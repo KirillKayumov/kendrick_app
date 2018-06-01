@@ -25,13 +25,13 @@ defmodule KendrickWeb.ChannelCase do
     end
   end
 
-
   setup tags do
     :ok = Ecto.Adapters.SQL.Sandbox.checkout(Kendrick.Repo)
+
     unless tags[:async] do
       Ecto.Adapters.SQL.Sandbox.mode(Kendrick.Repo, {:shared, self()})
     end
+
     :ok
   end
-
 end

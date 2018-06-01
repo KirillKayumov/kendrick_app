@@ -11,7 +11,7 @@ defmodule Kendrick.Application do
       # Start the Ecto repository
       supervisor(Kendrick.Repo, []),
       # Start the endpoint when the application starts
-      supervisor(KendrickWeb.Endpoint, []),
+      supervisor(KendrickWeb.Endpoint, [])
       # Start your own worker by calling: Kendrick.Worker.start_link(arg1, arg2, arg3)
       # worker(Kendrick.Worker, [arg1, arg2, arg3]),
     ]
