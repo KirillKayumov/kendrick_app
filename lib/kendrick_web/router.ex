@@ -20,6 +20,11 @@ defmodule KendrickWeb.Router do
     get("/", PageController, :index)
   end
 
+  scope "/auth", KendrickWeb do
+    get("/:provider", AuthController, :request)
+    get("/:provider/callback", AuthController, :callback)
+  end
+
   # Other scopes may use custom stacks.
   # scope "/api", KendrickWeb do
   #   pipe_through :api
