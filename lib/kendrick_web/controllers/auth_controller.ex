@@ -9,4 +9,10 @@ defmodule KendrickWeb.AuthController do
     |> Kendrick.Auth.Slack.authenticate(credentials)
     |> redirect(to: "/")
   end
+
+  def sign_out(conn, _params) do
+    conn
+    |> Kendrick.Guardian.Plug.sign_out()
+    |> redirect(to: "/")
+  end
 end
