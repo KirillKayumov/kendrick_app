@@ -1,5 +1,5 @@
 defmodule Kendrick.Guardian do
-  use Guardian, otp_app: :my_app
+  use Guardian, otp_app: :kendrick
 
   def subject_for_token(resource, _claims) do
     # You can use any value for the subject of your token but
@@ -8,6 +8,7 @@ defmodule Kendrick.Guardian do
     # A unique `id` is a good subject, a non-unique email address
     # is a poor subject.
     sub = to_string(resource.id)
+
     {:ok, sub}
   end
 
@@ -15,13 +16,14 @@ defmodule Kendrick.Guardian do
   #   {:error, :reason_for_error}
   # end
 
-  def resource_from_claims(_claims) do
+  def resource_from_claims(claims) do
     # Here we'll look up our resource from the claims, the subject can be
     # found in the `"sub"` key. In `above subject_for_token/2` we returned
     # the resource id so here we'll rely on that to look it up.
-    # id = claims["sub"]
-    # resource = MyApp.get_resource_by_id(id)
-    # {:ok, resource}
+    id = claims["sub"]
+    resource = Kendrick.Repo.get(Kendrick.User, id)
+
+    {:ok, resource}
   end
 
   # def resource_from_claims(_claims) do
