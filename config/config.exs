@@ -25,10 +25,6 @@ config :kendrick, Kendrick.Guardian,
   issuer: "kendrick",
   secret_key: System.get_env("GUARDIAN_SECRET_KEY")
 
-config :kendrick, KendrickWeb.Plugs.HomePagePipeline,
-  module: Kendrick.Guardian,
-  error_handler: Kendrick.Auth.ErrorHandler
-
 config :ueberauth, Ueberauth,
   providers: [
     slack: {Ueberauth.Strategy.Slack, []}
