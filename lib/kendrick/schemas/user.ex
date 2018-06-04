@@ -3,10 +3,15 @@ defmodule Kendrick.User do
 
   import Ecto.Changeset
 
-  alias Kendrick.User
+  alias Kendrick.{
+    User,
+    Workspace
+  }
 
   schema "users" do
     field(:slack_id, :string)
+
+    belongs_to(:workspace, Workspace)
 
     timestamps()
   end
