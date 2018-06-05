@@ -7,12 +7,12 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Hello Kendrick!</title>
+    <title>Kendrick App</title>
     <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
   </head>
 
   <body>
-    <%= render "navigation.html", conn: @conn %>
+    <%= render "navigation.html", assigns %>
 
     <div class="container">
       <%= render @view_module, @view_template, assigns %>
