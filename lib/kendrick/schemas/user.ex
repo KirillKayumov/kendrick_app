@@ -10,6 +10,7 @@ defmodule Kendrick.User do
 
   schema "users" do
     field(:slack_id, :string)
+    field(:slack_token, :string)
 
     belongs_to(:workspace, Workspace)
 

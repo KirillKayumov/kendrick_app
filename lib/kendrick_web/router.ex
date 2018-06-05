@@ -17,6 +17,7 @@ defmodule KendrickWeb.Router do
     plug(Guardian.Plug.VerifySession)
     plug(Guardian.Plug.LoadResource, allow_blank: true)
     plug(KendrickWeb.Plugs.SetCurrentUser)
+    plug(KendrickWeb.Plugs.SetCurrentWorkspace)
   end
 
   pipeline :api do
@@ -28,6 +29,12 @@ defmodule KendrickWeb.Router do
     pipe_through(:browser)
 
     get("/", PageController, :index)
+
+    scope "/users" do
+      get("/", UserController, :index)
+
+      post("/:slack_id/add_to_app", UserController, :add_to_app)
+    end
   end
 
   scope "/auth", KendrickWeb do

@@ -1,0 +1,11 @@
+<ul>
+  <%= for slack_user <- @slack_users do %>
+    <li>
+      <%= slack_user["real_name"] %>
+
+      <%= unless in_app?(slack_user, @users) do %>
+        <%= link "Add to the app", to: user_path(@conn, :add_to_app, slack_user["id"]), method: :post %>
+      <% end %>
+    </li>
+  <% end %>
+</ul>
