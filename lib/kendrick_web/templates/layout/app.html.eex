@@ -12,12 +12,12 @@
   </head>
 
   <body>
-    <div id="root">
-      <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
-      <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
+    <%= render "navigation.html", conn: @conn %>
 
+    <div class="container">
       <%= render @view_module, @view_template, assigns %>
     </div>
+
     <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
   </body>
 </html>

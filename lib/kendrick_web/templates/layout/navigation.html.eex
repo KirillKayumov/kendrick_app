@@ -1,0 +1,9 @@
+<nav class="navbar navbar-expand navbar-light bg-white">
+  <%= link "Kendrick App", to: page_path(@conn, :index), class: "navbar-brand" %>
+
+  <ul class="navbar-nav">
+    <li class="nav-item">
+      <%= link "Users", to: user_path(@conn, :index), class: "nav-link" %>
+    </li>
+  </ul>
+</nav>
