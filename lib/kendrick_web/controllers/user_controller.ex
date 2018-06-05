@@ -26,10 +26,7 @@ defmodule KendrickWeb.UserController do
   end
 
   def add_to_app(conn, %{"slack_id" => slack_id}) do
-    %{
-      current_user: current_user,
-      current_workspace: current_workspace
-    } = conn.assigns
+    %{current_workspace: current_workspace} = conn.assigns
 
     Kendrick.Users.AddToApp.call(slack_id, current_workspace)
 

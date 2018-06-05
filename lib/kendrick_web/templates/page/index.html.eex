@@ -1,7 +1,4 @@
-<%= if @current_user do %>
-  <%= link "Users", to: user_path(@conn, :index) %>
-  <%= link "Sign out", to: auth_path(@conn, :sign_out), method: :delete %>
-<% else %>
+<%= unless @current_user do %>
   <%= link to: auth_path(@conn, :request, "slack") do %>
     <img
       alt="Sign in with Slack"

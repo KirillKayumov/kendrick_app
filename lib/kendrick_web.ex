@@ -41,6 +41,7 @@ defmodule KendrickWeb do
       import KendrickWeb.Router.Helpers
       import KendrickWeb.ErrorHelpers
       import KendrickWeb.Gettext
+      import PhoenixActiveLink
     end
   end
 

@@ -44,7 +44,8 @@ defmodule Kendrick.Mixfile do
       {:guardian, "~> 1.0"},
       {:ueberauth, "~> 0.5.0"},
       {:ueberauth_slack, github: "ueberauth/ueberauth_slack", ref: "5049d0"},
-      {:httpoison, "~> 1.1"}
+      {:httpoison, "~> 1.1"},
+      {:phoenix_active_link, "~> 0.2.1"}
     ]
   end
 
