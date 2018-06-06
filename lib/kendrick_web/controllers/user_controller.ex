@@ -5,8 +5,7 @@ defmodule KendrickWeb.UserController do
 
   def index(conn, _params) do
     conn
-    |> Plug.Conn.assign(:slack_users, [])
-    |> Plug.Conn.assign(:users, [])
+    |> Plug.Conn.assign(:users, Kendrick.Users.for_workspace(current_workspace(conn)))
     |> render("index.html")
   end
 

@@ -27,7 +27,7 @@ config :kendrick, Kendrick.Guardian,
 
 config :ueberauth, Ueberauth,
   providers: [
-    slack: {Ueberauth.Strategy.Slack, []}
+    slack: {Ueberauth.Strategy.Slack, [default_scope: "users:read,users.profile:read"]}
   ]
 
 config :ueberauth, Ueberauth.Strategy.Slack.OAuth,

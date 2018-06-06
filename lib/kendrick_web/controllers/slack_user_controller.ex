@@ -3,7 +3,7 @@ defmodule KendrickWeb.SlackUserController do
 
   def index(conn, _params) do
     conn
-    |> assign(:slack_users, current_workspace(conn).slack_users["list"])
+    |> assign(:slack_users, Kendrick.Users.workspace_members(current_workspace(conn)))
     |> render("index.html")
   end
 

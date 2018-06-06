@@ -38,11 +38,25 @@ defmodule Kendrick.Auth.Slack do
     Map.put(credentials, :user, user)
   end
 
-  defp create_user(%{other: %{user_id: slack_id}, token: slack_token, workspace: workspace}) do
+  defp create_user(credentials) do
+    credentials
+    |> save_user()
+    |> save_profile_info()
+  end
+
+  defp save_user(%{other: %{user_id: slack_id}, token: slack_token, workspace: workspace}) do
     %User{}
     |> User.changeset(%{slack_id: slack_id, slack_token: slack_token})
     |> Ecto.Changeset.put_assoc(:workspace, workspace)
     |> Repo.insert!()
+  end
+
+  defp save_profile_info(user) do
+    %{"profile" => %{"real_name" => name}} = Kendrick.Slack.Client.profile_get(user.slack_token, user.slack_id)
+
+    user
+    |> User.changeset(%{name: name})
+    |> Repo.update!()
   end
 
   defp set_token(user, %{token: slack_token}) do

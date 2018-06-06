@@ -14,6 +14,7 @@ defmodule Kendrick.Workspaces do
 
   def refresh_slack_users(workspace, current_user) do
     %{"members" => users} = Slack.Client.users_list(current_user.slack_token)
+    users = Enum.filter(users, &(&1["id"] != "USLACKBOT"))
 
     workspace
     |> Workspace.changeset(%{slack_users: %{list: users}})
