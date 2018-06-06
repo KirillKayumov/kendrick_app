@@ -19,7 +19,7 @@ defmodule Kendrick.User do
 
   def changeset(%User{} = user, attrs) do
     user
-    |> cast(attrs, [:slack_id])
+    |> cast(attrs, [:slack_id, :slack_token])
     |> validate_required([:slack_id])
     |> unique_constraint(:slack_id)
   end

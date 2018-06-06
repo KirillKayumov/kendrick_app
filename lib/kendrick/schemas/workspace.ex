@@ -10,6 +10,7 @@ defmodule Kendrick.Workspace do
 
   schema "workspaces" do
     field(:team_id, :string)
+    field(:slack_users, :map)
 
     has_many(:users, User, on_delete: :delete_all)
 
@@ -18,7 +19,7 @@ defmodule Kendrick.Workspace do
 
   def changeset(%Workspace{} = workspace, attrs) do
     workspace
-    |> cast(attrs, [:team_id])
+    |> cast(attrs, [:team_id, :slack_users])
     |> validate_required([:team_id])
     |> unique_constraint(:team_id)
   end

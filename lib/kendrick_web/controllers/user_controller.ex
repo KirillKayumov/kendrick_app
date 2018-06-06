@@ -4,24 +4,9 @@ defmodule KendrickWeb.UserController do
   plug(Guardian.Plug.EnsureAuthenticated)
 
   def index(conn, _params) do
-    %{
-      current_user: current_user,
-      current_workspace: current_workspace
-    } = conn.assigns
-
-    response =
-      HTTPoison.get!(
-        "https://slack.com/api/users.list",
-        [],
-        params: [{:token, current_user.slack_token}]
-      )
-
-    %{"members" => slack_users} = Poison.decode!(response.body)
-    users = Kendrick.Users.for_workspace(current_workspace)
-
     conn
-    |> Plug.Conn.assign(:slack_users, slack_users)
-    |> Plug.Conn.assign(:users, users)
+    |> Plug.Conn.assign(:slack_users, [])
+    |> Plug.Conn.assign(:users, [])
     |> render("index.html")
   end
 

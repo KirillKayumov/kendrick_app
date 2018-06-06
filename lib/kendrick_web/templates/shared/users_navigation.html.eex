@@ -1,0 +1,19 @@
+<div class="row justify-content-center">
+  <div class="col-6">
+    <nav class="nav nav-pills nav-fill">
+      <%= active_link @conn, "In the app",
+        to: user_path(@conn, :index),
+        class: "nav-item nav-link",
+        active: [{KendrickWeb.UserController, :index}],
+        class_active: "active"
+      %>
+
+      <%= active_link @conn, "In Slack workspace",
+        to: slack_user_path(@conn, :index),
+        class: "nav-item nav-link",
+        active: [{KendrickWeb.SlackUserController, :index}],
+        class_active: "active"
+      %>
+    </nav>
+  </div>
+</div>
