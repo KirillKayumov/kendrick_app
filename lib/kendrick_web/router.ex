@@ -20,8 +20,9 @@ defmodule KendrickWeb.Router do
     plug(KendrickWeb.Plugs.SetCurrentWorkspace)
   end
 
-  pipeline :api do
+  pipeline :slack do
     plug(:accepts, ["json"])
+    plug(KendrickWeb.Plugs.VerifySlackVerificationToken)
   end
 
   scope "/", KendrickWeb do
@@ -45,6 +46,12 @@ defmodule KendrickWeb.Router do
     get("/:provider", AuthController, :request)
     get("/:provider/callback", AuthController, :callback)
     delete("/sign_out", AuthController, :sign_out)
+  end
+
+  scope "/slack", KendrickWeb.Slack do
+    pipe_through(:slack)
+
+    post("/event", EventController, :index)
   end
 
   # Other scopes may use custom stacks.
