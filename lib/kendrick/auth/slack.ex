@@ -1,6 +1,7 @@
 defmodule Kendrick.Auth.Slack do
   alias Kendrick.{
     Repo,
+    Slack,
     User,
     Workspace
   }
@@ -22,10 +23,25 @@ defmodule Kendrick.Auth.Slack do
     Map.put(credentials, :workspace, workspace)
   end
 
-  defp create_workspace(%{other: %{team_id: team_id}}) do
+  defp create_workspace(credentials) do
+    credentials
+    |> save_workspace()
+    |> save_slack_users(credentials)
+  end
+
+  defp save_workspace(%{other: %{team_id: team_id}}) do
     %Workspace{}
     |> Workspace.changeset(%{team_id: team_id})
     |> Repo.insert!()
+  end
+
+  defp save_slack_users(workspace, %{token: slack_token}) do
+    %{"members" => users} = Slack.Client.users_list(slack_token)
+    users = Enum.filter(users, &(&1["id"] != "USLACKBOT"))
+
+    workspace
+    |> Workspace.changeset(%{slack_users: %{list: users}})
+    |> Repo.update!()
   end
 
   defp find_or_create_user(%{other: %{user_id: slack_id}} = credentials) do

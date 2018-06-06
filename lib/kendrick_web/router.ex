@@ -38,7 +38,6 @@ defmodule KendrickWeb.Router do
 
     scope "/slack_users" do
       get("/", SlackUserController, :index)
-      post("/refresh", SlackUserController, :refresh)
     end
   end
 
