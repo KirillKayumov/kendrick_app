@@ -23,6 +23,7 @@ defmodule KendrickWeb do
       import Plug.Conn
       import KendrickWeb.Router.Helpers
       import KendrickWeb.Gettext
+      import KendrickWeb.Helpers.CurrentResources
     end
   end
 
