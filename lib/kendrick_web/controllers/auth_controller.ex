@@ -10,6 +10,11 @@ defmodule KendrickWeb.AuthController do
     |> redirect(to: "/")
   end
 
+  def callback(conn, %{"error" => "access_denied"}) do
+    conn
+    |> redirect(to: "/")
+  end
+
   def sign_out(conn, _params) do
     conn
     |> Kendrick.Guardian.Plug.sign_out()

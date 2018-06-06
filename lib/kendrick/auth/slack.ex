@@ -37,7 +37,9 @@ defmodule Kendrick.Auth.Slack do
 
   defp save_slack_users(workspace, %{token: slack_token}) do
     %{"members" => users} = Slack.Client.users_list(slack_token)
-    users = Enum.filter(users, &(&1["id"] != "USLACKBOT"))
+    users = users
+      |> Enum.filter(&(!&1["is_bot"]))
+      |> Enum.filter(&(&1["id"] != "USLACKBOT"))
 
     workspace
     |> Workspace.changeset(%{slack_users: %{list: users}})
