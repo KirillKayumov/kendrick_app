@@ -6,4 +6,11 @@ defmodule KendrickWeb.SlackUserController do
     |> assign(:slack_users, Kendrick.Users.workspace_members(current_workspace(conn)))
     |> render("index.html")
   end
+
+  def add_to_app(conn, %{"slack_id" => slack_id}) do
+    Kendrick.Users.AddToApp.call(slack_id, current_workspace(conn))
+
+    conn
+    |> redirect(to: slack_user_path(conn, :index))
+  end
 end
