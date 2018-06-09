@@ -42,6 +42,8 @@ defmodule KendrickWeb.Router do
 
       post("/:slack_id/add_to_app", SlackUserController, :add_to_app)
     end
+
+    resources("/projects", ProjectController)
   end
 
   scope "/auth", KendrickWeb do

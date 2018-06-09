@@ -18,7 +18,7 @@ defmodule Kendrick.User do
     timestamps()
   end
 
-  def changeset(%User{} = user, attrs) do
+  def changeset(%User{} = user, attrs \\ %{}) do
     user
     |> cast(attrs, [:slack_id, :slack_token, :name])
     |> validate_required([:slack_id])

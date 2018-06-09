@@ -4,6 +4,7 @@ defmodule Kendrick.Workspace do
   import Ecto.Changeset
 
   alias Kendrick.{
+    Project,
     User,
     Workspace
   }
@@ -13,11 +14,12 @@ defmodule Kendrick.Workspace do
     field(:slack_users, :map)
 
     has_many(:users, User, on_delete: :delete_all)
+    has_many(:projects, Project, on_delete: :delete_all)
 
     timestamps()
   end
 
-  def changeset(%Workspace{} = workspace, attrs) do
+  def changeset(%Workspace{} = workspace, attrs \\ %{}) do
     workspace
     |> cast(attrs, [:team_id, :slack_users])
     |> validate_required([:team_id])
