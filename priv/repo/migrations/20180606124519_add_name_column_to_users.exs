@@ -3,7 +3,7 @@ defmodule Kendrick.Repo.Migrations.AddNameColumnToUsers do
 
   def change do
     alter table(:users) do
-      add :name, :string, null: false, default: ""
+      add(:name, :string, null: false, default: "")
     end
   end
 end

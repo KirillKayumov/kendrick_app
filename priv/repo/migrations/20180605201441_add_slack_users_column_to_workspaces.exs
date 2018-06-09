@@ -3,7 +3,7 @@ defmodule Kendrick.Repo.Migrations.AddSlackUsersColumnToWorkspaces do
 
   def change do
     alter table(:workspaces) do
-      add :slack_users, :jsonb
+      add(:slack_users, :jsonb)
     end
   end
 end

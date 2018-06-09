@@ -12,7 +12,7 @@ defmodule Kendrick.Users do
   end
 
   defp filter_out_users_from(users, slack_users) do
-    slack_ids = Enum.map(users, &(&1.slack_id))
+    slack_ids = Enum.map(users, & &1.slack_id)
 
     Enum.filter(slack_users, &(&1["id"] not in slack_ids))
   end

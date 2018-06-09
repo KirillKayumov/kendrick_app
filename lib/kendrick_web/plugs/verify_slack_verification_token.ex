@@ -7,7 +7,8 @@ defmodule KendrickWeb.Plugs.VerifySlackVerificationToken do
     opts
   end
 
-  def call(%{ params: %{ "token" => token }} = conn, _opts) when token == @token, do: conn
+  def call(%{params: %{"token" => token}} = conn, _opts) when token == @token, do: conn
+
   def call(conn, _opts) do
     conn
     |> send_resp(401, "")

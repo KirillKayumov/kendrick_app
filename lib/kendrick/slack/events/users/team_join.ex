@@ -15,20 +15,20 @@ defmodule Kendrick.Slack.Events.Users.TeamJoin do
   defp get_workspace(user) do
     workspace = Repo.get_by(Workspace, team_id: user["team_id"])
 
-    { user, workspace }
+    {user, workspace}
   end
 
-  defp get_slack_users({ user, workspace }) do
-    { user, workspace, workspace.slack_users["list"] }
+  defp get_slack_users({user, workspace}) do
+    {user, workspace, workspace.slack_users["list"]}
   end
 
-  defp append_new_user({ user, workspace, slack_users }) do
-    { user, workspace, slack_users ++ [user] }
+  defp append_new_user({user, workspace, slack_users}) do
+    {user, workspace, slack_users ++ [user]}
   end
 
-  defp update_workspace({ _user, workspace, slack_users }) do
+  defp update_workspace({_user, workspace, slack_users}) do
     workspace
-    |> Workspace.changeset(%{slack_users: %{list: slack_users }})
+    |> Workspace.changeset(%{slack_users: %{list: slack_users}})
     |> Repo.update!()
   end
 end

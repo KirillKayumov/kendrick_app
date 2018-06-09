@@ -37,7 +37,9 @@ defmodule Kendrick.Auth.Slack do
 
   defp save_slack_users(workspace, %{token: slack_token}) do
     %{"members" => users} = Slack.Client.users_list(slack_token)
-    users = users
+
+    users =
+      users
       |> Enum.filter(&(!&1["is_bot"]))
       |> Enum.filter(&(&1["id"] != "USLACKBOT"))
 
@@ -70,7 +72,8 @@ defmodule Kendrick.Auth.Slack do
   end
 
   defp save_profile_info(user) do
-    %{"profile" => %{"real_name" => name}} = Kendrick.Slack.Client.profile_get(user.slack_token, user.slack_id)
+    %{"profile" => %{"real_name" => name}} =
+      Kendrick.Slack.Client.profile_get(user.slack_token, user.slack_id)
 
     user
     |> User.changeset(%{name: name})
