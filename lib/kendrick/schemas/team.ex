@@ -4,14 +4,17 @@ defmodule Kendrick.Team do
   import Ecto.Changeset
 
   alias Kendrick.{
+    Project,
     Team,
-    Project
+    User
   }
 
   schema "teams" do
     field(:name, :string)
 
     belongs_to(:project, Project)
+
+    many_to_many(:users, User, join_through: "teams_users", on_replace: :delete)
 
     timestamps()
   end
@@ -20,6 +23,6 @@ defmodule Kendrick.Team do
     team
     |> cast(attrs, [:name])
     |> validate_required([:name])
-    |> unique_constraint(:name, name: :team_name_project_id_index)
+    |> unique_constraint(:name, name: :teams_name_project_id_index)
   end
 end

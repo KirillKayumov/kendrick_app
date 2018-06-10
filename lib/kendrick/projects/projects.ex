@@ -1,4 +1,6 @@
 defmodule Kendrick.Projects do
+  import Ecto.Query, only: [order_by: 2]
+
   alias Kendrick.{
     Project,
     Repo
@@ -9,7 +11,9 @@ defmodule Kendrick.Projects do
   end
 
   def for_workspace(workspace) do
-    Ecto.assoc(workspace, :projects) |> Repo.all()
+    Ecto.assoc(workspace, :projects)
+    |> order_by(:name)
+    |> Repo.all()
   end
 
   def create(params, workspace) do

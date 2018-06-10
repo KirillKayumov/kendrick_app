@@ -4,6 +4,7 @@ defmodule Kendrick.User do
   import Ecto.Changeset
 
   alias Kendrick.{
+    Team,
     User,
     Workspace
   }
@@ -14,6 +15,8 @@ defmodule Kendrick.User do
     field(:name, :string)
 
     belongs_to(:workspace, Workspace)
+
+    many_to_many(:teams, Team, join_through: "teams_users")
 
     timestamps()
   end

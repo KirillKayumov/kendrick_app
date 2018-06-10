@@ -1,8 +1,20 @@
 defmodule Kendrick.Users do
+  import Ecto.Query, only: [order_by: 2]
+
   alias Kendrick.Repo
 
   def for_workspace(workspace) do
-    Ecto.assoc(workspace, :users) |> Repo.all()
+    workspace
+    |> Ecto.assoc(:users)
+    |> order_by(:name)
+    |> Repo.all()
+  end
+
+  def for_team(team) do
+    team
+    |> Ecto.assoc(:users)
+    |> order_by(:name)
+    |> Repo.all()
   end
 
   def workspace_members(workspace) do

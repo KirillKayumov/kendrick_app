@@ -1,0 +1,21 @@
+<div class="row justify-content-center">
+  <div class="col-6">
+    <%= form_for @changeset, project_team_path(@conn, :update, @project, @team), fn f -> %>
+      <div class="form-group">
+        <%= label f, :name %>
+        <%= text_input f, :name, class: "form-control", required: true %>
+      </div>
+
+      <div class="form-group">
+        <%= for user <- @users do %>
+          <div class="form-check">
+            <%= checkbox :"team[user_ids]", "#{user.id}", value: user.id in @team_user_ids %>
+            <%= label :"team[user_ids]", "#{user.id}", user.name %>
+          </div>
+        <% end %>
+      </div>
+
+      <%= submit "Save", class: "btn btn-primary" %>
+    <% end %>
+  </div>
+</div>
