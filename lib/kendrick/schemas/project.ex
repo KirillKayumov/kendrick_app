@@ -5,6 +5,7 @@ defmodule Kendrick.Project do
 
   alias Kendrick.{
     Project,
+    Team,
     Workspace
   }
 
@@ -12,6 +13,8 @@ defmodule Kendrick.Project do
     field(:name, :string)
 
     belongs_to(:workspace, Workspace)
+
+    has_many(:teams, Team, on_delete: :delete_all)
 
     timestamps()
   end

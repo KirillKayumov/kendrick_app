@@ -1,0 +1,19 @@
+<div class="container">
+  <div class="row">
+    <%= link "New team", to: project_team_path(@conn, :new, @project), class: "btn btn-primary" %>
+  </div>
+
+  <div class="row">
+    <ul>
+      <%= for team <- @teams do %>
+        <li>
+          <%= team.name %>
+          <%= link "Remove",
+            to: project_team_path(@conn, :delete, @project, team),
+            method: :delete,
+            data: [confirm: "Are you sure?"] %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+</div>

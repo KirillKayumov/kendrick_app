@@ -4,6 +4,10 @@ defmodule Kendrick.Projects do
     Repo
   }
 
+  def get(id) do
+    Repo.get(Project, id)
+  end
+
   def for_workspace(workspace) do
     Ecto.assoc(workspace, :projects) |> Repo.all()
   end

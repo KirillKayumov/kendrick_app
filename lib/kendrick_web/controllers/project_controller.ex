@@ -3,7 +3,8 @@ defmodule KendrickWeb.ProjectController do
 
   alias Kendrick.{
     Project,
-    Projects
+    Projects,
+    Teams
   }
 
   def index(conn, _params) do
@@ -13,13 +14,23 @@ defmodule KendrickWeb.ProjectController do
     |> render("index.html", projects: projects)
   end
 
+  def show(conn, %{"id" => id}) do
+    project = Projects.get(id)
+    teams = Teams.for_project(project)
+
+    conn
+    |> assign(:project, project)
+    |> assign(:teams, teams)
+    |> render("show.html", team: teams)
+  end
+
   def new(conn, _params) do
     conn
     |> render("new.html", changeset: Project.changeset(%Project{}))
   end
 
   def create(conn, %{"project" => project_params}) do
-    case Kendrick.Projects.create(project_params, current_workspace(conn)) do
+    case Projects.create(project_params, current_workspace(conn)) do
       {:ok, _} ->
         conn
         |> redirect(to: project_path(conn, :index))

@@ -7,7 +7,7 @@
     <ul>
       <%= for project <- @projects do %>
         <li>
-          <%= project.name %>
+          <%= link project.name, to: project_path(@conn, :show, project) %>
           <%= link "Remove",
             to: project_path(@conn, :delete, project),
             method: :delete,
