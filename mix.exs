@@ -20,7 +20,7 @@ defmodule Kendrick.Mixfile do
   def application do
     [
       mod: {Kendrick.Application, []},
-      extra_applications: [:logger, :runtime_tools, :ueberauth, :ueberauth_slack]
+      extra_applications: [:logger, :runtime_tools, :ueberauth]
     ]
   end
 
@@ -43,9 +43,9 @@ defmodule Kendrick.Mixfile do
       {:cowboy, "~> 1.0"},
       {:guardian, "~> 1.0"},
       {:ueberauth, "~> 0.5.0"},
-      {:ueberauth_slack, github: "ueberauth/ueberauth_slack", ref: "5049d0"},
       {:httpoison, "~> 1.1"},
-      {:phoenix_active_link, "~> 0.2.1"}
+      {:phoenix_active_link, "~> 0.2.1"},
+      {:oauth2, "~> 0.9.2"}
     ]
   end
 

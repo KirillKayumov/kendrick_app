@@ -50,7 +50,8 @@ defmodule KendrickWeb.Router do
 
   scope "/auth", KendrickWeb do
     get("/:provider", AuthController, :request)
-    get("/:provider/callback", AuthController, :callback)
+    get("/slack/callback", AuthController, :slack_callback)
+    get("/add_to_slack/callback", AuthController, :add_to_slack_callback)
     delete("/sign_out", AuthController, :sign_out)
   end
 
@@ -58,6 +59,7 @@ defmodule KendrickWeb.Router do
     pipe_through(:slack)
 
     post("/event", EventController, :index)
+    post("/command", CommandController, :index)
   end
 
   # Other scopes may use custom stacks.

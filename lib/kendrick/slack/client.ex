@@ -1,6 +1,7 @@
 defmodule Kendrick.Slack.Client do
-  @users_list_url "https://slack.com/api/users.list"
+  @post_message_url "https://slack.com/api/chat.postMessage"
   @profile_get_url "https://slack.com/api/users.profile.get"
+  @users_list_url "https://slack.com/api/users.list"
 
   def users_list(token) do
     response =
@@ -23,6 +24,26 @@ defmodule Kendrick.Slack.Client do
         params: [
           {:token, token},
           {:user, slack_id}
+        ]
+      )
+
+    Poison.decode!(response.body)
+  end
+
+  def post_message(message, channel, token) do
+    response =
+      HTTPoison.post!(
+        @post_message_url,
+        {
+          :form,
+          [
+            {"channel", channel},
+            {"text", message},
+            {"token", token}
+          ]
+        },
+        [
+          {"Content-Type", "multipart/form-data"}
         ]
       )
 

@@ -1,8 +1,7 @@
 defmodule Kendrick.Users.AddToApp do
   alias Kendrick.{
     Repo,
-    User,
-    Workspace
+    User
   }
 
   def call(slack_id, workspace) do

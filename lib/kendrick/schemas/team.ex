@@ -14,7 +14,7 @@ defmodule Kendrick.Team do
 
     belongs_to(:project, Project)
 
-    many_to_many(:users, User, join_through: "teams_users", on_replace: :delete)
+    many_to_many(:users, User, join_through: "teams_users", on_replace: :delete, on_delete: :delete_all)
 
     timestamps()
   end

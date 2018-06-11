@@ -27,10 +27,11 @@ config :kendrick, Kendrick.Guardian,
 
 config :ueberauth, Ueberauth,
   providers: [
-    slack: {Ueberauth.Strategy.Slack, [default_scope: "users:read,users.profile:read"]}
+    slack: {Kendrick.Ueberauth.Strategy.Slack, []},
+    add_to_slack: {Kendrick.Ueberauth.Strategy.AddToSlack, []}
   ]
 
-config :ueberauth, Ueberauth.Strategy.Slack.OAuth,
+config :ueberauth, Kendrick.Ueberauth.Strategy.Slack.OAuth,
   client_id: System.get_env("SLACK_CLIENT_ID"),
   client_secret: System.get_env("SLACK_CLIENT_SECRET")
 
