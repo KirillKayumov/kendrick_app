@@ -1,6 +1,8 @@
 defmodule KendrickWeb.SlackUserController do
   use KendrickWeb, :controller
 
+  plug(Guardian.Plug.EnsureAuthenticated)
+
   def index(conn, _params) do
     conn
     |> assign(:slack_users, Kendrick.Users.workspace_members(current_workspace(conn)))

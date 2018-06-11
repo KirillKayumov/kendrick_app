@@ -8,8 +8,9 @@ defmodule KendrickWeb.TeamController do
     Users
   }
 
+  plug(Guardian.Plug.EnsureAuthenticated)
   plug(:set_project)
-  plug(:set_team, only: [:show, :update, :delete])
+  plug(:set_team when action in [:show, :update, :delete])
 
   def show(conn, _params) do
     %{team: team} = conn.assigns

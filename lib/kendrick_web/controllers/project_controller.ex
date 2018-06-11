@@ -7,6 +7,8 @@ defmodule KendrickWeb.ProjectController do
     Teams
   }
 
+  plug(Guardian.Plug.EnsureAuthenticated)
+
   def index(conn, _params) do
     projects = Projects.for_workspace(current_workspace(conn))
 
