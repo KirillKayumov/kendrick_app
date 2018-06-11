@@ -16,8 +16,9 @@ defmodule KendrickWeb.AuthController do
   end
 
   def add_to_slack_callback(%{assigns: %{ueberauth_auth: %{credentials: credentials}}} = conn, _params) do
+    Kendrick.Auth.Slack.add_to_slack(credentials)
+
     conn
-    |> Kendrick.Auth.Slack.add_to_slack(credentials)
     |> redirect(to: "/")
   end
 

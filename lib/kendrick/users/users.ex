@@ -1,7 +1,14 @@
 defmodule Kendrick.Users do
   import Ecto.Query, only: [order_by: 2]
 
-  alias Kendrick.Repo
+  alias Kendrick.{
+    Repo,
+    User
+  }
+
+  def get_by(attrs) do
+    Repo.get_by(User, attrs)
+  end
 
   def for_workspace(workspace) do
     workspace

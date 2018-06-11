@@ -16,14 +16,14 @@ defmodule Kendrick.Slack.Client do
     Poison.decode!(response.body)
   end
 
-  def profile_get(token, slack_id) do
+  def profile_get(slack_id, token) do
     response =
       HTTPoison.get!(
         @profile_get_url,
         [],
         params: [
-          {:token, token},
-          {:user, slack_id}
+          {:user, slack_id},
+          {:token, token}
         ]
       )
 

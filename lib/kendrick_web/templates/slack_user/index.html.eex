@@ -5,7 +5,6 @@
     <%= for slack_user <- @slack_users do %>
       <li>
         <%= slack_user["real_name"] %>
-        <%= link "Add to app", to: slack_user_path(@conn, :add_to_app, slack_user["id"]), method: :post %>
       </li>
     <% end %>
   </ul>
