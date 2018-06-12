@@ -35,6 +35,11 @@ config :ueberauth, Kendrick.Ueberauth.Strategy.Slack.OAuth,
   client_id: System.get_env("SLACK_CLIENT_ID"),
   client_secret: System.get_env("SLACK_CLIENT_SECRET")
 
+config :jira,
+  username: System.get_env("JIRA_USERNAME"),
+  password: System.get_env("JIRA_PASSWORD"),
+  host: System.get_env("JIRA_HOST")
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env()}.exs"

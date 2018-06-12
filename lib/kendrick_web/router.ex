@@ -58,7 +58,6 @@ defmodule KendrickWeb.Router do
   scope "/slack", KendrickWeb.Slack do
     pipe_through(:slack)
 
-    post("/event", EventController, :index)
     post("/command", CommandController, :index)
   end
 

@@ -4,6 +4,7 @@ defmodule Kendrick.User do
   import Ecto.Changeset
 
   alias Kendrick.{
+    Task,
     Team,
     User,
     Workspace
@@ -15,6 +16,8 @@ defmodule Kendrick.User do
     field(:slack_channel, :string)
 
     belongs_to(:workspace, Workspace)
+
+    has_many(:tasks, Task, on_delete: :delete_all)
 
     many_to_many(:teams, Team, join_through: "teams_users", on_delete: :delete_all)
 
