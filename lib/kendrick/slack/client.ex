@@ -1,13 +1,34 @@
 defmodule Kendrick.Slack.Client do
+  @dialog_open_url "https://slack.com/api/dialog.open"
   @post_message_url "https://slack.com/api/chat.postMessage"
   @profile_get_url "https://slack.com/api/users.profile.get"
   @users_list_url "https://slack.com/api/users.list"
+
+  def dialog_open(dialog, trigger_id, token) do
+    response =
+      HTTPoison.post!(
+        @dialog_open_url,
+        {
+          :form,
+          [
+            {"dialog", Poison.encode!(dialog)},
+            {"trigger_id", trigger_id},
+            {"token", token}
+          ]
+        },
+        [
+          {"Content-Type", "multipart/form-data"}
+        ]
+      )
+
+    Poison.decode!(response.body)
+  end
 
   def post_message(text, channel, token) when is_binary(text) do
     post_message(text, "", channel, token)
   end
 
-  def post_message(attachments, channel, token) when is_map(attachments) do
+  def post_message(attachments, channel, token) when is_list(attachments) do
     post_message("", attachments, channel, token)
   end
 

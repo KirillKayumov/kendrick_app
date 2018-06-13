@@ -14,11 +14,4 @@ defmodule KendrickWeb.Slack.CommandController do
     conn
     |> send_resp(200, "")
   end
-
-  def index(conn, %{"command" => "/add_task"} = params) do
-    Kendrick.Slack.Commands.AddTask.call(params)
-
-    conn
-    |> send_resp(200, "")
-  end
 end

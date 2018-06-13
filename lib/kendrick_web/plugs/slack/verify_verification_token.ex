@@ -1,4 +1,4 @@
-defmodule KendrickWeb.Plugs.VerifySlackVerificationToken do
+defmodule KendrickWeb.Plugs.Slack.VerifyVerificationToken do
   import Plug.Conn
 
   @token System.get_env("SLACK_VERIFICATION_TOKEN")

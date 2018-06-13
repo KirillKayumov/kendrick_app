@@ -19,6 +19,12 @@ defmodule Kendrick.Jira.Task do
     }
   end
 
+  def key_from_url(url) do
+    url
+    |> String.split("/")
+    |> List.last()
+  end
+
   # def to_ticket(jira_ticket) do
   #   %Ticket{
   #     title: jira_ticket.title,
@@ -29,10 +35,13 @@ defmodule Kendrick.Jira.Task do
   # end
 
   defp title(%{"fields" => %{"summary" => title}}), do: title
+  defp title(_), do: nil
 
   defp url(%{"key" => key}), do: "#{Application.fetch_env!(:jira, :host)}/browse/#{key}"
+  defp url(_), do: nil
 
   defp status(%{"fields" => %{"status" => %{"name" => status}}}), do: status
+  defp status(_), do: nil
 
   # defp type(%{ "fields" => %{ "issuetype" => %{ "name" => type } } }), do: type
 end

@@ -2,11 +2,8 @@ defmodule Kendrick.Slack.Commands.Report do
   use GenServer
 
   alias Kendrick.{
-    Repo,
     Slack,
-    User,
     Users,
-    Workspace,
     Workspaces
   }
 
@@ -25,11 +22,61 @@ defmodule Kendrick.Slack.Commands.Report do
   end
 
   def handle_cast({:do_call, params}, state) do
-    user = Users.get_by(slack_id: params["user_id"])
-    workspace = Workspaces.get_by(team_id: params["team_id"])
-
-    Slack.Client.post_message("lol", user.slack_channel, workspace.slack_token)
+    %{params: params}
+    |> get_user()
+    |> get_workspace()
+    |> build_report()
+    |> post_message()
 
     {:noreply, state}
+  end
+
+  defp get_user(%{params: params} = data) do
+    user = Users.get_by(slack_id: params["user_id"])
+
+    Map.put(data, :user, user)
+  end
+
+  defp get_workspace(%{params: params} = data) do
+    workspace = Workspaces.get_by(team_id: params["team_id"])
+
+    Map.put(data, :workspace, workspace)
+  end
+
+  defp build_report(data) do
+    attachments =
+      []
+      |> add_menu()
+
+    Map.put(data, :attachments, attachments)
+  end
+
+  defp add_menu(attachments) do
+    attachments ++ [build_menu()]
+  end
+
+  defp build_menu do
+    %{
+      "actions" => menu_actions(),
+      "callback_id" => "menu",
+      "color" => "#717171",
+      "fallback" => "Menu",
+      "title" => "MENU"
+    }
+  end
+
+  defp menu_actions do
+    [
+      %{
+        "name" => "add_task",
+        "text" => "Add task",
+        "type" => "button",
+        "value" => "add_task"
+      }
+    ]
+  end
+
+  defp post_message(%{attachments: attachments, user: user, workspace: workspace}) do
+    Slack.Client.post_message(attachments, user.slack_channel, workspace.slack_token)
   end
 end

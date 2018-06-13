@@ -22,7 +22,8 @@ defmodule KendrickWeb.Router do
 
   pipeline :slack do
     plug(:accepts, ["json"])
-    plug(KendrickWeb.Plugs.VerifySlackVerificationToken)
+    plug(KendrickWeb.Plugs.Slack.DecodePayload)
+    plug(KendrickWeb.Plugs.Slack.VerifyVerificationToken)
   end
 
   scope "/", KendrickWeb do
@@ -59,6 +60,7 @@ defmodule KendrickWeb.Router do
     pipe_through(:slack)
 
     post("/command", CommandController, :index)
+    post("/action", ActionController, :index)
   end
 
   # Other scopes may use custom stacks.
