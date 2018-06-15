@@ -13,10 +13,11 @@ defmodule KendrickWeb.Slack.ActionController do
   end
 
   def index(conn, %{"callback_id" => "add_task"} = params) do
-    body = case Kendrick.Slack.Commands.AddTask.save_task(params) do
-      :ok -> ""
-      {:error, errors} -> errors
-    end
+    body =
+      case Kendrick.Slack.Commands.AddTask.save_task(params) do
+        :ok -> ""
+        {:error, errors} -> errors
+      end
 
     send_resp(conn, 200, body)
   end

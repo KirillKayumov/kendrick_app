@@ -1,0 +1,22 @@
+<div class="row justify-content-center">
+  <div class="col-6">
+    <%= if @current_user.rewards_token do %>
+      <p>You're connected to Rewards app</p>
+      <%= link "Disconnect", to: rewards_path(@conn, :delete), method: :delete, data: [confirm: "Are you sure?"] %>
+    <% else %>
+      <%= form_for @conn, rewards_path(@conn, :create), fn f -> %>
+        <div class="form-group">
+          <%= label f, :email, for: "email" %>
+          <%= email_input f, :email, id: "email", class: "form-control", required: true %>
+        </div>
+
+        <div class="form-group">
+          <%= label f, :password, for: "password" %>
+          <%= password_input f, :password, id: "password", class: "form-control", required: true %>
+        </div>
+
+        <%= submit "Connect", class: "btn btn-primary" %>
+      <% end %>
+    <% end %>
+  </div>
+</div>

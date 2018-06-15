@@ -47,6 +47,8 @@ defmodule KendrickWeb.Router do
     resources("/projects", ProjectController) do
       resources("/teams", TeamController)
     end
+
+    resources("/rewards", RewardsController, singleton: true)
   end
 
   scope "/auth", KendrickWeb do

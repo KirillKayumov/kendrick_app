@@ -54,19 +54,21 @@ defmodule Kendrick.Slack.Commands.Todo do
   end
 
   defp do_create(%{params: %{"text" => text}, user: user, project: project} = data) do
-    changeset = %Todo{}
-    |> Todo.changeset(%{text: text})
-    |> Ecto.Changeset.put_assoc(:user, user)
-    |> Ecto.Changeset.put_assoc(:project, project)
+    changeset =
+      %Todo{}
+      |> Todo.changeset(%{text: text})
+      |> Ecto.Changeset.put_assoc(:user, user)
+      |> Ecto.Changeset.put_assoc(:project, project)
 
-    data = case changeset.valid? do
-      true ->
-        todo = Repo.insert!(changeset)
-        Map.put(data, :todo, todo)
+    data =
+      case changeset.valid? do
+        true ->
+          todo = Repo.insert!(changeset)
+          Map.put(data, :todo, todo)
 
-      false ->
-        Map.put(data, :error, ":warning: Please provide text of to-do.")
-    end
+        false ->
+          Map.put(data, :error, ":warning: Please provide text of to-do.")
+      end
 
     data
   end
@@ -79,7 +81,7 @@ defmodule Kendrick.Slack.Commands.Todo do
       },
       workspace: %{
         slack_token: token
-      },
+      }
     } = data
 
     Slack.Client.chat_post_ephemeral(error, channel, user, token)

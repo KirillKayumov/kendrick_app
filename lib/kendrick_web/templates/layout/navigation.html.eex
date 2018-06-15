@@ -26,6 +26,17 @@
             class_active: "active"
           %>
         </li>
+
+        <li class="nav-item">
+          <%= active_link @conn, "Rewards Integration",
+            to: rewards_path(@conn, :show),
+            class: "nav-link",
+            active: [
+              {KendrickWeb.RewardsController, :show},
+            ],
+            class_active: "active"
+          %>
+        </li>
       </ul>
 
       <ul class="navbar-nav">
