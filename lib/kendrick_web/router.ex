@@ -59,8 +59,9 @@ defmodule KendrickWeb.Router do
   scope "/slack", KendrickWeb.Slack do
     pipe_through(:slack)
 
-    post("/command", CommandController, :index)
     post("/action", ActionController, :index)
+    post("/command", CommandController, :index)
+    post("/event", EventController, :index)
   end
 
   # Other scopes may use custom stacks.

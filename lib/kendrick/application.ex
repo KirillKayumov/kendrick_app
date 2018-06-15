@@ -14,7 +14,8 @@ defmodule Kendrick.Application do
       supervisor(KendrickWeb.Endpoint, []),
       worker(Kendrick.Slack.Commands.Start, []),
       worker(Kendrick.Slack.Commands.Report, []),
-      worker(Kendrick.Slack.Commands.AddTask, [])
+      worker(Kendrick.Slack.Commands.AddTask, []),
+      worker(Kendrick.Slack.Commands.Todo, [])
       # Start your own worker by calling: Kendrick.Worker.start_link(arg1, arg2, arg3)
       # worker(Kendrick.Worker, [arg1, arg2, arg3]),
     ]

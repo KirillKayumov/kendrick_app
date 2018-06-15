@@ -6,6 +6,7 @@ defmodule Kendrick.User do
   alias Kendrick.{
     Task,
     Team,
+    Todo,
     User,
     Workspace
   }
@@ -18,8 +19,11 @@ defmodule Kendrick.User do
     belongs_to(:workspace, Workspace)
 
     has_many(:tasks, Task, on_delete: :delete_all)
+    has_many(:todos, Todo, on_delete: :delete_all)
 
     many_to_many(:teams, Team, join_through: "teams_users", on_delete: :delete_all)
+
+    has_many(:projects, through: [:teams, :project])
 
     timestamps()
   end

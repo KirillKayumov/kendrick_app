@@ -1,8 +1,30 @@
 defmodule Kendrick.Slack.Client do
+  @chat_post_ephemeral_url "https://slack.com/api/chat.postEphemeral"
   @dialog_open_url "https://slack.com/api/dialog.open"
   @post_message_url "https://slack.com/api/chat.postMessage"
   @profile_get_url "https://slack.com/api/users.profile.get"
   @users_list_url "https://slack.com/api/users.list"
+
+  def chat_post_ephemeral(text, channel, user, token) do
+    response =
+      HTTPoison.post!(
+        @chat_post_ephemeral_url,
+        {
+          :form,
+          [
+            {"text", text},
+            {"channel", channel},
+            {"user", user},
+            {"token", token}
+          ]
+        },
+        [
+          {"Content-Type", "multipart/form-data"}
+        ]
+      )
+
+    Poison.decode!(response.body)
+  end
 
   def dialog_open(dialog, trigger_id, token) do
     response =
