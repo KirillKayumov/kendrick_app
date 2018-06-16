@@ -24,4 +24,10 @@ defmodule KendrickWeb.Slack.CommandController do
 
     send_resp(conn, 200, "")
   end
+
+  def index(conn, %{"command" => "/reward"} = params) do
+    Kendrick.Slack.Commands.Reward.show_form(params)
+
+    send_resp(conn, 200, "")
+  end
 end
