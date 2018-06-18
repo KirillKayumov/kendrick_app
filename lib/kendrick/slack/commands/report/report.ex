@@ -43,37 +43,10 @@ defmodule Kendrick.Slack.Commands.Report do
     Map.put(data, :workspace, workspace)
   end
 
-  defp build_report(data) do
-    attachments =
-      []
-      |> add_menu()
+  defp build_report(%{user: user} = data) do
+    attachments = Slack.Commands.Report.Tasks.build(user)
 
     Map.put(data, :attachments, attachments)
-  end
-
-  defp add_menu(attachments) do
-    attachments ++ [build_menu()]
-  end
-
-  defp build_menu do
-    %{
-      "actions" => menu_actions(),
-      "callback_id" => "menu",
-      "color" => "#717171",
-      "fallback" => "Menu",
-      "title" => "MENU"
-    }
-  end
-
-  defp menu_actions do
-    [
-      %{
-        "name" => "add_task",
-        "text" => "Add task",
-        "type" => "button",
-        "value" => "add_task"
-      }
-    ]
   end
 
   defp post_message(%{attachments: attachments, user: user, workspace: workspace}) do

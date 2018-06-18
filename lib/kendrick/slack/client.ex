@@ -5,6 +5,19 @@ defmodule Kendrick.Slack.Client do
   @profile_get_url "https://slack.com/api/users.profile.get"
   @users_list_url "https://slack.com/api/users.list"
 
+  def respond(opts) do
+    response =
+      HTTPoison.post!(
+        opts[:url],
+        Poison.encode!(opts[:body]),
+        [
+          {"Content-Type", "application/json"}
+        ]
+      )
+
+    Poison.decode!(response.body)
+  end
+
   def chat_post_ephemeral(text, channel, user, token) do
     response =
       HTTPoison.post!(
