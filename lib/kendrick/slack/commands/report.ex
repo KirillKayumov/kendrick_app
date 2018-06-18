@@ -44,7 +44,7 @@ defmodule Kendrick.Slack.Commands.Report do
   end
 
   defp build_report(%{user: user} = data) do
-    attachments = Slack.Commands.Report.Tasks.build(user)
+    attachments = Slack.Report.build(user)
 
     Map.put(data, :attachments, attachments)
   end
