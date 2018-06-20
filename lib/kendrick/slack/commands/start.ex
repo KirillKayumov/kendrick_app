@@ -1,6 +1,9 @@
 defmodule Kendrick.Slack.Commands.Start do
   use GenServer
 
+  import OK, only: [~>>: 2]
+  import Kendrick.Slack.Shared, only: [find_workspace: 1]
+
   alias Kendrick.{
     Repo,
     Slack,
@@ -16,64 +19,60 @@ defmodule Kendrick.Slack.Commands.Start do
   end
 
   def call(params) do
-    GenServer.cast(@name, {:do_call, params})
+    GenServer.cast(@name, {:call, params})
   end
 
   def init(args) do
     {:ok, args}
   end
 
-  def handle_cast({:do_call, params}, state) do
-    workspace = find_workspace(params)
-
-    case do_call(params, workspace) do
-      :created -> post_created_message(params, workspace)
-      :found -> post_found_message(params, workspace)
-    end
+  def handle_cast({:call, params}, state) do
+    %{params: params}
+    |> find_workspace()
+    ~>> ensure_no_user()
+    ~>> create_user()
+    |> post_message()
 
     {:noreply, state}
   end
 
-  defp find_workspace(%{"team_id" => team_id}) do
-    Repo.get_by(Workspace, team_id: team_id)
-  end
-
-  defp do_call(params, workspace) do
+  defp ensure_no_user(%{params: params} = data) do
     case Users.get_by(slack_id: params["user_id"]) do
-      nil ->
-        create_user(params, workspace)
-        :created
-
-      _ ->
-        :found
+      nil -> {:ok, data}
+      _ -> {:error, {:user_exists, data}}
     end
   end
 
-  defp create_user(params, workspace) do
+  defp create_user(%{params: params, workspace: workspace} = data) do
     %{
       "channel_id" => slack_channel,
       "user_id" => slack_id
     } = params
 
-    name = get_name(params, workspace)
+    user =
+      %User{}
+      |> User.changeset(%{slack_id: slack_id, name: user_name(data), slack_channel: slack_channel})
+      |> Ecto.Changeset.put_assoc(:workspace, workspace)
+      |> Repo.insert!()
 
-    %User{}
-    |> User.changeset(%{slack_id: slack_id, name: name, slack_channel: slack_channel})
-    |> Ecto.Changeset.put_assoc(:workspace, workspace)
-    |> Repo.insert!()
+    {:ok, Map.put(data, :user, user)}
   end
 
-  defp get_name(%{"user_id" => user_id}, %{slack_token: slack_token}) do
-    response = Slack.Client.profile_get(user_id, slack_token)
+  defp user_name(%{params: %{"user_id" => user_id}, workspace: workspace}) do
+    response = Slack.Client.profile_get(user_id, workspace.slack_token)
 
     response["profile"]["real_name"]
   end
 
-  defp post_created_message(%{"channel_id" => channel_id}, %{slack_token: slack_token}) do
-    Slack.Client.post_message("The app was started for you :tada:", channel_id, slack_token)
+  defp post_message({:ok, data}) do
+    do_post_message("The app was started for you :tada:", data)
   end
 
-  defp post_found_message(%{"channel_id" => channel_id}, %{slack_token: slack_token}) do
-    Slack.Client.post_message("You already started the app.", channel_id, slack_token)
+  defp post_message({:error, {:user_exists, data}}) do
+    do_post_message("You already started the app.", data)
+  end
+
+  defp do_post_message(message, %{params: %{"channel_id" => channel_id}, workspace: workspace}) do
+    Slack.Client.post_message(message, channel_id, workspace.slack_token)
   end
 end

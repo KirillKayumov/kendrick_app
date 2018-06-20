@@ -20,6 +20,7 @@ defmodule Kendrick.Jira.Task do
   end
 
   def key_from_url(nil), do: nil
+
   def key_from_url(url) do
     url
     |> String.split("/")

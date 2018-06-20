@@ -46,7 +46,8 @@ defmodule Kendrick.Mixfile do
       {:phoenix_pubsub, "~> 1.0"},
       {:phoenix, "~> 1.3.2"},
       {:postgrex, ">= 0.0.0"},
-      {:ueberauth, "~> 0.5.0"}
+      {:ueberauth, "~> 0.5.0"},
+      {:ok, "~> 1.11"}
     ]
   end
 

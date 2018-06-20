@@ -5,7 +5,7 @@ defmodule Kendrick.Slack.Report.Tasks do
     user
     |> Kendrick.Tasks.for_user()
     |> Enum.with_index(1)
-    |> Enum.map(&(task(&1)))
+    |> Enum.map(&task(&1))
   end
 
   defp task({task, index}) do
@@ -52,7 +52,7 @@ defmodule Kendrick.Slack.Report.Tasks do
           %{
             text: "Done",
             value: "Done"
-          },
+          }
         ]
       }
     ]

@@ -58,7 +58,7 @@ defmodule Kendrick.Slack.Actions.Tasks.StatusUpdate do
     %{
       "actions" => [
         %{
-          "selected_options" => [%{"value" => status}],
+          "selected_options" => [%{"value" => status}]
         }
       ]
     } = params
