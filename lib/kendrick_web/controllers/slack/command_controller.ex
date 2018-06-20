@@ -1,6 +1,8 @@
 defmodule KendrickWeb.Slack.CommandController do
   use KendrickWeb, :controller
 
+  plug(KendrickWeb.Plugs.Slack.EnsureUserExists)
+
   def index(conn, %{"ssl_check" => _ssl_check}) do
     send_resp(conn, 200, "")
   end
