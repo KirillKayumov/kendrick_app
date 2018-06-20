@@ -1,13 +1,13 @@
 defmodule Kendrick.Slack.Commands.Todo do
   use GenServer
 
+  import OK, only: [~>>: 2]
+  import Kendrick.Slack.Shared, only: [find_workspace: 1, find_user: 1, find_project: 1]
+
   alias Kendrick.{
-    Projects,
     Repo,
     Slack,
-    Todo,
-    Users,
-    Workspaces
+    Todo
   }
 
   @name :slack_commands_todo_worker
@@ -26,81 +26,75 @@ defmodule Kendrick.Slack.Commands.Todo do
 
   def handle_cast({:create, params}, state) do
     %{params: params}
-    |> get_user()
-    |> get_project()
-    |> get_workspace()
-    |> do_create()
-    |> post_result()
+    |> find_workspace()
+    ~>> find_user()
+    ~>> find_project()
+    ~>> build_changeset()
+    ~>> validate_changeset()
+    ~>> save_todo()
+    |> post_result_message()
 
     {:noreply, state}
   end
 
-  defp get_user(%{params: params} = data) do
-    user = Users.get_by(slack_id: params["user_id"])
-
-    Map.put(data, :user, user)
-  end
-
-  defp get_project(%{user: user} = data) do
-    project = Projects.for_user(user)
-
-    Map.put(data, :project, project)
-  end
-
-  defp get_workspace(%{params: params} = data) do
-    workspace = Workspaces.get_by(team_id: params["team_id"])
-
-    Map.put(data, :workspace, workspace)
-  end
-
-  defp do_create(%{params: %{"text" => text}, user: user, project: project} = data) do
+  defp build_changeset(%{params: %{"text" => text}, user: user, project: project} = data) do
     changeset =
       %Todo{}
       |> Todo.changeset(%{text: text})
       |> Ecto.Changeset.put_assoc(:user, user)
       |> Ecto.Changeset.put_assoc(:project, project)
+      |> Ecto.Changeset.cast_assoc(:user, required: true)
+      |> Ecto.Changeset.cast_assoc(:project, required: true)
 
-    data =
-      case changeset.valid? do
-        true ->
-          todo = Repo.insert!(changeset)
-          Map.put(data, :todo, todo)
-
-        false ->
-          Map.put(data, :error, ":warning: Please provide text of to-do.")
-      end
-
-    data
+    {:ok, Map.put(data, :changeset, changeset)}
   end
 
-  defp post_result(%{error: error} = data) do
+  defp validate_changeset(%{changeset: changeset} = data) do
+    case changeset.valid? do
+      true -> {:ok, data}
+      false -> {:error, data}
+    end
+  end
+
+  defp save_todo(%{changeset: changeset} = data) do
+    todo = Repo.insert!(changeset)
+
+    {:ok, Map.put(data, :todo, todo)}
+  end
+
+  defp post_result_message({:ok, %{todo: todo} = data}) do
+    post_message(":white_check_mark: To-do \"#{todo.text}\" was added.", data)
+  end
+
+  defp post_result_message({:error, %{changeset: changeset} = data}) do
+    cond do
+      changeset.errors[:project] -> post_no_project_message(data)
+      changeset.errors[:text] -> post_no_text_message(data)
+    end
+  end
+
+  defp post_no_project_message(data) do
+    post_message(":warning: You can't create a to-do because you don't belong to any project.", data)
+  end
+
+  defp post_no_text_message(data) do
+    post_message(":warning: Please provide text of to-do.", data)
+  end
+
+  defp post_message(text, data) do
     %{
       params: %{
         "channel_id" => channel,
         "user_id" => user
       },
-      workspace: %{
-        slack_token: token
-      }
+      workspace: workspace
     } = data
 
-    Slack.Client.chat_post_ephemeral(error, channel, user, token)
-  end
-
-  defp post_result(data) do
-    %{
-      params: %{
-        "channel_id" => channel,
-        "user_id" => user
-      },
-      workspace: %{
-        slack_token: token
-      },
-      todo: %{
-        text: text
-      }
-    } = data
-
-    Slack.Client.chat_post_ephemeral(":white_check_mark: To-do \"#{text}\" was added.", channel, user, token)
+    Slack.Client.chat_post_ephemeral(
+      text,
+      channel,
+      user,
+      workspace.slack_token
+    )
   end
 end

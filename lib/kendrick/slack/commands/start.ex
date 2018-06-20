@@ -8,8 +8,7 @@ defmodule Kendrick.Slack.Commands.Start do
     Repo,
     Slack,
     User,
-    Users,
-    Workspace
+    Users
   }
 
   @name :slack_commands_start_worker
