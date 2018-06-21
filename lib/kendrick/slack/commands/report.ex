@@ -25,7 +25,7 @@ defmodule Kendrick.Slack.Commands.Report do
     |> find_workspace()
     ~>> find_user()
     ~>> build_report()
-    |> post_message()
+    |> post_report()
 
     {:noreply, state}
   end
@@ -36,7 +36,7 @@ defmodule Kendrick.Slack.Commands.Report do
     Map.put(data, :attachments, attachments)
   end
 
-  defp post_message(%{attachments: attachments, user: user, workspace: workspace}) do
+  defp post_report(%{attachments: attachments, user: user, workspace: workspace}) do
     Slack.Client.post_message(attachments, user.slack_channel, workspace.slack_token)
   end
 end

@@ -27,8 +27,8 @@ defmodule Kendrick.Slack.Commands.Start do
 
   def handle_cast({:call, params}, state) do
     %{params: params}
-    |> find_workspace()
-    ~>> ensure_no_user()
+    |> ensure_no_user()
+    ~>> find_workspace()
     ~>> create_user()
     |> post_message()
 
@@ -52,6 +52,7 @@ defmodule Kendrick.Slack.Commands.Start do
       %User{}
       |> User.changeset(%{slack_id: slack_id, name: user_name(data), slack_channel: slack_channel})
       |> Ecto.Changeset.put_assoc(:workspace, workspace)
+      |> Ecto.Changeset.cast_assoc(:workspace, required: true)
       |> Repo.insert!()
 
     {:ok, Map.put(data, :user, user)}
