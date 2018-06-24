@@ -14,7 +14,6 @@ defmodule Kendrick.Application do
       supervisor(KendrickWeb.Endpoint, []),
       worker(Kendrick.Slack.Commands.Start, []),
       worker(Kendrick.Slack.Commands.Report, []),
-      worker(Kendrick.Slack.Commands.AddTask, []),
       worker(Kendrick.Slack.Commands.Todo, []),
       worker(Kendrick.Slack.Actions.Tasks.ShowNewForm, []),
       worker(Kendrick.Slack.Actions.Tasks.Create, []),

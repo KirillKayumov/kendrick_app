@@ -13,8 +13,11 @@ defmodule KendrickWeb.Plugs.Slack.EnsureUserExists do
   def call(%{params: %{"ssl_check" => _ssl_check}} = conn, _opts), do: conn
   def call(%{params: %{"command" => "/start"}} = conn, _opts), do: conn
 
-  def call(conn, _opts) do
-    case Users.get_by(slack_id: conn.params["user_id"]) do
+  def call(%{params: %{"user_id" => slack_id}} = conn, _opts), do: ensure_user_exists(conn, slack_id)
+  def call(%{params: %{"user" => %{"id" => slack_id}}} = conn, _opts), do: ensure_user_exists(conn, slack_id)
+
+  defp ensure_user_exists(conn, slack_id) do
+    case Users.get_by(slack_id: slack_id) do
       nil ->
         Slack.NoUserNotifier.call(conn.params)
 
