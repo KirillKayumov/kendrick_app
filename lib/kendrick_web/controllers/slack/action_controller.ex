@@ -26,7 +26,7 @@ defmodule KendrickWeb.Slack.ActionController do
   end
 
   def index(conn, %{"actions" => [%{"name" => "task_status"}]} = params) do
-    Tasks.StatusUpdate.call(params)
+    Tasks.UpdateStatus.call(params)
 
     send_resp(conn, 200, "")
   end
