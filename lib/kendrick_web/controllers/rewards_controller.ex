@@ -1,7 +1,7 @@
 defmodule KendrickWeb.RewardsController do
   use KendrickWeb, :controller
 
-  def show(conn, params) do
+  def show(conn, _params) do
     conn
     |> assign(:current_user, current_user(conn))
     |> render("show.html")

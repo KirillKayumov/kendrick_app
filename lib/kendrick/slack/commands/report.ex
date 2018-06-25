@@ -4,7 +4,11 @@ defmodule Kendrick.Slack.Commands.Report do
   import OK, only: [~>>: 2]
   import Kendrick.Slack.Shared, only: [find_workspace: 1, find_user: 1]
 
-  alias Kendrick.Slack
+  alias Kendrick.{
+    Repo,
+    Slack,
+    User
+  }
 
   @name :slack_commands_report_worker
 
@@ -24,19 +28,22 @@ defmodule Kendrick.Slack.Commands.Report do
     %{params: params}
     |> find_workspace()
     ~>> find_user()
-    ~>> build_report()
-    |> post_report()
+    ~>> post_report()
+    ~>> save_report_ts()
 
     {:noreply, state}
   end
 
-  defp build_report(%{user: user} = data) do
+  defp post_report(%{user: user, workspace: workspace} = data) do
     attachments = Slack.Report.build(user)
+    response = Slack.Client.post_message(attachments, user.slack_channel, workspace.slack_token)
 
-    Map.put(data, :attachments, attachments)
+    {:ok, Map.put(data, :report_ts, response["ts"])}
   end
 
-  defp post_report(%{attachments: attachments, user: user, workspace: workspace}) do
-    Slack.Client.post_message(attachments, user.slack_channel, workspace.slack_token)
+  defp save_report_ts(%{user: user, report_ts: report_ts}) do
+    user
+    |> User.changeset(%{report_ts: report_ts})
+    |> Repo.update!()
   end
 end

@@ -32,6 +32,7 @@ defmodule Kendrick.Slack.Commands.Todo do
     ~>> validate_changeset()
     ~>> save_todo()
     |> post_result_message()
+    ~>> update_report()
 
     {:noreply, state}
   end
@@ -61,12 +62,16 @@ defmodule Kendrick.Slack.Commands.Todo do
 
   defp post_result_message({:ok, %{todo: todo} = data}) do
     post_message(":white_check_mark: Todo \"#{todo.text}\" was added.", data)
+
+    {:ok, data}
   end
 
   defp post_result_message({:error, %{changeset: changeset} = data}) do
     cond do
       changeset.errors[:text] -> post_no_text_message(data)
     end
+
+    {:error, data}
   end
 
   defp post_no_text_message(data) do
@@ -88,5 +93,16 @@ defmodule Kendrick.Slack.Commands.Todo do
       user,
       workspace.slack_token
     )
+  end
+
+  defp update_report(%{user: user, workspace: workspace}) do
+    attachments = Slack.Report.build(user)
+
+    Slack.Client.chat_update(%{
+      attachments: attachments,
+      channel: user.slack_channel,
+      token: workspace.slack_token,
+      ts: user.report_ts
+    })
   end
 end

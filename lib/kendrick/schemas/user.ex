@@ -16,6 +16,7 @@ defmodule Kendrick.User do
     field(:name, :string)
     field(:slack_channel, :string)
     field(:rewards_token, :string)
+    field(:report_ts, :string)
 
     belongs_to(:workspace, Workspace)
 
@@ -31,7 +32,7 @@ defmodule Kendrick.User do
 
   def changeset(%User{} = user, attrs \\ %{}) do
     user
-    |> cast(attrs, [:slack_id, :name, :slack_channel, :rewards_token])
+    |> cast(attrs, [:slack_id, :name, :slack_channel, :rewards_token, :report_ts])
     |> validate_required([:slack_id, :slack_channel])
     |> unique_constraint(:slack_id)
   end

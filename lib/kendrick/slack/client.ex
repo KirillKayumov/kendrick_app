@@ -1,5 +1,6 @@
 defmodule Kendrick.Slack.Client do
   @chat_post_ephemeral_url "https://slack.com/api/chat.postEphemeral"
+  @chat_update_url "https://slack.com/api/chat.update"
   @dialog_open_url "https://slack.com/api/dialog.open"
   @post_message_url "https://slack.com/api/chat.postMessage"
   @profile_get_url "https://slack.com/api/users.profile.get"
@@ -34,6 +35,22 @@ defmodule Kendrick.Slack.Client do
         [
           {"Content-Type", "multipart/form-data"}
         ]
+      )
+
+    Poison.decode!(response.body)
+  end
+
+  def chat_update(%{token: token, channel: channel, ts: ts} = data) do
+    response =
+      HTTPoison.post!(
+        @chat_update_url,
+        Poison.encode!(%{
+          attachments: data[:attachments] || [],
+          channel: channel,
+          text: data[:text] || "",
+          ts: ts
+        }),
+        headers(token)
       )
 
     Poison.decode!(response.body)
@@ -113,5 +130,12 @@ defmodule Kendrick.Slack.Client do
       )
 
     Poison.decode!(response.body)
+  end
+
+  defp headers(token) do
+    [
+      {"Content-Type", "application/json"},
+      {"Authorization", "Bearer #{token}"}
+    ]
   end
 end
