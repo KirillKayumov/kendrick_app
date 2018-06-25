@@ -6,14 +6,15 @@ defmodule Kendrick.Slack.Client do
   @profile_get_url "https://slack.com/api/users.profile.get"
   @users_list_url "https://slack.com/api/users.list"
 
-  def respond(opts) do
+  def respond(%{url: url, token: token} = data) do
     response =
       HTTPoison.post!(
-        opts[:url],
-        Poison.encode!(opts[:body]),
-        [
-          {"Content-Type", "application/json"}
-        ]
+        url,
+        Poison.encode!(%{
+          attachments: data[:attachments] || [],
+          text: data[:text] || ""
+        }),
+        headers(token)
       )
 
     Poison.decode!(response.body)

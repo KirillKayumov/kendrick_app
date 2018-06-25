@@ -4,13 +4,13 @@ defmodule Kendrick.Todo do
   import Ecto.Changeset
 
   alias Kendrick.{
-    Project,
     Todo,
     User
   }
 
   schema "todos" do
     field(:text, :string)
+    field(:done, :boolean)
 
     belongs_to(:user, User)
 
@@ -19,7 +19,7 @@ defmodule Kendrick.Todo do
 
   def changeset(%Todo{} = todo, attrs \\ %{}) do
     todo
-    |> cast(attrs, [:text])
+    |> cast(attrs, [:text, :done])
     |> validate_required([:text])
   end
 end

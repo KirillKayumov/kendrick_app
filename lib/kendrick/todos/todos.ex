@@ -3,8 +3,12 @@ defmodule Kendrick.Todos do
 
   alias Kendrick.{
     Repo,
-    Task
+    Todo
   }
+
+  def get(id) do
+    Repo.get(Todo, id)
+  end
 
   def for_user(user) do
     user

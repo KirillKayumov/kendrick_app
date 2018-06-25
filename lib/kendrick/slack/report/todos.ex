@@ -8,39 +8,38 @@ defmodule Kendrick.Slack.Report.Todos do
 
   defp todo({todo, index}) do
     %{
-      text: todo_title(todo, index),
+      actions: actions(todo),
       callback_id: todo.id,
-      actions: []
+      color: color(todo),
+      text: text(todo, index)
     }
   end
 
-  defp todo_title(todo, index), do: "~#{index}. #{todo.text}~"
-
-  defp todo_actions do
+  defp actions(%{done: false}) do
     [
       %{
-        name: "todo_status",
-        text: "Set status",
-        type: "select",
-        options: [
-          %{
-            text: "Starting Today",
-            value: "Starting Today"
-          },
-          %{
-            text: "WIP",
-            value: "WIP"
-          },
-          %{
-            text: "Code Review",
-            value: "Code Review"
-          },
-          %{
-            text: "Done",
-            value: "Done"
-          }
-        ]
-      }
+        name: "todo_done",
+        style: "primary",
+        text: "Done",
+        type: "button"
+      },
+      delete_action()
     ]
   end
+
+  defp actions(%{done: true}), do: [delete_action()]
+
+  defp delete_action do
+    %{
+      name: "todo_delete",
+      text: "Delete",
+      type: "button"
+    }
+  end
+
+  defp color(%{done: false}), do: "#EABA51"
+  defp color(%{done: true}), do: "#42996D"
+
+  defp text(%{done: false, text: text}, index), do: "#{index}. #{text}"
+  defp text(%{done: true, text: text}, index), do: "~#{index}. #{text}~"
 end

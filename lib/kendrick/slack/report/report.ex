@@ -18,8 +18,9 @@ defmodule Kendrick.Slack.Report do
     attachments ++
       [
         %{
-          title: "TASKS",
-          fallback: "TASKS"
+          color: "#717171",
+          fallback: "TASKS",
+          title: "TASKS"
         }
       ]
   end
@@ -32,8 +33,9 @@ defmodule Kendrick.Slack.Report do
     attachments ++
       [
         %{
-          title: "TODO",
-          fallback: "TODO"
+          color: "#717171",
+          fallback: "TODO",
+          title: "TODO"
         }
       ]
   end
