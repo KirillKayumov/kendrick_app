@@ -130,13 +130,11 @@ defmodule Kendrick.Slack.Actions.Tasks.Create do
   end
 
   defp post_report(%{user: user, workspace: workspace} = data) do
-    Slack.Client.respond(
-      url: Actions.Tasks.ShowNewForm.get_response_url(user.slack_id),
-      body: %{
-        attachments: Report.build(user),
-        token: workspace.slack_token
-      }
-    )
+    Slack.Client.respond(%{
+      attachments: Report.build(user),
+      token: workspace.slack_token,
+      url: Actions.Tasks.ShowNewForm.get_response_url(user.slack_id)
+    })
 
     {:ok, data}
   end

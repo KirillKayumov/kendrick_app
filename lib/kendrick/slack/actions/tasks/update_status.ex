@@ -57,14 +57,10 @@ defmodule Kendrick.Slack.Actions.Tasks.UpdateStatus do
   end
 
   defp post_report(%{params: params, workspace: workspace, user: user}) do
-    attachments = Slack.Report.build(user)
-
-    Slack.Client.respond(
-      url: params["response_url"],
-      body: %{
-        token: workspace.slack_token,
-        attachments: attachments
-      }
-    )
+    Slack.Client.respond(%{
+      attachments: Slack.Report.build(user),
+      token: workspace.slack_token,
+      url: params["response_url"]
+    })
   end
 end

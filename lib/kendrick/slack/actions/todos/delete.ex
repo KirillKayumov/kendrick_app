@@ -1,14 +1,11 @@
-defmodule Kendrick.Slack.Actions.Todos.Done do
+defmodule Kendrick.Slack.Actions.Todos.Delete do
   use GenServer
 
   import OK, only: [~>>: 2]
   import Kendrick.Slack.Shared, only: [find_workspace: 1, find_user: 1]
   import Kendrick.Slack.Actions.Todos.Shared, only: [find_todo: 1, update_report: 1]
 
-  alias Kendrick.{
-    Repo,
-    Todo
-  }
+  alias Kendrick.Repo
 
   def start_link do
     GenServer.start_link(__MODULE__, [], name: __MODULE__)
@@ -27,16 +24,14 @@ defmodule Kendrick.Slack.Actions.Todos.Done do
     |> find_workspace()
     ~>> find_user()
     ~>> find_todo()
-    ~>> make_done()
+    ~>> delete()
     ~>> update_report()
 
     {:noreply, state}
   end
 
-  defp make_done(%{todo: todo} = data) do
-    todo
-    |> Todo.changeset(%{done: true})
-    |> Repo.update!()
+  defp delete(%{todo: todo} = data) do
+    Repo.delete!(todo)
 
     {:ok, data}
   end

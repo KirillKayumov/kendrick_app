@@ -1,9 +1,25 @@
 defmodule Kendrick.Slack.Report.Todos do
   def build(user) do
-    user
-    |> Kendrick.Todos.for_user()
-    |> Enum.with_index(1)
-    |> Enum.map(&todo(&1))
+    todos = Kendrick.Todos.for_user(user)
+
+    case length(todos) do
+      0 ->
+        help()
+
+      _ ->
+        todos
+        |> Enum.with_index(1)
+        |> Enum.map(&todo(&1))
+    end
+  end
+
+  defp help() do
+    [
+      %{
+        text: "No todos.",
+        footer: "To add a todo use the slash-command `/todo order a pizza`"
+      }
+    ]
   end
 
   defp todo({todo, index}) do

@@ -39,4 +39,10 @@ defmodule KendrickWeb.Slack.ActionController do
 
     send_resp(conn, 200, "")
   end
+
+  def index(conn, %{"actions" => [%{"name" => "todo_delete"}]} = params) do
+    Todos.Delete.call(params)
+
+    send_resp(conn, 200, "")
+  end
 end
