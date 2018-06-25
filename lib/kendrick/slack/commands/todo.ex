@@ -2,7 +2,7 @@ defmodule Kendrick.Slack.Commands.Todo do
   use GenServer
 
   import OK, only: [~>>: 2]
-  import Kendrick.Slack.Shared, only: [find_workspace: 1, find_user: 1, find_project: 1]
+  import Kendrick.Slack.Shared, only: [find_workspace: 1, find_user: 1]
 
   alias Kendrick.{
     Repo,
@@ -28,7 +28,6 @@ defmodule Kendrick.Slack.Commands.Todo do
     %{params: params}
     |> find_workspace()
     ~>> find_user()
-    ~>> find_project()
     ~>> build_changeset()
     ~>> validate_changeset()
     ~>> save_todo()
@@ -37,14 +36,12 @@ defmodule Kendrick.Slack.Commands.Todo do
     {:noreply, state}
   end
 
-  defp build_changeset(%{params: %{"text" => text}, user: user, project: project} = data) do
+  defp build_changeset(%{params: %{"text" => text}, user: user} = data) do
     changeset =
       %Todo{}
       |> Todo.changeset(%{text: text})
       |> Ecto.Changeset.put_assoc(:user, user)
-      |> Ecto.Changeset.put_assoc(:project, project)
       |> Ecto.Changeset.cast_assoc(:user, required: true)
-      |> Ecto.Changeset.cast_assoc(:project, required: true)
 
     {:ok, Map.put(data, :changeset, changeset)}
   end
@@ -63,22 +60,17 @@ defmodule Kendrick.Slack.Commands.Todo do
   end
 
   defp post_result_message({:ok, %{todo: todo} = data}) do
-    post_message(":white_check_mark: To-do \"#{todo.text}\" was added.", data)
+    post_message(":white_check_mark: Todo \"#{todo.text}\" was added.", data)
   end
 
   defp post_result_message({:error, %{changeset: changeset} = data}) do
     cond do
-      changeset.errors[:project] -> post_no_project_message(data)
       changeset.errors[:text] -> post_no_text_message(data)
     end
   end
 
-  defp post_no_project_message(data) do
-    post_message(":warning: You can't create a to-do because you don't belong to any project.", data)
-  end
-
   defp post_no_text_message(data) do
-    post_message(":warning: Please provide text of to-do.", data)
+    post_message(":warning: Please provide text of todo.", data)
   end
 
   defp post_message(text, data) do

@@ -13,7 +13,6 @@ defmodule Kendrick.Todo do
     field(:text, :string)
 
     belongs_to(:user, User)
-    belongs_to(:project, Project)
 
     timestamps()
   end

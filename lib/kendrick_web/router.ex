@@ -24,6 +24,7 @@ defmodule KendrickWeb.Router do
     plug(:accepts, ["json"])
     plug(KendrickWeb.Plugs.Slack.DecodePayload)
     plug(KendrickWeb.Plugs.Slack.VerifyVerificationToken)
+    plug(KendrickWeb.Plugs.Slack.SslCheck)
   end
 
   scope "/", KendrickWeb do

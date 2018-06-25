@@ -10,7 +10,6 @@ defmodule KendrickWeb.Plugs.Slack.EnsureUserExists do
     opts
   end
 
-  def call(%{params: %{"ssl_check" => _ssl_check}} = conn, _opts), do: conn
   def call(%{params: %{"command" => "/start"}} = conn, _opts), do: conn
 
   def call(%{params: %{"user_id" => slack_id}} = conn, _opts), do: ensure_user_exists(conn, slack_id)

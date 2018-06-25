@@ -28,12 +28,6 @@ defmodule Kendrick.Slack.Shared do
     {:ok, Map.put(data, :user, user)}
   end
 
-  def find_project(%{user: user} = data) do
-    project = Projects.for_user(user)
-
-    {:ok, Map.put(data, :project, project)}
-  end
-
   def find_channel(%{params: %{"channel_id" => channel}} = data), do: do_find_channel(channel, data)
   def find_channel(%{params: %{"channel" => %{"id" => channel}}} = data), do: do_find_channel(channel, data)
 
