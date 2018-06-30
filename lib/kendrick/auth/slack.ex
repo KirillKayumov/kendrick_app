@@ -19,8 +19,11 @@ defmodule Kendrick.Auth.Slack do
     |> create_workspace()
   end
 
-  defp find_workspace(%{other: %{"team_id" => team_id}} = credentials), do: find_workspace(team_id, credentials)
-  defp find_workspace(%{other: %{"team" => %{"id" => team_id}}} = credentials), do: find_workspace(team_id, credentials)
+  defp find_workspace(%{other: %{"team_id" => team_id}} = credentials),
+    do: find_workspace(team_id, credentials)
+
+  defp find_workspace(%{other: %{"team" => %{"id" => team_id}}} = credentials),
+    do: find_workspace(team_id, credentials)
 
   defp find_workspace(team_id, credentials) do
     workspace = Repo.get_by(Workspace, team_id: team_id)

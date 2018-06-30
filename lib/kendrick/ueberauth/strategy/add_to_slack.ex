@@ -16,6 +16,7 @@ defmodule Kendrick.Ueberauth.Strategy.AddToSlack do
     opts = if team, do: Keyword.put(opts, :team, team), else: opts
 
     callback_url = callback_url(conn)
+
     callback_url = if String.ends_with?(callback_url, "?"), do: String.slice(callback_url, 0..-2), else: callback_url
 
     opts = Keyword.put(opts, :redirect_uri, callback_url)

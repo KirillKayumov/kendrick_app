@@ -1,6 +1,5 @@
 defmodule Kendrick.Slack.Shared do
   alias Kendrick.{
-    Projects,
     Users,
     Workspaces
   }
@@ -14,8 +13,11 @@ defmodule Kendrick.Slack.Shared do
     {:ok, Map.put(data, :workspace, workspace)}
   end
 
-  def find_user_slack_id(%{params: %{"user_id" => slack_id}} = data), do: do_find_user_slack_id(slack_id, data)
-  def find_user_slack_id(%{params: %{"user" => %{"id" => slack_id}}} = data), do: do_find_user_slack_id(slack_id, data)
+  def find_user_slack_id(%{params: %{"user_id" => slack_id}} = data),
+    do: do_find_user_slack_id(slack_id, data)
+
+  def find_user_slack_id(%{params: %{"user" => %{"id" => slack_id}}} = data),
+    do: do_find_user_slack_id(slack_id, data)
 
   defp do_find_user_slack_id(user_slack_id, data) do
     {:ok, Map.put(data, :user_slack_id, user_slack_id)}

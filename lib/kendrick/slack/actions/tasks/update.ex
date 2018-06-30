@@ -1,11 +1,11 @@
-defmodule Kendrick.Slack.Actions.Tasks.Create do
+defmodule Kendrick.Slack.Actions.Tasks.Update do
   use GenServer
 
   import OK, only: [~>>: 2]
   import Kendrick.Slack.Shared, only: [find_user: 1, find_workspace: 1]
 
   import Kendrick.Slack.Actions.Tasks.Shared,
-    only: [validate_params: 1, get_jira_data: 1, ensure_task_url_valid: 1, task_attributes: 1]
+    only: [find_task: 1, validate_params: 1, get_jira_data: 1, ensure_task_url_valid: 1, task_attributes: 1]
 
   alias Kendrick.{
     Repo,
@@ -36,21 +36,20 @@ defmodule Kendrick.Slack.Actions.Tasks.Create do
       |> validate_params()
       ~>> find_workspace()
       ~>> find_user()
+      ~>> find_task()
       ~>> get_jira_data()
       ~>> ensure_task_url_valid()
-      ~>> create_task()
+      ~>> update_task()
       ~>> update_report()
 
     {:reply, result, state}
   end
 
-  defp create_task(%{user: user} = data) do
+  defp update_task(%{task: task} = data) do
     task =
-      %Task{}
+      task
       |> Task.changeset(task_attributes(data))
-      |> Ecto.Changeset.put_assoc(:user, user)
-      |> Ecto.Changeset.cast_assoc(:user, required: true)
-      |> Repo.insert!()
+      |> Repo.update!()
 
     {:ok, Map.put(data, :task, task)}
   end
@@ -59,7 +58,7 @@ defmodule Kendrick.Slack.Actions.Tasks.Create do
     Slack.Client.respond(%{
       attachments: Report.build(user),
       token: workspace.slack_token,
-      url: Actions.Tasks.ShowNewForm.get_response_url(user.slack_id)
+      url: Actions.Tasks.ShowEditForm.get_response_url(user.slack_id)
     })
 
     {:ok, data}

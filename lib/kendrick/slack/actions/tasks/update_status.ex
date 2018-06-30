@@ -3,12 +3,12 @@ defmodule Kendrick.Slack.Actions.Tasks.UpdateStatus do
 
   import OK, only: [~>>: 2]
   import Kendrick.Slack.Shared, only: [find_workspace: 1, find_user: 1]
+  import Kendrick.Slack.Actions.Tasks.Shared, only: [find_task: 1]
 
   alias Kendrick.{
     Repo,
     Slack,
-    Task,
-    Tasks
+    Task
   }
 
   def start_link do
@@ -32,12 +32,6 @@ defmodule Kendrick.Slack.Actions.Tasks.UpdateStatus do
     ~>> post_report()
 
     {:noreply, state}
-  end
-
-  defp find_task(%{params: params} = data) do
-    task = Tasks.get(params["callback_id"])
-
-    {:ok, Map.put(data, :task, task)}
   end
 
   defp update_status(%{params: params, task: task} = data) do

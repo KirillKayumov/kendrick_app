@@ -5,10 +5,10 @@ defmodule Kendrick.Slack.Report do
     Todos
   }
 
-  def build(user) do
+  def build(user, opts \\ %{}) do
     []
     |> add_tasks_title()
-    |> add_task_list(user)
+    |> add_task_list(user, opts)
     |> add_todo_title()
     |> add_todo_list(user)
     |> add_menu()
@@ -25,7 +25,7 @@ defmodule Kendrick.Slack.Report do
       ]
   end
 
-  defp add_task_list(attachments, user), do: attachments ++ Tasks.build(user)
+  defp add_task_list(attachments, user, opts), do: attachments ++ Tasks.build(user, opts)
 
   defp add_menu(attachments), do: attachments ++ [Menu.build()]
 

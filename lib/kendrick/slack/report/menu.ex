@@ -12,10 +12,9 @@ defmodule Kendrick.Slack.Report.Menu do
   defp menu_actions do
     [
       %{
-        "name" => "add_task",
+        "name" => "task_add",
         "text" => "Add task",
-        "type" => "button",
-        "value" => "add_task"
+        "type" => "button"
       }
     ]
   end

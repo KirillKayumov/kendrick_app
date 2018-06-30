@@ -1,13 +1,14 @@
-defmodule Kendrick.Slack.Actions.Tasks.ShowNewForm do
+defmodule Kendrick.Slack.Actions.Tasks.ShowEditForm do
   use GenServer
 
   import OK, only: [~>>: 2]
   import Kendrick.Slack.Shared, only: [find_workspace: 1]
+  import Kendrick.Slack.Actions.Tasks.Shared, only: [find_task: 1]
 
   alias Kendrick.Slack
 
   def start_link do
-    GenServer.start_link(__MODULE__, [], name: __MODULE__)
+    GenServer.start_link(__MODULE__, %{}, name: __MODULE__)
   end
 
   def get_response_url(slack_id) do
@@ -18,8 +19,8 @@ defmodule Kendrick.Slack.Actions.Tasks.ShowNewForm do
     GenServer.cast(__MODULE__, {:call, params})
   end
 
-  def init(_args) do
-    {:ok, %{}}
+  def init(args) do
+    {:ok, args}
   end
 
   def handle_call({:get_response_url, slack_id}, _from, state) do
@@ -30,6 +31,7 @@ defmodule Kendrick.Slack.Actions.Tasks.ShowNewForm do
     new_state =
       %{params: params, state: state}
       |> find_workspace()
+      ~>> find_task()
       ~>> build_form()
       ~>> show_form()
       ~>> save_response_url()
@@ -37,10 +39,10 @@ defmodule Kendrick.Slack.Actions.Tasks.ShowNewForm do
     {:noreply, new_state}
   end
 
-  defp build_form(data) do
+  defp build_form(%{params: params, task: task} = data) do
     dialog = %{
-      callback_id: "task_add",
-      title: "Add task",
+      callback_id: "task_edit:#{params["callback_id"]}",
+      title: "Edit task",
       submit_label: "Save",
       elements: [
         %{
@@ -50,21 +52,23 @@ defmodule Kendrick.Slack.Actions.Tasks.ShowNewForm do
           placeholder: "https://aclgrc.atlassian.net/browse/PD-7200",
           subtype: "url",
           type: "text",
-          value: "https://aclgrc.atlassian.net/browse/"
+          value: task.url
         },
         %{
           label: "Task description",
           name: "description",
           optional: true,
           placeholder: "Deploy to preprod",
-          type: "text"
+          type: "text",
+          value: task.title
         },
         %{
           label: "Status",
           name: "status",
           optional: true,
           placeholder: "WIP",
-          type: "text"
+          type: "text",
+          value: task.status
         }
       ]
     }
