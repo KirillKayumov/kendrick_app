@@ -1,6 +1,4 @@
 defmodule Kendrick.Slack.Report.Tasks do
-  alias Kendrick.Jira
-
   def build(user, opts) do
     user
     |> Kendrick.Tasks.for_user()
@@ -11,23 +9,32 @@ defmodule Kendrick.Slack.Report.Tasks do
   defp task({task, index}, opts) do
     %{
       title: task_title(task, index),
-      title_link: task.url,
       fallback: task_title(task, index),
       callback_id: "task:#{task.id}",
-      fields: [
-        %{
-          title: "Status",
-          value: task.status
-        }
-      ],
+      fields: fields(task),
       actions: task_actions(task, opts)
     }
   end
 
-  defp task_title(task, index) do
-    ["#{index}.", Jira.Task.key_from_url(task.url), task.title]
-    |> Enum.reject(&is_nil/1)
-    |> Enum.join(" ")
+  defp task_title(task, index), do: "#{index}. #{task.title}"
+
+  defp fields(task) do
+    [
+      task_link(task),
+      %{
+        title: "Status",
+        value: task.status
+      }
+    ]
+  end
+
+  defp task_link(%{url: nil}), do: %{}
+
+  defp task_link(%{url: url}) do
+    %{
+      title: "Link",
+      value: url
+    }
   end
 
   defp task_actions(%{id: todo_id}, %{more_actions: id}) when todo_id == id do
