@@ -21,6 +21,7 @@ defmodule Kendrick.Application do
       worker(Kendrick.Slack.Actions.Tasks.More, []),
       worker(Kendrick.Slack.Actions.Tasks.ShowEditForm, []),
       worker(Kendrick.Slack.Actions.Tasks.Update, []),
+      worker(Kendrick.Slack.Actions.Tasks.Delete, []),
       worker(Kendrick.Slack.Actions.Todos.Done, []),
       worker(Kendrick.Slack.Actions.Todos.Delete, []),
       worker(Kendrick.Slack.NoUserNotifier, [])

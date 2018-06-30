@@ -29,7 +29,7 @@ defmodule Kendrick.Slack.Actions.Tasks.UpdateStatus do
     ~>> find_user()
     ~>> find_task()
     ~>> update_status()
-    ~>> post_report()
+    ~>> update_report()
 
     {:noreply, state}
   end
@@ -50,7 +50,7 @@ defmodule Kendrick.Slack.Actions.Tasks.UpdateStatus do
     {:ok, data}
   end
 
-  defp post_report(%{params: params, workspace: workspace, user: user}) do
+  defp update_report(%{params: params, workspace: workspace, user: user}) do
     Slack.Client.respond(%{
       attachments: Slack.Report.build(user),
       token: workspace.slack_token,

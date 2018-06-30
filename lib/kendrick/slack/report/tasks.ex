@@ -1,9 +1,24 @@
 defmodule Kendrick.Slack.Report.Tasks do
   def build(user, opts) do
-    user
-    |> Kendrick.Tasks.for_user()
-    |> Enum.with_index(1)
-    |> Enum.map(&task(&1, opts))
+    tasks = Kendrick.Tasks.for_user(user)
+
+    case length(tasks) do
+      0 ->
+        help()
+
+      _ ->
+        tasks
+        |> Enum.with_index(1)
+        |> Enum.map(&task(&1, opts))
+    end
+  end
+
+  defp help do
+    [
+      %{
+        text: "No tasks."
+      }
+    ]
   end
 
   defp task({task, index}, opts) do
