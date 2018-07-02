@@ -2,8 +2,7 @@ defmodule Kendrick.Slack.Actions.Tasks.More do
   use GenServer
 
   import OK, only: [~>>: 2]
-  import Kendrick.Slack.Shared, only: [find_workspace: 1, find_user: 1]
-  import Kendrick.Slack.Actions.Tasks.Shared, only: [find_task_id: 1]
+  import Kendrick.Slack.Shared, only: [find_workspace: 1, find_user: 1, decode_callback_id: 1]
 
   alias Kendrick.Slack
 
@@ -23,15 +22,15 @@ defmodule Kendrick.Slack.Actions.Tasks.More do
     %{params: params}
     |> find_workspace()
     ~>> find_user()
-    ~>> find_task_id()
+    ~>> decode_callback_id()
     ~>> update_report()
 
     {:noreply, state}
   end
 
-  defp update_report(%{params: params, workspace: workspace, user: user, task_id: task_id}) do
+  defp update_report(%{params: params, workspace: workspace, user: user, callback_id: callback_id}) do
     Slack.Client.respond(%{
-      attachments: Slack.Report.build(user, %{more_actions: task_id}),
+      attachments: Slack.Report.build(user, %{more_actions: callback_id["id"]}),
       token: workspace.slack_token,
       url: params["response_url"]
     })

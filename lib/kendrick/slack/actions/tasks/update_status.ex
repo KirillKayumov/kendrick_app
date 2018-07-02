@@ -2,7 +2,7 @@ defmodule Kendrick.Slack.Actions.Tasks.UpdateStatus do
   use GenServer
 
   import OK, only: [~>>: 2]
-  import Kendrick.Slack.Shared, only: [find_workspace: 1, find_user: 1]
+  import Kendrick.Slack.Shared, only: [find_workspace: 1, find_user: 1, decode_callback_id: 1]
   import Kendrick.Slack.Actions.Tasks.Shared, only: [find_task: 1]
 
   alias Kendrick.{
@@ -27,6 +27,7 @@ defmodule Kendrick.Slack.Actions.Tasks.UpdateStatus do
     %{params: params}
     |> find_workspace()
     ~>> find_user()
+    ~>> decode_callback_id()
     ~>> find_task()
     ~>> update_status()
     ~>> update_report()

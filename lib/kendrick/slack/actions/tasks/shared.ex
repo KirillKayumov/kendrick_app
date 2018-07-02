@@ -1,19 +1,8 @@
 defmodule Kendrick.Slack.Actions.Tasks.Shared do
   alias Kendrick.Tasks
 
-  def find_task_id(%{params: params} = data) do
-    {task_id, _} =
-      params["callback_id"]
-      |> String.split(":")
-      |> List.last()
-      |> Integer.parse()
-
-    {:ok, Map.put(data, :task_id, task_id)}
-  end
-
-  def find_task(data) do
-    {:ok, data} = find_task_id(data)
-    task = Tasks.get(data.task_id)
+  def find_task(%{callback_id: %{"id" => task_id}} = data) do
+    task = Tasks.get(task_id)
 
     {:ok, Map.put(data, :task, task)}
   end

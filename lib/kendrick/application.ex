@@ -24,6 +24,7 @@ defmodule Kendrick.Application do
       worker(Kendrick.Slack.Actions.Tasks.Delete, []),
       worker(Kendrick.Slack.Actions.Todos.Done, []),
       worker(Kendrick.Slack.Actions.Todos.Delete, []),
+      worker(Kendrick.Slack.Actions.ProjectReport.Show, []),
       worker(Kendrick.Slack.NoUserNotifier, [])
       # Start your own worker by calling: Kendrick.Worker.start_link(arg1, arg2, arg3)
       # worker(Kendrick.Worker, [arg1, arg2, arg3]),

@@ -34,4 +34,14 @@ defmodule Kendrick.Slack.Shared do
   def find_channel(%{params: %{"channel" => %{"id" => channel}}} = data), do: do_find_channel(channel, data)
 
   defp do_find_channel(channel, data), do: {:ok, Map.put(data, :channel, channel)}
+
+  def encode_callback_id(data) do
+    Poison.encode!(data)
+  end
+
+  def decode_callback_id(%{params: %{"callback_id" => callback_id}} = data) do
+    callback_id = Poison.decode!(callback_id)
+
+    {:ok, Map.put(data, :callback_id, callback_id)}
+  end
 end

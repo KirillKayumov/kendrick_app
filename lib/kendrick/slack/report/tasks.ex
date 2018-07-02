@@ -1,7 +1,7 @@
 defmodule Kendrick.Slack.Report.Tasks do
-  def build(user, opts) do
-    tasks = Kendrick.Tasks.for_user(user)
+  import Kendrick.Slack.Shared, only: [encode_callback_id: 1]
 
+  def build(tasks, opts \\ %{}) do
     case length(tasks) do
       0 ->
         help()
@@ -25,7 +25,9 @@ defmodule Kendrick.Slack.Report.Tasks do
     %{
       title: task_title(task, index),
       fallback: task_title(task, index),
-      callback_id: "task:#{task.id}",
+      callback_id: encode_callback_id(%{
+        id: task.id
+      }),
       fields: fields(task),
       actions: task_actions(task, opts)
     }
@@ -36,10 +38,7 @@ defmodule Kendrick.Slack.Report.Tasks do
   defp fields(task) do
     [
       task_link(task),
-      %{
-        title: "Status",
-        value: task.status
-      }
+      task_status(task)
     ]
   end
 
@@ -52,9 +51,25 @@ defmodule Kendrick.Slack.Report.Tasks do
     }
   end
 
+  defp task_status(%{status: nil}), do: %{}
+
+  defp task_status(%{status: status}) do
+    %{
+      title: "Status",
+      value: status
+    }
+  end
+
   defp task_actions(%{id: todo_id}, %{more_actions: id}) when todo_id == id do
     [
       set_status_action(),
+      edit_action(),
+      delete_action()
+    ]
+  end
+
+  defp task_actions(_task, %{project_report: true}) do
+    [
       edit_action(),
       delete_action()
     ]
@@ -93,7 +108,7 @@ defmodule Kendrick.Slack.Report.Tasks do
     }
   end
 
-  def edit_action do
+  defp edit_action do
     %{
       name: "task_edit",
       text: "Edit",

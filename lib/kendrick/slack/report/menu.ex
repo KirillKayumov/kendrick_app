@@ -15,6 +15,11 @@ defmodule Kendrick.Slack.Report.Menu do
         "name" => "task_add",
         "text" => "Add task",
         "type" => "button"
+      },
+      %{
+        "name" => "project_report",
+        "text" => "Project report",
+        "type" => "button"
       }
     ]
   end

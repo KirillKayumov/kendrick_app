@@ -2,7 +2,7 @@ defmodule Kendrick.Slack.Actions.Tasks.ShowEditForm do
   use GenServer
 
   import OK, only: [~>>: 2]
-  import Kendrick.Slack.Shared, only: [find_workspace: 1]
+  import Kendrick.Slack.Shared, only: [find_workspace: 1, decode_callback_id: 1]
   import Kendrick.Slack.Actions.Tasks.Shared, only: [find_task: 1]
 
   alias Kendrick.Slack
@@ -31,6 +31,7 @@ defmodule Kendrick.Slack.Actions.Tasks.ShowEditForm do
     new_state =
       %{params: params, state: state}
       |> find_workspace()
+      ~>> decode_callback_id()
       ~>> find_task()
       ~>> build_form()
       ~>> show_form()

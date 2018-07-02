@@ -25,7 +25,11 @@ defmodule Kendrick.Slack.Report do
       ]
   end
 
-  defp add_task_list(attachments, user, opts), do: attachments ++ Tasks.build(user, opts)
+  defp add_task_list(attachments, user, opts) do
+    tasks = Kendrick.Tasks.for_user(user)
+
+    attachments ++ Tasks.build(tasks, opts)
+  end
 
   defp add_menu(attachments), do: attachments ++ [Menu.build()]
 

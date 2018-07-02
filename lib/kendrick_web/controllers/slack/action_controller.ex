@@ -3,6 +3,7 @@ defmodule KendrickWeb.Slack.ActionController do
 
   alias Kendrick.Slack.Actions.{
     Tasks,
+    ProjectReport,
     Todos
   }
 
@@ -50,6 +51,12 @@ defmodule KendrickWeb.Slack.ActionController do
 
   def index(conn, %{"actions" => [%{"name" => "todo_delete"}]} = params) do
     Todos.Delete.call(params)
+
+    send_resp(conn, 200, "")
+  end
+
+  def index(conn, %{"actions" => [%{"name" => "project_report"}]} = params) do
+    ProjectReport.Show.call(params)
 
     send_resp(conn, 200, "")
   end
