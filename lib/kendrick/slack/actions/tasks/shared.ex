@@ -72,8 +72,6 @@ defmodule Kendrick.Slack.Actions.Tasks.Shared do
     |> assign_status(params)
   end
 
-  defp assign_url(attributes, %{"submission" => %{"url" => nil}}), do: attributes
-
   defp assign_url(attributes, %{"submission" => %{"url" => url}}), do: Map.put(attributes, :url, url)
 
   defp assign_title(attributes, %{"submission" => %{"description" => nil}}), do: attributes
@@ -81,8 +79,6 @@ defmodule Kendrick.Slack.Actions.Tasks.Shared do
   defp assign_title(attributes, %{"submission" => %{"description" => title}}) do
     Map.put(attributes, :title, title)
   end
-
-  defp assign_status(attributes, %{"submission" => %{"status" => nil}}), do: attributes
 
   defp assign_status(attributes, %{"submission" => %{"status" => status}}) do
     Map.put(attributes, :status, status)

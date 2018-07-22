@@ -30,7 +30,6 @@ defmodule Kendrick.Slack.ProjectReport do
       attachments ++
         [
           %{
-            color: "#FFFFFF",
             fallback: team.name,
             title: String.upcase(team.name)
           }
@@ -40,16 +39,23 @@ defmodule Kendrick.Slack.ProjectReport do
   end
 
   defp add_user(user, attachments, project) do
-    attachments =
-      attachments ++
-        [
-          %{
-            color: "#717171",
-            fallback: user.name,
-            title: user.name
-          }
-        ]
+    attachments ++
+      [user_name(user)] ++
+      Slack.Report.Tasks.build(user.tasks, %{project: project}) ++
+      [Slack.Report.Menu.build(%{project: project})] ++ [delimiter()]
+  end
 
-    attachments ++ Slack.Report.Tasks.build(user.tasks, %{project: project})
+  defp user_name(user) do
+    %{
+      fallback: user.name,
+      title: String.upcase(user.name)
+    }
+  end
+
+  defp delimiter do
+    %{
+      fallback: "delimiter",
+      title: Enum.join(for(_i <- 1..50, do: "-"), " ")
+    }
   end
 end
