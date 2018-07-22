@@ -1,5 +1,6 @@
 defmodule Kendrick.Slack.Shared do
   alias Kendrick.{
+    Projects,
     Users,
     Workspaces
   }
@@ -44,4 +45,12 @@ defmodule Kendrick.Slack.Shared do
 
     {:ok, Map.put(data, :callback_id, callback_id)}
   end
+
+  def find_project(%{callback_id: %{"project_id" => project_id}} = data) do
+    project = Projects.get(project_id)
+
+    {:ok, Map.put(data, :project, project)}
+  end
+
+  def find_project(data), do: {:ok, data}
 end

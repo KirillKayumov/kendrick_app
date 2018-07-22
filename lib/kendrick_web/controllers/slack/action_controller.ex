@@ -62,9 +62,11 @@ defmodule KendrickWeb.Slack.ActionController do
   end
 
   def index(conn, params) do
-    cond do
-      params["callback_id"] =~ "task_add" -> task_add(conn, params)
-      params["callback_id"] =~ "task_edit" -> task_edit(conn, params)
+    action = Poison.decode!(params["callback_id"])["action"]
+
+    case action do
+      "task_add" -> task_add(conn, params)
+      "task_edit" -> task_edit(conn, params)
     end
   end
 

@@ -30,8 +30,8 @@ defmodule Kendrick.Slack.Actions.Tasks.ShowEditForm do
   def handle_cast({:call, params}, state) do
     new_state =
       %{params: params, state: state}
-      |> find_workspace()
-      ~>> decode_callback_id()
+      |> decode_callback_id()
+      ~>> find_workspace()
       ~>> find_task()
       ~>> build_form()
       ~>> show_form()
@@ -40,9 +40,9 @@ defmodule Kendrick.Slack.Actions.Tasks.ShowEditForm do
     {:noreply, new_state}
   end
 
-  defp build_form(%{params: params, task: task} = data) do
+  defp build_form(%{task: task, callback_id: callback_id} = data) do
     dialog = %{
-      callback_id: "task_edit:#{params["callback_id"]}",
+      callback_id: Poison.encode!(Map.put(callback_id, :action, "task_edit")),
       title: "Edit task",
       submit_label: "Save",
       elements: [

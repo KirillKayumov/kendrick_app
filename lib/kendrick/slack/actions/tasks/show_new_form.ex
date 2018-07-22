@@ -39,7 +39,7 @@ defmodule Kendrick.Slack.Actions.Tasks.ShowNewForm do
 
   defp build_form(data) do
     dialog = %{
-      callback_id: "task_add",
+      callback_id: Poison.encode!(%{action: "task_add"}),
       title: "Add task",
       submit_label: "Save",
       elements: [
@@ -49,8 +49,7 @@ defmodule Kendrick.Slack.Actions.Tasks.ShowNewForm do
           optional: true,
           placeholder: "https://aclgrc.atlassian.net/browse/PD-7200",
           subtype: "url",
-          type: "text",
-          value: "https://aclgrc.atlassian.net/browse/"
+          type: "text"
         },
         %{
           label: "Task description",

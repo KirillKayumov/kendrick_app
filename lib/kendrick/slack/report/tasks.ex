@@ -25,15 +25,22 @@ defmodule Kendrick.Slack.Report.Tasks do
     %{
       title: task_title(task, index),
       fallback: task_title(task, index),
-      callback_id: encode_callback_id(%{
-        id: task.id
-      }),
+      callback_id: callback_id(task, opts),
       fields: fields(task),
       actions: task_actions(task, opts)
     }
   end
 
   defp task_title(task, index), do: "#{index}. #{task.title}"
+
+  defp callback_id(task, opts) do
+    %{id: task.id}
+    |> add_project_id(opts)
+    |> encode_callback_id()
+  end
+
+  defp add_project_id(data, %{project: project}), do: Map.put(data, :project_id, project.id)
+  defp add_project_id(data, _opts), do: data
 
   defp fields(task) do
     [
@@ -68,7 +75,7 @@ defmodule Kendrick.Slack.Report.Tasks do
     ]
   end
 
-  defp task_actions(_task, %{project_report: true}) do
+  defp task_actions(_task, %{project: _project}) do
     [
       edit_action(),
       delete_action()

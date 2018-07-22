@@ -11,7 +11,7 @@ defmodule Kendrick.Slack.ProjectReport do
   def build(project) do
     project
     |> teams()
-    |> Enum.reduce([], &add_team(&1, &2))
+    |> Enum.reduce([], &add_team(&1, &2, project))
   end
 
   defp teams(project) do
@@ -25,7 +25,7 @@ defmodule Kendrick.Slack.ProjectReport do
     |> Repo.all()
   end
 
-  defp add_team(team, attachments) do
+  defp add_team(team, attachments, project) do
     attachments =
       attachments ++
         [
@@ -36,10 +36,10 @@ defmodule Kendrick.Slack.ProjectReport do
           }
         ]
 
-    Enum.reduce(team.users, attachments, &add_user(&1, &2))
+    Enum.reduce(team.users, attachments, &add_user(&1, &2, project))
   end
 
-  defp add_user(user, attachments) do
+  defp add_user(user, attachments, project) do
     attachments =
       attachments ++
         [
@@ -50,6 +50,6 @@ defmodule Kendrick.Slack.ProjectReport do
           }
         ]
 
-    attachments ++ Slack.Report.Tasks.build(user.tasks, %{project_report: true})
+    attachments ++ Slack.Report.Tasks.build(user.tasks, %{project: project})
   end
 end
