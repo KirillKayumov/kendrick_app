@@ -52,11 +52,13 @@ defmodule Kendrick.Slack.Actions.Tasks.Delete do
     {:ok, data}
   end
 
-  defp update_report(%{params: params, workspace: workspace, user: user}) do
+  defp update_report(%{params: params, workspace: workspace, user: user} = data) do
     Slack.Client.respond(%{
       attachments: Slack.Report.build(user),
       token: workspace.slack_token,
       url: params["response_url"]
     })
+
+    {:ok, data}
   end
 end

@@ -2,7 +2,7 @@ defmodule Kendrick.Slack.Actions.Tasks.ShowNewForm do
   use GenServer
 
   import OK, only: [~>>: 2]
-  import Kendrick.Slack.Shared, only: [find_workspace: 1]
+  import Kendrick.Slack.Shared, only: [find_workspace: 1, decode_callback_id: 1, encode_callback_id: 1]
 
   alias Kendrick.Slack
 
@@ -29,7 +29,8 @@ defmodule Kendrick.Slack.Actions.Tasks.ShowNewForm do
   def handle_cast({:call, params}, state) do
     new_state =
       %{params: params, state: state}
-      |> find_workspace()
+      |> decode_callback_id()
+      ~>> find_workspace()
       ~>> build_form()
       ~>> show_form()
       ~>> save_response_url()
@@ -39,7 +40,7 @@ defmodule Kendrick.Slack.Actions.Tasks.ShowNewForm do
 
   defp build_form(data) do
     dialog = %{
-      callback_id: Poison.encode!(%{action: "task_add"}),
+      callback_id: callback_id(data),
       title: "Add task",
       submit_label: "Save",
       elements: [
@@ -69,6 +70,12 @@ defmodule Kendrick.Slack.Actions.Tasks.ShowNewForm do
     }
 
     {:ok, Map.put(data, :dialog, dialog)}
+  end
+
+  defp callback_id(%{callback_id: callback_id}) do
+    callback_id
+    |> Map.put(:action, "task_add")
+    |> encode_callback_id()
   end
 
   defp show_form(%{dialog: dialog, params: params, workspace: workspace} = data) do

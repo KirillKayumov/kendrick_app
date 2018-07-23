@@ -26,8 +26,8 @@ defmodule Kendrick.Slack.Report.Tasks do
       title: task_title(task, index),
       fallback: task_title(task, index),
       callback_id: callback_id(task, opts),
-      fields: fields(task),
-      actions: task_actions(task, opts)
+      actions: task_actions(task, opts),
+      text: task_text(task)
     }
   end
 
@@ -42,30 +42,20 @@ defmodule Kendrick.Slack.Report.Tasks do
   defp add_project_id(data, %{project: project}), do: Map.put(data, :project_id, project.id)
   defp add_project_id(data, _opts), do: data
 
-  defp fields(task) do
-    [
-      task_link(task),
-      task_status(task)
-    ]
+  defp task_text(task) do
+    """
+    #{task_link(task)}
+    #{task_status(task)}
+    """
   end
 
-  defp task_link(%{url: nil}), do: %{}
+  defp task_link(%{url: nil}), do: ""
 
-  defp task_link(%{url: url}) do
-    %{
-      title: "Link",
-      value: url
-    }
-  end
+  defp task_link(%{url: url}), do: "*Link:* #{url}"
 
-  defp task_status(%{status: nil}), do: %{}
+  defp task_status(%{status: nil}), do: ""
 
-  defp task_status(%{status: status}) do
-    %{
-      title: "Status",
-      value: status
-    }
-  end
+  defp task_status(%{status: status}), do: "*Status:* #{status}"
 
   defp task_actions(%{id: todo_id}, %{more_actions: id}) when todo_id == id do
     [

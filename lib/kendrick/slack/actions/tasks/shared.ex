@@ -61,13 +61,14 @@ defmodule Kendrick.Slack.Actions.Tasks.Shared do
   def task_attributes(%{jira_data: jira_data, params: params}) do
     jira_data
     |> Kendrick.Jira.Task.to_map()
-    |> assign_url(params)
-    |> assign_title(params)
-    |> assign_status(params)
+    |> assign_attributes(params)
   end
 
-  def task_attributes(%{params: params}) do
-    %{}
+  def task_attributes(%{params: params}), do: assign_attributes(%{}, params)
+
+  defp assign_attributes(data, params) do
+    data
+    |> assign_url(params)
     |> assign_title(params)
     |> assign_status(params)
   end

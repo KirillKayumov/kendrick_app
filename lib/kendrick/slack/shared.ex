@@ -14,22 +14,19 @@ defmodule Kendrick.Slack.Shared do
     {:ok, Map.put(data, :workspace, workspace)}
   end
 
-  def find_user_slack_id(%{params: %{"user_id" => slack_id}} = data),
-    do: do_find_user_slack_id(slack_id, data)
+  def find_user_slack_id(data), do: {:ok, Map.put(data, :user_slack_id, user_slack_id(data))}
 
-  def find_user_slack_id(%{params: %{"user" => %{"id" => slack_id}}} = data),
-    do: do_find_user_slack_id(slack_id, data)
-
-  defp do_find_user_slack_id(user_slack_id, data) do
-    {:ok, Map.put(data, :user_slack_id, user_slack_id)}
-  end
+  defp user_slack_id(%{params: %{"user_id" => slack_id}}), do: slack_id
+  defp user_slack_id(%{params: %{"user" => %{"id" => slack_id}}}), do: slack_id
 
   def find_user(data) do
-    {:ok, data} = find_user_slack_id(data)
-    user = Users.get_by(slack_id: data.user_slack_id)
+    user = Users.get_by(slack_id: user_slack_id(data))
 
     {:ok, Map.put(data, :user, user)}
   end
+
+  def user_from_callback_id(%{callback_id: %{"user_id" => user_id}}), do: Users.get(user_id)
+  def user_from_callback_id(_data), do: nil
 
   def find_channel(%{params: %{"channel_id" => channel}} = data), do: do_find_channel(channel, data)
   def find_channel(%{params: %{"channel" => %{"id" => channel}}} = data), do: do_find_channel(channel, data)

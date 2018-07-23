@@ -6,6 +6,10 @@ defmodule Kendrick.Users do
     User
   }
 
+  def get(id) do
+    Repo.get(User, id)
+  end
+
   def get_by(attrs) do
     Repo.get_by(User, attrs)
   end

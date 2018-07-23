@@ -1,18 +1,20 @@
 defmodule Kendrick.Slack.Report.Menu do
-  def build(opts \\ %{})
+  import Kendrick.Slack.Shared, only: [encode_callback_id: 1]
 
-  def build(%{project: _project} = opts) do
+  def build(user, opts \\ %{})
+
+  def build(user, %{project: _project} = opts) do
     %{
       "actions" => menu_actions(opts),
-      "callback_id" => "menu",
+      "callback_id" => callback_id(user, opts),
       "fallback" => "Menu"
     }
   end
 
-  def build(opts) do
+  def build(user, opts) do
     %{
       "actions" => menu_actions(opts),
-      "callback_id" => "menu",
+      "callback_id" => callback_id(user, opts),
       "color" => "#717171",
       "fallback" => "Menu",
       "title" => "MENU"
@@ -47,4 +49,8 @@ defmodule Kendrick.Slack.Report.Menu do
       "type" => "button"
     }
   end
+
+  defp callback_id(user, %{project: project}), do: encode_callback_id(%{user_id: user.id, project_id: project.id})
+
+  defp callback_id(user, _opts), do: encode_callback_id(%{user_id: user.id})
 end

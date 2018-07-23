@@ -11,7 +11,7 @@ defmodule Kendrick.Slack.Report do
     |> add_task_list(user, opts)
     |> add_todo_title()
     |> add_todo_list(user)
-    |> add_menu()
+    |> add_menu(user)
   end
 
   defp add_tasks_title(attachments) do
@@ -31,7 +31,7 @@ defmodule Kendrick.Slack.Report do
     attachments ++ Tasks.build(tasks, opts)
   end
 
-  defp add_menu(attachments), do: attachments ++ [Menu.build()]
+  defp add_menu(attachments, user), do: attachments ++ [Menu.build(user)]
 
   defp add_todo_title(attachments) do
     attachments ++
