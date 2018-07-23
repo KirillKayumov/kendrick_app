@@ -15,25 +15,24 @@ defmodule Kendrick.Slack.Actions.Tasks.Delete do
   end
 
   def call(params) do
-    GenServer.call(__MODULE__, {:call, params})
+    GenServer.cast(__MODULE__, {:call, params})
   end
 
   def init(args) do
     {:ok, args}
   end
 
-  def handle_call({:call, params}, _from, state) do
-    result =
-      %{params: params}
-      |> decode_callback_id()
-      ~>> find_workspace()
-      ~>> find_user()
-      ~>> find_task()
-      ~>> find_project()
-      ~>> delete_task()
-      ~>> update_report()
+  def handle_cast({:call, params}, state) do
+    %{params: params}
+    |> decode_callback_id()
+    ~>> find_workspace()
+    ~>> find_user()
+    ~>> find_task()
+    ~>> find_project()
+    ~>> delete_task()
+    ~>> update_report()
 
-    {:reply, result, state}
+    {:noreply, state}
   end
 
   defp delete_task(%{task: task} = data) do
@@ -48,8 +47,6 @@ defmodule Kendrick.Slack.Actions.Tasks.Delete do
       token: workspace.slack_token,
       url: params["response_url"]
     })
-
-    {:ok, data}
   end
 
   defp update_report(%{params: params, workspace: workspace, user: user} = data) do
@@ -58,7 +55,5 @@ defmodule Kendrick.Slack.Actions.Tasks.Delete do
       token: workspace.slack_token,
       url: params["response_url"]
     })
-
-    {:ok, data}
   end
 end
