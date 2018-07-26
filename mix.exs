@@ -20,7 +20,7 @@ defmodule Kendrick.Mixfile do
   def application do
     [
       mod: {Kendrick.Application, []},
-      extra_applications: [:logger, :runtime_tools, :ueberauth]
+      extra_applications: [:logger, :runtime_tools, :ueberauth, :timex, :ex_cldr]
     ]
   end
 
@@ -47,7 +47,9 @@ defmodule Kendrick.Mixfile do
       {:phoenix, "~> 1.3.2"},
       {:postgrex, ">= 0.0.0"},
       {:ueberauth, "~> 0.5.0"},
-      {:ok, "~> 1.11"}
+      {:ok, "~> 1.11"},
+      {:timex, "~> 3.3"},
+      {:ex_cldr_numbers, "~> 1.5"}
     ]
   end
 

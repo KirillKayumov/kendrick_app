@@ -1,28 +1,22 @@
 defmodule Kendrick.Slack.ProjectReport do
-  alias Kendrick.{
-    Repo,
-    Slack,
-    Task,
-    User
-  }
+  import Kendrick.Slack.ProjectReport.Shared, only: [teams: 1]
 
-  import Ecto.Query
+  alias Kendrick.Slack
+  alias Slack.ProjectReport.Menu
 
   def build(project) do
-    project
-    |> teams()
-    |> Enum.reduce([], &add_team(&1, &2, project))
+    []
+    |> add_tasks(project)
+    |> add_menu(project)
   end
 
-  defp teams(project) do
-    tasks = Task |> order_by(:id)
-    users = User |> preload(tasks: ^tasks) |> order_by(:id)
+  defp add_tasks(attachments, project) do
+    tasks =
+      project
+      |> teams()
+      |> Enum.reduce([], &add_team(&1, &2, project))
 
-    project
-    |> Ecto.assoc(:teams)
-    |> preload(users: ^users)
-    |> order_by(:id)
-    |> Repo.all()
+    attachments ++ tasks
   end
 
   defp add_team(team, attachments, project) do
@@ -63,5 +57,9 @@ defmodule Kendrick.Slack.ProjectReport do
       fallback: "",
       title: ""
     }
+  end
+
+  defp add_menu(attachments, project) do
+    attachments ++ [Menu.build(project)]
   end
 end

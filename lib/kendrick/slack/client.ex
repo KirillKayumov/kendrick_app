@@ -2,6 +2,7 @@ defmodule Kendrick.Slack.Client do
   @chat_post_ephemeral_url "https://slack.com/api/chat.postEphemeral"
   @chat_update_url "https://slack.com/api/chat.update"
   @dialog_open_url "https://slack.com/api/dialog.open"
+  @files_upload_url "https://slack.com/api/files.upload"
   @post_message_url "https://slack.com/api/chat.postMessage"
   @profile_get_url "https://slack.com/api/users.profile.get"
   @users_list_url "https://slack.com/api/users.list"
@@ -66,6 +67,28 @@ defmodule Kendrick.Slack.Client do
           [
             {"dialog", Poison.encode!(dialog)},
             {"trigger_id", trigger_id},
+            {"token", token}
+          ]
+        },
+        [
+          {"Content-Type", "multipart/form-data"}
+        ]
+      )
+
+    Poison.decode!(response.body)
+  end
+
+  def files_upload(%{token: token, channel: channel, text: text, title: title} = data) do
+    response =
+      HTTPoison.post!(
+        @files_upload_url,
+        {
+          :form,
+          [
+            {"channels", channel},
+            {"content", text},
+            {"filetype", data[:filetype] || "markdown"},
+            {"title", title},
             {"token", token}
           ]
         },

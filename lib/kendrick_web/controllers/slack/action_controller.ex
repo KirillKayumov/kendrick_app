@@ -61,6 +61,12 @@ defmodule KendrickWeb.Slack.ActionController do
     send_resp(conn, 200, "")
   end
 
+  def index(conn, %{"actions" => [%{"name" => "project_report_post"}]} = params) do
+    ProjectReport.Post.call(params)
+
+    send_resp(conn, 200, "")
+  end
+
   def index(conn, params) do
     action = Poison.decode!(params["callback_id"])["action"]
 

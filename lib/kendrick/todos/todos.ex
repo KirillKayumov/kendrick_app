@@ -13,7 +13,7 @@ defmodule Kendrick.Todos do
   def for_user(user) do
     user
     |> Ecto.assoc(:todos)
-    |> order_by(:id)
+    |> order_by([:done, :id])
     |> Repo.all()
   end
 end
