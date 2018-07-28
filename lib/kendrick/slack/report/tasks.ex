@@ -23,31 +23,41 @@ defmodule Kendrick.Slack.Report.Tasks do
 
   defp task({task, index}, opts) do
     %{
-      actions: task_actions(task, opts),
+      actions: actions(task, opts),
       callback_id: callback_id(task, opts),
       color: color(task),
-      fallback: task_title(task, index),
-      text: task_text(task),
-      title: task_title(task, index)
+      fallback: title(task, index),
+      footer: footer(task),
+      text: text(task),
+      title: title(task, index)
     }
   end
 
-  defp task_actions(%{id: todo_id}, %{more_actions: id}) when todo_id == id do
+  defp actions(%{disabled: true}, _opts) do
+    [
+      enable_action(),
+      delete_action()
+    ]
+  end
+
+  defp actions(%{id: todo_id}, %{more_actions: id}) when todo_id == id do
     [
       set_status_action(),
       edit_action(),
+      disable_action(),
       delete_action()
     ]
   end
 
-  defp task_actions(_task, %{project: _project}) do
+  defp actions(_task, %{project: _project}) do
     [
       edit_action(),
+      disable_action(),
       delete_action()
     ]
   end
 
-  defp task_actions(_task, _opts) do
+  defp actions(_task, _opts) do
     [
       set_status_action(),
       more_action()
@@ -88,6 +98,27 @@ defmodule Kendrick.Slack.Report.Tasks do
     }
   end
 
+  defp disable_action do
+    %{
+      name: "task_disable",
+      text: "Disable",
+      type: "button",
+      confirm: %{
+        title: "Are you sure?",
+        ok_text: "Yes",
+        dismiss_text: "No"
+      }
+    }
+  end
+
+  defp enable_action do
+    %{
+      name: "task_enable",
+      text: "Enable",
+      type: "button"
+    }
+  end
+
   defp more_action do
     %{
       name: "task_more",
@@ -119,9 +150,11 @@ defmodule Kendrick.Slack.Report.Tasks do
   defp add_project_id(data, %{project: project}), do: Map.put(data, :project_id, project.id)
   defp add_project_id(data, _opts), do: data
 
+  defp color(%{disabled: true}), do: ""
+
   defp color(task) do
     case task.type do
-      "Bug" -> "#E5493A"
+      "Bug" -> "#DE4D33"
       "Design" -> "#FF9C23"
       "Epic" -> "#904EE2"
       "Fail Test" -> "#8095AA"
@@ -132,9 +165,13 @@ defmodule Kendrick.Slack.Report.Tasks do
     end
   end
 
-  defp task_title(task, index), do: "#{index}. #{task.title}"
+  defp title(%{disabled: true} = task, index), do: "#{index}. #{task.title}"
+  defp title(task, index), do: "#{index}. #{task.title}"
 
-  defp task_text(task) do
+  defp footer(%{disabled: true}), do: "This task won't appear in the project report."
+  defp footer(_task), do: ""
+
+  defp text(task) do
     """
     #{task_link(task)}
     #{task_status(task)}

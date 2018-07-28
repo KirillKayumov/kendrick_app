@@ -37,6 +37,18 @@ defmodule KendrickWeb.Slack.ActionController do
     send_resp(conn, 200, "")
   end
 
+  def index(conn, %{"actions" => [%{"name" => "task_disable"}]} = params) do
+    Tasks.Disable.disable(params)
+
+    send_resp(conn, 200, "")
+  end
+
+  def index(conn, %{"actions" => [%{"name" => "task_enable"}]} = params) do
+    Tasks.Disable.enable(params)
+
+    send_resp(conn, 200, "")
+  end
+
   def index(conn, %{"actions" => [%{"name" => "task_delete"}]} = params) do
     Tasks.Delete.call(params)
 

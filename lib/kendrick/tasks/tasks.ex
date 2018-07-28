@@ -13,7 +13,7 @@ defmodule Kendrick.Tasks do
   def for_user(user) do
     user
     |> Ecto.assoc(:tasks)
-    |> order_by(:id)
+    |> order_by([:disabled, :id])
     |> Repo.all()
   end
 end

@@ -8,7 +8,7 @@ defmodule Kendrick.Slack.ProjectReport.Shared do
   }
 
   def teams(project) do
-    tasks = Task |> order_by(:id)
+    tasks = Task |> where(disabled: false) |> order_by(:id)
     users = User |> preload(tasks: ^tasks) |> order_by(:id)
 
     project

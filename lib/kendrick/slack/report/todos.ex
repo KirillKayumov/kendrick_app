@@ -54,7 +54,7 @@ defmodule Kendrick.Slack.Report.Todos do
   end
 
   defp color(%{done: false}), do: "#EABA51"
-  defp color(%{done: true}), do: "#42996D"
+  defp color(%{done: true}), do: "#63BA3C"
 
   defp text(%{done: false, text: text}, index), do: "*#{index}. #{text}*"
   defp text(%{done: true, text: text}, index), do: "*~#{index}. #{text}~*"
