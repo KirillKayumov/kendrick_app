@@ -12,6 +12,7 @@ defmodule Kendrick.Task do
     field(:title, :string)
     field(:url, :string)
     field(:status, :string)
+    field(:type, :string)
 
     belongs_to(:user, User)
 
@@ -20,7 +21,7 @@ defmodule Kendrick.Task do
 
   def changeset(%Task{} = task, attrs \\ %{}) do
     task
-    |> cast(attrs, [:title, :url, :status])
+    |> cast(attrs, [:title, :url, :status, :type])
     |> validate_required([:title])
   end
 end

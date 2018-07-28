@@ -34,13 +34,13 @@ defmodule Kendrick.Slack.Actions.Tasks.Update do
     result =
       %{params: params}
       |> validate_params()
+      ~>> get_jira_data()
+      ~>> ensure_task_url_valid()
       ~>> decode_callback_id()
       ~>> find_workspace()
       ~>> find_user()
       ~>> find_task()
       ~>> find_project()
-      ~>> get_jira_data()
-      ~>> ensure_task_url_valid()
       ~>> update_task()
       ~>> update_report()
 

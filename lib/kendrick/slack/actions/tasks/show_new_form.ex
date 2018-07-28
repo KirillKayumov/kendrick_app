@@ -50,7 +50,8 @@ defmodule Kendrick.Slack.Actions.Tasks.ShowNewForm do
           optional: true,
           placeholder: "https://aclgrc.atlassian.net/browse/PD-7200",
           subtype: "url",
-          type: "text"
+          type: "text",
+          value: "https://aclgrc.atlassian.net/browse/"
         },
         %{
           label: "Task description",

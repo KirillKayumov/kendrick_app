@@ -41,7 +41,7 @@ defmodule Kendrick.Slack.Actions.Tasks.Delete do
     {:ok, data}
   end
 
-  defp update_report(%{workspace: workspace, project: project, params: params} = data) do
+  defp update_report(%{workspace: workspace, project: project, params: params}) do
     Slack.Client.respond(%{
       attachments: Slack.ProjectReport.build(project),
       token: workspace.slack_token,
@@ -49,7 +49,7 @@ defmodule Kendrick.Slack.Actions.Tasks.Delete do
     })
   end
 
-  defp update_report(%{params: params, workspace: workspace, user: user} = data) do
+  defp update_report(%{params: params, workspace: workspace, user: user}) do
     Slack.Client.respond(%{
       attachments: Slack.Report.build(user),
       token: workspace.slack_token,

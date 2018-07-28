@@ -23,39 +23,14 @@ defmodule Kendrick.Slack.Report.Tasks do
 
   defp task({task, index}, opts) do
     %{
-      title: task_title(task, index),
-      fallback: task_title(task, index),
-      callback_id: callback_id(task, opts),
       actions: task_actions(task, opts),
-      text: task_text(task)
+      callback_id: callback_id(task, opts),
+      color: color(task),
+      fallback: task_title(task, index),
+      text: task_text(task),
+      title: task_title(task, index)
     }
   end
-
-  defp task_title(task, index), do: "#{index}. #{task.title}"
-
-  defp callback_id(task, opts) do
-    %{id: task.id}
-    |> add_project_id(opts)
-    |> encode_callback_id()
-  end
-
-  defp add_project_id(data, %{project: project}), do: Map.put(data, :project_id, project.id)
-  defp add_project_id(data, _opts), do: data
-
-  defp task_text(task) do
-    """
-    #{task_link(task)}
-    #{task_status(task)}
-    """
-  end
-
-  defp task_link(%{url: nil}), do: ""
-
-  defp task_link(%{url: url}), do: "*Link:* #{url}"
-
-  defp task_status(%{status: nil}), do: ""
-
-  defp task_status(%{status: status}), do: "*Status:* #{status}"
 
   defp task_actions(%{id: todo_id}, %{more_actions: id}) when todo_id == id do
     [
@@ -134,4 +109,43 @@ defmodule Kendrick.Slack.Report.Tasks do
       type: "button"
     }
   end
+
+  defp callback_id(task, opts) do
+    %{id: task.id}
+    |> add_project_id(opts)
+    |> encode_callback_id()
+  end
+
+  defp add_project_id(data, %{project: project}), do: Map.put(data, :project_id, project.id)
+  defp add_project_id(data, _opts), do: data
+
+  defp color(task) do
+    case task.type do
+      "Bug" -> "#E5493A"
+      "Design" -> "#FF9C23"
+      "Epic" -> "#904EE2"
+      "Fail Test" -> "#8095AA"
+      "Story" -> "#63BA3C"
+      "Sub-task" -> "#4BAEE8"
+      "Task" -> "#4BADE8"
+      _ -> ""
+    end
+  end
+
+  defp task_title(task, index), do: "#{index}. #{task.title}"
+
+  defp task_text(task) do
+    """
+    #{task_link(task)}
+    #{task_status(task)}
+    """
+  end
+
+  defp task_link(%{url: nil}), do: ""
+
+  defp task_link(%{url: url}), do: "*Link:* #{url}"
+
+  defp task_status(%{status: nil}), do: ""
+
+  defp task_status(%{status: status}), do: "*Status:* #{status}"
 end
