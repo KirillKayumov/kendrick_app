@@ -3,11 +3,11 @@ defmodule Kendrick.Slack.ProjectReport.Menu do
 
   def build(project) do
     %{
-      "actions" => actions(),
-      "callback_id" => callback_id(project),
-      "color" => "#717171",
-      "fallback" => "Menu",
-      "title" => "MENU"
+      actions: actions(),
+      callback_id: callback_id(project),
+      color: "#717171",
+      fallback: "Menu",
+      title: "MENU"
     }
   end
 
@@ -19,9 +19,9 @@ defmodule Kendrick.Slack.ProjectReport.Menu do
 
   defp project_report_post_action do
     %{
-      "name" => "project_report_post",
-      "text" => "Create post",
-      "type" => "button"
+      name: "project_report_post",
+      text: "Create post",
+      type: "button"
     }
   end
 

@@ -2,9 +2,10 @@ defmodule KendrickWeb.Slack.ActionController do
   use KendrickWeb, :controller
 
   alias Kendrick.Slack.Actions.{
-    Tasks,
     ProjectReport,
-    Todos
+    Tasks,
+    Todos,
+    Users
   }
 
   plug(KendrickWeb.Plugs.Slack.EnsureUserExists)
@@ -75,6 +76,12 @@ defmodule KendrickWeb.Slack.ActionController do
 
   def index(conn, %{"actions" => [%{"name" => "project_report_post"}]} = params) do
     ProjectReport.Post.call(params)
+
+    send_resp(conn, 200, "")
+  end
+
+  def index(conn, %{"actions" => [%{"name" => "user_update_absence"}]} = params) do
+    Users.UpdateAbsence.call(params)
 
     send_resp(conn, 200, "")
   end

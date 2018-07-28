@@ -1,5 +1,7 @@
 defmodule Kendrick.Slack.ProjectReport do
   import Kendrick.Slack.ProjectReport.Shared, only: [teams: 1]
+  import Kendrick.Slack.Report.Shared, only: [absence_reasons: 0]
+  import Kendrick.Slack.Shared, only: [encode_callback_id: 1]
 
   alias Kendrick.Slack
   alias Slack.ProjectReport.Menu
@@ -38,19 +40,25 @@ defmodule Kendrick.Slack.ProjectReport do
     attachments ++
       [
         delimiter(),
-        user_name(user),
-        delimiter()
-      ] ++
-      Slack.Report.Tasks.build(user.tasks, %{project: project}) ++ [Slack.Report.Menu.build(user, %{project: project})]
+        user_name_attachment(user, project)
+      ] ++ Slack.Report.Tasks.build(user.tasks, %{project: project})
   end
 
-  defp user_name(user) do
+  defp user_name_attachment(user, project) do
     %{
-      fallback: user.name,
-      title: String.upcase(user.name),
-      color: "#A4A4A4"
+      actions: Slack.Report.Menu.menu_actions(%{project: project}),
+      callback_id: callback_id(user, project),
+      color: "#A4A4A4",
+      fallback: user_name(user),
+      title: user_name(user)
     }
   end
+
+  defp user_name(%{absence: nil} = user), do: String.upcase(user.name)
+
+  defp user_name(user), do: "#{String.upcase(user.name)} (#{absence_reasons()[user.absence]})"
+
+  defp callback_id(user, project), do: encode_callback_id(%{user_id: user.id, project_id: project.id})
 
   defp delimiter do
     %{
