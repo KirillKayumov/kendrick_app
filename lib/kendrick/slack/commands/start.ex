@@ -42,21 +42,32 @@ defmodule Kendrick.Slack.Commands.Start do
     end
   end
 
-  defp create_user(%{params: params, workspace: workspace} = data) do
-    %{
-      "channel_id" => slack_channel,
-      "user_id" => slack_id
-    } = params
-
+  defp create_user(%{workspace: workspace} = data) do
     user =
       %User{}
-      |> User.changeset(%{slack_id: slack_id, name: user_name(data), slack_channel: slack_channel})
+      |> User.changeset(user_attributes(data))
       |> Ecto.Changeset.put_assoc(:workspace, workspace)
       |> Ecto.Changeset.cast_assoc(:workspace, required: true)
       |> Repo.insert!()
 
     {:ok, Map.put(data, :user, user)}
   end
+
+  defp user_attributes(%{params: params, workspace: workspace} = data) do
+    %{
+      "channel_id" => slack_channel,
+      "user_id" => slack_id
+    } = params
+
+    %{
+      color: user_color(workspace),
+      name: user_name(data),
+      slack_channel: slack_channel,
+      slack_id: slack_id
+    }
+  end
+
+  defp user_color(workspace), do: Users.Colors.unique_for_workspace(workspace)
 
   defp user_name(%{params: %{"user_id" => user_id}, workspace: workspace}) do
     response = Slack.Client.profile_get(user_id, workspace.slack_token)

@@ -41,14 +41,14 @@ defmodule Kendrick.Slack.ProjectReport do
       [
         delimiter(),
         user_name_attachment(user, project)
-      ] ++ Slack.Report.Tasks.build(user.tasks, %{project: project})
+      ] ++ Slack.ProjectReport.UserTasks.build(user, project)
   end
 
   defp user_name_attachment(user, project) do
     %{
       actions: Slack.Report.Menu.menu_actions(%{project: project}),
       callback_id: callback_id(user, project),
-      color: "#A4A4A4",
+      color: user.color,
       fallback: user_name(user),
       title: user_name(user)
     }

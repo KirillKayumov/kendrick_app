@@ -24,7 +24,7 @@ defmodule Kendrick.Slack.Report.Tasks do
   defp task({task, index}, opts) do
     %{
       actions: actions(task, opts),
-      callback_id: callback_id(task, opts),
+      callback_id: callback_id(task),
       color: color(task),
       fallback: title(task, index),
       footer: footer(task),
@@ -43,14 +43,6 @@ defmodule Kendrick.Slack.Report.Tasks do
   defp actions(%{id: todo_id}, %{more_actions: id}) when todo_id == id do
     [
       set_status_action(),
-      edit_action(),
-      disable_action(),
-      delete_action()
-    ]
-  end
-
-  defp actions(_task, %{project: _project}) do
-    [
       edit_action(),
       disable_action(),
       delete_action()
@@ -141,14 +133,7 @@ defmodule Kendrick.Slack.Report.Tasks do
     }
   end
 
-  defp callback_id(task, opts) do
-    %{id: task.id}
-    |> add_project_id(opts)
-    |> encode_callback_id()
-  end
-
-  defp add_project_id(data, %{project: project}), do: Map.put(data, :project_id, project.id)
-  defp add_project_id(data, _opts), do: data
+  defp callback_id(task), do: encode_callback_id(%{id: task.id})
 
   defp color(%{disabled: true}), do: ""
 
