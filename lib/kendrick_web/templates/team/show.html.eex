@@ -6,11 +6,18 @@
         <%= text_input f, :name, class: "form-control", required: true %>
       </div>
 
+      <div class="form-group form-check">
+        <%= checkbox f, :for_reports, class: "form-check-input" %>
+        <%= label f, :for_reports, "Should this team appear in reports?", class: "form-check-label" %>
+      </div>
+
       <div class="form-group">
         <%= for user <- @users do %>
-          <div class="form-check">
-            <%= checkbox :"team[user_ids]", "#{user.id}", value: user.id in @team_user_ids %>
-            <%= label :"team[user_ids]", "#{user.id}", user.name %>
+          <div class="form-group form-check">
+            <%= checkbox :"team[user_ids]", "#{user.id}",
+              value: user.id in @team_user_ids,
+              class: "form-check-input" %>
+            <%= label :"team[user_ids]", "#{user.id}", user.name, class: "form-check-label" %>
           </div>
         <% end %>
       </div>

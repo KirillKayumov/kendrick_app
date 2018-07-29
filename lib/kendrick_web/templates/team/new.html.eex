@@ -6,6 +6,11 @@
         <%= text_input f, :name, class: "form-control", required: true %>
       </div>
 
+      <div class="form-group form-check">
+        <%= checkbox f, :for_reports, class: "form-check-input", value: true %>
+        <%= label f, :for_reports, "Should this team appear in reports?", class: "form-check-label" %>
+      </div>
+
       <%= submit "Save", class: "btn btn-primary" %>
     <% end %>
   </div>

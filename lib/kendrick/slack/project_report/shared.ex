@@ -21,6 +21,7 @@ defmodule Kendrick.Slack.ProjectReport.Shared do
 
     project
     |> Ecto.assoc(:teams)
+    |> where(for_reports: true)
     |> preload(users: ^users)
     |> order_by(:id)
     |> Repo.all()

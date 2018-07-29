@@ -11,6 +11,7 @@ defmodule Kendrick.Team do
 
   schema "teams" do
     field(:name, :string)
+    field(:for_reports, :boolean)
 
     belongs_to(:project, Project)
 
@@ -21,7 +22,7 @@ defmodule Kendrick.Team do
 
   def changeset(%Team{} = team, attrs \\ %{}) do
     team
-    |> cast(attrs, [:name])
+    |> cast(attrs, [:name, :for_reports])
     |> validate_required([:name])
     |> unique_constraint(:name, name: :teams_name_project_id_index)
   end
