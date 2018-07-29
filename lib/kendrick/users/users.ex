@@ -1,10 +1,12 @@
 defmodule Kendrick.Users do
-  import Ecto.Query, only: [order_by: 2]
+  import Ecto.Query
 
   alias Kendrick.{
     Repo,
     User
   }
+
+  def all(query), do: Repo.all(query)
 
   def get(id) do
     Repo.get(User, id)
@@ -26,6 +28,17 @@ defmodule Kendrick.Users do
     |> Ecto.assoc(:users)
     |> order_by(:name)
     |> Repo.all()
+  end
+
+  def for_project(project) do
+    project
+    |> Ecto.assoc(:users)
+    |> order_by(:name)
+  end
+
+  def with_absence(query) do
+    query
+    |> where([u], not is_nil(u.absence))
   end
 
   def workspace_members(workspace) do

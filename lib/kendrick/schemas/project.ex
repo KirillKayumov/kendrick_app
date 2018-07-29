@@ -15,6 +15,7 @@ defmodule Kendrick.Project do
     belongs_to(:workspace, Workspace)
 
     has_many(:teams, Team, on_delete: :delete_all)
+    has_many(:users, through: [:teams, :users])
 
     timestamps()
   end
