@@ -1,10 +1,12 @@
-defmodule Kendrick.Slack.ProjectReport.Post do
-  import Kendrick.Slack.ProjectReport.Shared, only: [teams: 1]
+defmodule Kendrick.Slack.ProjectReport.BasecampPost do
+  import Kendrick.Slack.ProjectReport.Shared, only: [title: 0, teams: 1]
 
   alias Kendrick.Users
 
   def build(project, user) do
     """
+    #{title()}
+
     #{header_part(project)}
     #{teams_part(project)}
     #{footer_part(user)}
@@ -16,7 +18,7 @@ defmodule Kendrick.Slack.ProjectReport.Post do
     Hello everybody!
     Below please find the report with the development progress.
 
-    # Questions / Comments
+    QUESTIONS / COMMENTS
     #{comments_part(project)}\
     """
   end
@@ -36,9 +38,9 @@ defmodule Kendrick.Slack.ProjectReport.Post do
     end
   end
 
-  defp user_absence(%{absence: "day_off"} = user), do: "* **#{user.name}** has a day off"
-  defp user_absence(%{absence: "sick_leave"} = user), do: "* **#{user.name}** is on a sick leave"
-  defp user_absence(%{absence: "vacation"} = user), do: "* **#{user.name}** is on vacation"
+  defp user_absence(%{absence: "day_off"} = user), do: "* #{user.name} has a day off"
+  defp user_absence(%{absence: "sick_leave"} = user), do: "* #{user.name} is on a sick leave"
+  defp user_absence(%{absence: "vacation"} = user), do: "* #{user.name} is on vacation"
 
   defp teams_part(project) do
     project
@@ -51,7 +53,7 @@ defmodule Kendrick.Slack.ProjectReport.Post do
 
     team_part = """
 
-    # #{team.name}
+    #{String.upcase(team.name)}
     #{users_part}\
     """
 
@@ -61,7 +63,7 @@ defmodule Kendrick.Slack.ProjectReport.Post do
   defp add_user(user, report) do
     user_part = """
 
-    ## #{user.name}
+    #{String.upcase(user.name)}
     #{tasks_part(user)}
     """
 

@@ -1,6 +1,12 @@
 defmodule Kendrick.Application do
   use Application
 
+  alias Kendrick.Slack.{
+    Actions,
+    Commands,
+    NoUserNotifier
+  }
+
   # See https://hexdocs.pm/elixir/Application.html
   # for more information on OTP Applications
   def start(_type, _args) do
@@ -12,23 +18,23 @@ defmodule Kendrick.Application do
       supervisor(Kendrick.Repo, []),
       # Start the endpoint when the application starts
       supervisor(KendrickWeb.Endpoint, []),
-      worker(Kendrick.Slack.Commands.Start, []),
-      worker(Kendrick.Slack.Commands.Report, []),
-      worker(Kendrick.Slack.Commands.Todo, []),
-      worker(Kendrick.Slack.Actions.Tasks.ShowNewForm, []),
-      worker(Kendrick.Slack.Actions.Tasks.Create, []),
-      worker(Kendrick.Slack.Actions.Tasks.UpdateStatus, []),
-      worker(Kendrick.Slack.Actions.Tasks.More, []),
-      worker(Kendrick.Slack.Actions.Tasks.ShowEditForm, []),
-      worker(Kendrick.Slack.Actions.Tasks.Update, []),
-      worker(Kendrick.Slack.Actions.Tasks.Disable, []),
-      worker(Kendrick.Slack.Actions.Tasks.Delete, []),
-      worker(Kendrick.Slack.Actions.Todos.Done, []),
-      worker(Kendrick.Slack.Actions.Todos.Delete, []),
-      worker(Kendrick.Slack.Actions.ProjectReport.Show, []),
-      worker(Kendrick.Slack.Actions.ProjectReport.Post, []),
-      worker(Kendrick.Slack.Actions.Users.UpdateAbsence, []),
-      worker(Kendrick.Slack.NoUserNotifier, [])
+      worker(Commands.Start, []),
+      worker(Commands.Report, []),
+      worker(Commands.Todo, []),
+      worker(Actions.Tasks.ShowNewForm, []),
+      worker(Actions.Tasks.Create, []),
+      worker(Actions.Tasks.UpdateStatus, []),
+      worker(Actions.Tasks.More, []),
+      worker(Actions.Tasks.ShowEditForm, []),
+      worker(Actions.Tasks.Update, []),
+      worker(Actions.Tasks.Disable, []),
+      worker(Actions.Tasks.Delete, []),
+      worker(Actions.Todos.Done, []),
+      worker(Actions.Todos.Delete, []),
+      worker(Actions.ProjectReport.Show, []),
+      worker(Actions.ProjectReport.Post, []),
+      worker(Actions.Users.UpdateAbsence, []),
+      worker(NoUserNotifier, [])
       # Start your own worker by calling: Kendrick.Worker.start_link(arg1, arg2, arg3)
       # worker(Kendrick.Worker, [arg1, arg2, arg3]),
     ]

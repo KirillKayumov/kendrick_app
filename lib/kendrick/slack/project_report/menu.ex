@@ -13,14 +13,23 @@ defmodule Kendrick.Slack.ProjectReport.Menu do
 
   defp actions do
     [
-      project_report_post_action()
+      slack_post_action(),
+      basecamp_post_action()
     ]
   end
 
-  defp project_report_post_action do
+  defp slack_post_action do
     %{
-      name: "project_report_post",
-      text: "Create post",
+      name: "project_report_slack_post",
+      text: "Slack post",
+      type: "button"
+    }
+  end
+
+  defp basecamp_post_action do
+    %{
+      name: "project_report_basecamp_post",
+      text: "Basecamp post",
       type: "button"
     }
   end
