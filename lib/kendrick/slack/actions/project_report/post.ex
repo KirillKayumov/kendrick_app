@@ -2,7 +2,9 @@ defmodule Kendrick.Slack.Actions.ProjectReport.Post do
   use GenServer
 
   import OK, only: [~>>: 2]
-  import Kendrick.Slack.Shared, only: [find_workspace: 1, find_project: 1, find_channel: 1, decode_callback_id: 1]
+
+  import Kendrick.Slack.Shared,
+    only: [find_workspace: 1, find_project: 1, find_channel: 1, find_user: 1, decode_callback_id: 1]
 
   alias Kendrick.Slack
 
@@ -23,17 +25,18 @@ defmodule Kendrick.Slack.Actions.ProjectReport.Post do
     |> decode_callback_id()
     ~>> find_workspace()
     ~>> find_project()
+    ~>> find_user()
     ~>> find_channel()
     ~>> post()
 
     {:noreply, state}
   end
 
-  defp post(%{project: project, channel: channel, workspace: workspace}) do
+  defp post(%{project: project, user: user, channel: channel, workspace: workspace}) do
     Slack.Client.files_upload(%{
       token: workspace.slack_token,
       channel: channel,
-      text: Slack.ProjectReport.Post.build(project),
+      text: Slack.ProjectReport.Post.build(project, user),
       title: title()
     })
   end

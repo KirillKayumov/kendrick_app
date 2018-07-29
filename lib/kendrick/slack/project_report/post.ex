@@ -3,11 +3,11 @@ defmodule Kendrick.Slack.ProjectReport.Post do
 
   alias Kendrick.Users
 
-  def build(project) do
+  def build(project, user) do
     """
     #{header_part(project)}
     #{teams_part(project)}
-    #{footer_part()}
+    #{footer_part(user)}
     """
   end
 
@@ -22,12 +22,18 @@ defmodule Kendrick.Slack.ProjectReport.Post do
   end
 
   defp comments_part(project) do
-    project
-    |> Users.for_project()
-    |> Users.with_absence()
-    |> Users.all()
-    |> Enum.map(&user_absence/1)
-    |> Enum.join("\n")
+    comments =
+      project
+      |> Users.for_project()
+      |> Users.with_absence()
+      |> Users.all()
+      |> Enum.map(&user_absence/1)
+      |> Enum.join("\n")
+
+    case comments do
+      "" -> "–"
+      _ -> comments
+    end
   end
 
   defp user_absence(%{absence: "day_off"} = user), do: "* **#{user.name}** has a day off"
@@ -90,10 +96,10 @@ defmodule Kendrick.Slack.ProjectReport.Post do
     end
   end
 
-  defp footer_part do
+  defp footer_part(user) do
     """
     Thanks,
-    Yuliana\
+    #{user.name}\
     """
   end
 end
