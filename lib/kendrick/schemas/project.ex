@@ -11,6 +11,7 @@ defmodule Kendrick.Project do
 
   schema "projects" do
     field(:name, :string)
+    field(:report_saved_at, :utc_datetime)
 
     belongs_to(:workspace, Workspace)
 
@@ -22,7 +23,7 @@ defmodule Kendrick.Project do
 
   def changeset(%Project{} = project, attrs \\ %{}) do
     project
-    |> cast(attrs, [:name])
+    |> cast(attrs, [:name, :report_saved_at])
     |> validate_required([:name])
     |> unique_constraint(:name, name: :projects_name_workspace_id_index)
   end

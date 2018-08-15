@@ -33,6 +33,7 @@ defmodule Kendrick.Application do
       worker(Actions.Todos.Delete, []),
       worker(Actions.ProjectReport.Show, []),
       worker(Actions.ProjectReport.Post, []),
+      worker(Actions.ProjectReport.Save, []),
       worker(Actions.Users.UpdateAbsence, []),
       worker(NoUserNotifier, [])
       # Start your own worker by calling: Kendrick.Worker.start_link(arg1, arg2, arg3)

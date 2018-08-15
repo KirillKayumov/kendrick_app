@@ -74,6 +74,12 @@ defmodule KendrickWeb.Slack.ActionController do
     send_resp(conn, 200, "")
   end
 
+  def index(conn, %{"actions" => [%{"name" => "project_report_save"}]} = params) do
+    ProjectReport.Save.call(params)
+
+    send_resp(conn, 200, "")
+  end
+
   def index(conn, %{"actions" => [%{"name" => "project_report_slack_post"}]} = params) do
     ProjectReport.Post.slack(params)
 
