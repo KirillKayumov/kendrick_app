@@ -5,12 +5,13 @@ defmodule Kendrick.Mixfile do
     [
       app: :kendrick,
       version: "0.0.1",
-      elixir: "~> 1.4",
+      elixir: "~> 1.7",
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: [:phoenix, :gettext] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
-      deps: deps()
+      deps: deps(),
+      preferred_cli_env: [espec: :test]
     ]
   end
 
@@ -25,7 +26,7 @@ defmodule Kendrick.Mixfile do
   end
 
   # Specifies which paths to compile per environment.
-  defp elixirc_paths(:test), do: ["lib", "test/support"]
+  defp elixirc_paths(:test), do: ["lib", "spec/support"]
   defp elixirc_paths(_), do: ["lib"]
 
   # Specifies your project dependencies.
@@ -34,22 +35,25 @@ defmodule Kendrick.Mixfile do
   defp deps do
     [
       {:cowboy, "~> 1.0"},
+      {:ex_cldr_numbers, "~> 1.5"},
       {:gettext, "~> 0.11"},
       {:guardian, "~> 1.0"},
       {:httpoison, "~> 1.1"},
       {:jira, "~> 0.0.8"},
       {:oauth2, "~> 0.9.2"},
+      {:ok, "~> 1.11"},
       {:phoenix_active_link, "~> 0.2.1"},
       {:phoenix_ecto, "~> 3.2"},
       {:phoenix_html, "~> 2.10"},
-      {:phoenix_live_reload, "~> 1.0", only: :dev},
       {:phoenix_pubsub, "~> 1.0"},
       {:phoenix, "~> 1.3.2"},
       {:postgrex, ">= 0.0.0"},
-      {:ueberauth, "~> 0.5.0"},
-      {:ok, "~> 1.11"},
       {:timex, "~> 3.3"},
-      {:ex_cldr_numbers, "~> 1.5"}
+      {:ueberauth, "~> 0.5.0"},
+      {:phoenix_live_reload, "~> 1.0", only: :dev},
+      {:espec, "~> 1.6", only: :test},
+      {:espec_phoenix, "~> 0.6", only: :test},
+      {:mox, "~> 0.4.0", only: :test}
     ]
   end
 
@@ -63,7 +67,7 @@ defmodule Kendrick.Mixfile do
     [
       "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
-      test: ["ecto.create --quiet", "ecto.migrate", "test"]
+      test: ["ecto.create --quiet", "ecto.migrate", "espec"]
     ]
   end
 end

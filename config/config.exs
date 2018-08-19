@@ -40,6 +40,6 @@ config :jira,
   password: System.get_env("JIRA_PASSWORD"),
   host: System.get_env("JIRA_HOST")
 
-# Import environment specific config. This must remain at the bottom
-# of this file so it overrides the configuration defined above.
+config :kendrick, date_time: DateTime
+
 import_config "#{Mix.env()}.exs"

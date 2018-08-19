@@ -52,6 +52,7 @@ defmodule Kendrick.Slack.Report.Tasks do
   defp actions(_task, _opts) do
     [
       set_status_action(),
+      edit_action(),
       more_action()
     ]
   end

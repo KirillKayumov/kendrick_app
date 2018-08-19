@@ -17,3 +17,5 @@ config :kendrick, Kendrick.Repo,
   database: "kendrick_test",
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
+
+config :kendrick, date_time: Kendrick.Mocks.DateTime

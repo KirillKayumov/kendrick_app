@@ -1,11 +1,6 @@
 defmodule KendrickWeb.Plugs.Slack.SslCheck do
   import Plug.Conn
 
-  alias Kendrick.{
-    Slack,
-    Users
-  }
-
   def init(opts) do
     opts
   end
