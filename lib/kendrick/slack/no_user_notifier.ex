@@ -6,14 +6,12 @@ defmodule Kendrick.Slack.NoUserNotifier do
 
   alias Kendrick.Slack
 
-  @name :slack_no_user_notifier_worker
-
-  def start_link do
-    GenServer.start_link(__MODULE__, [], name: @name)
+  def start_link(args) do
+    GenServer.start_link(__MODULE__, args, name: __MODULE__)
   end
 
   def call(params) do
-    GenServer.cast(@name, {:call, params})
+    GenServer.cast(__MODULE__, {:call, params})
   end
 
   def init(args) do

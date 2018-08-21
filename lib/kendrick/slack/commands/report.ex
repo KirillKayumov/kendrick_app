@@ -10,14 +10,12 @@ defmodule Kendrick.Slack.Commands.Report do
     User
   }
 
-  @name :slack_commands_report_worker
-
-  def start_link do
-    GenServer.start_link(__MODULE__, [], name: @name)
+  def start_link(args) do
+    GenServer.start_link(__MODULE__, args, name: __MODULE__)
   end
 
   def call(params) do
-    GenServer.cast(@name, {:call, params})
+    GenServer.cast(__MODULE__, {:call, params})
   end
 
   def init(args) do

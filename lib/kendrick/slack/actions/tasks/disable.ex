@@ -11,8 +11,8 @@ defmodule Kendrick.Slack.Actions.Tasks.Disable do
     Task
   }
 
-  def start_link do
-    GenServer.start_link(__MODULE__, [], name: __MODULE__)
+  def start_link(args) do
+    GenServer.start_link(__MODULE__, args, name: __MODULE__)
   end
 
   def disable(params) do

@@ -10,14 +10,12 @@ defmodule Kendrick.Slack.Commands.Todo do
     Todo
   }
 
-  @name :slack_commands_todo_worker
-
-  def start_link do
-    GenServer.start_link(__MODULE__, [], name: @name)
+  def start_link(args) do
+    GenServer.start_link(__MODULE__, args, name: __MODULE__)
   end
 
   def create(params) do
-    GenServer.cast(@name, {:create, params})
+    GenServer.cast(__MODULE__, {:create, params})
   end
 
   def init(args) do
