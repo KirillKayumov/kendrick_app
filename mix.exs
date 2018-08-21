@@ -46,7 +46,7 @@ defmodule Kendrick.Mixfile do
       {:phoenix_ecto, "~> 3.2"},
       {:phoenix_html, "~> 2.10"},
       {:phoenix_pubsub, "~> 1.0"},
-      {:phoenix, "~> 1.3.2"},
+      {:phoenix, "~> 1.3.4"},
       {:postgrex, ">= 0.0.0"},
       {:timex, "~> 3.3"},
       {:ueberauth, "~> 0.5.0"},
