@@ -40,6 +40,8 @@ config :jira,
   password: System.get_env("JIRA_PASSWORD"),
   host: System.get_env("JIRA_HOST")
 
+config :quantum, timezone: "Europe/Moscow"
+
 config :kendrick, date_time: DateTime
 
 import_config "#{Mix.env()}.exs"

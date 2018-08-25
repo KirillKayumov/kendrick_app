@@ -44,7 +44,9 @@ defmodule KendrickWeb.ProjectController do
   end
 
   def delete(conn, %{"id" => id}) do
-    Projects.delete(id)
+    id
+    |> String.to_integer()
+    |> Projects.delete()
 
     conn
     |> redirect(to: project_path(conn, :index))

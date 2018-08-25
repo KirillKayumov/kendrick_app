@@ -1,36 +1,39 @@
 defmodule Kendrick.Application do
   use Application
 
-  alias Kendrick.Repo
   alias KendrickWeb.Endpoint
-  alias Kendrick.Slack.{
-    Actions,
-    Commands,
-    NoUserNotifier
+
+  alias Kendrick.{
+    Repo,
+    Scheduler,
+    Slack,
+    Tasks
   }
 
   def start(_type, _args) do
     children = [
-      Actions.ProjectReport.Post,
-      Actions.ProjectReport.Save,
-      Actions.ProjectReport.Show,
-      Actions.Tasks.Create,
-      Actions.Tasks.Delete,
-      Actions.Tasks.Disable,
-      Actions.Tasks.More,
-      Actions.Tasks.ShowEditForm,
-      Actions.Tasks.ShowNewForm,
-      Actions.Tasks.Update,
-      Actions.Tasks.UpdateStatus,
-      Actions.Todos.Delete,
-      Actions.Todos.Done,
-      Actions.Users.UpdateAbsence,
-      Commands.Report,
-      Commands.Start,
-      Commands.Todo,
       Endpoint,
-      NoUserNotifier,
-      Repo
+      Repo,
+      Scheduler,
+      Slack.Actions.ProjectReport.Post,
+      Slack.Actions.ProjectReport.Save,
+      Slack.Actions.ProjectReport.Show,
+      Slack.Actions.Tasks.Create,
+      Slack.Actions.Tasks.Delete,
+      Slack.Actions.Tasks.Disable,
+      Slack.Actions.Tasks.More,
+      Slack.Actions.Tasks.ShowEditForm,
+      Slack.Actions.Tasks.ShowNewForm,
+      Slack.Actions.Tasks.Update,
+      Slack.Actions.Tasks.UpdateStatus,
+      Slack.Actions.Todos.Delete,
+      Slack.Actions.Todos.Done,
+      Slack.Actions.Users.UpdateAbsence,
+      Slack.Commands.Report,
+      Slack.Commands.Start,
+      Slack.Commands.Todo,
+      Slack.NoUserNotifier,
+      Tasks.CleanUp.Supervisor
     ]
 
     opts = [strategy: :one_for_one, name: Kendrick.Supervisor]

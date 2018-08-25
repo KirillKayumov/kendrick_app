@@ -62,3 +62,5 @@ config :kendrick, Kendrick.Repo,
   database: "kendrick_dev",
   hostname: "localhost",
   pool_size: 10
+
+config :kendrick, Kendrick.Scheduler, debug_logging: false

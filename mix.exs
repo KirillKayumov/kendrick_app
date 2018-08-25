@@ -48,11 +48,12 @@ defmodule Kendrick.Mixfile do
       {:phoenix_pubsub, "~> 1.0"},
       {:phoenix, "~> 1.3.4"},
       {:postgrex, ">= 0.0.0"},
+      {:quantum, "~> 2.3"},
       {:timex, "~> 3.3"},
       {:ueberauth, "~> 0.5.0"},
       {:phoenix_live_reload, "~> 1.0", only: :dev},
-      {:espec, "~> 1.6", only: :test},
       {:espec_phoenix, "~> 0.6", only: :test},
+      {:espec, "~> 1.6", only: :test},
       {:mox, "~> 0.4.0", only: :test}
     ]
   end

@@ -3,8 +3,13 @@ defmodule Kendrick.Projects do
 
   alias Kendrick.{
     Project,
-    Repo
+    Repo,
+    Tasks
   }
+
+  def all(query \\ Project) do
+    Repo.all(query)
+  end
 
   def get(id) do
     Repo.get(Project, id)
@@ -23,15 +28,27 @@ defmodule Kendrick.Projects do
   end
 
   def create(params, workspace) do
-    %Project{}
-    |> Project.changeset(params)
-    |> Ecto.Changeset.put_assoc(:workspace, workspace)
-    |> Repo.insert()
+    result =
+      %Project{}
+      |> Project.changeset(params)
+      |> Ecto.Changeset.put_assoc(:workspace, workspace)
+      |> Repo.insert()
+
+    case result do
+      {:ok, project} ->
+        Tasks.CleanUp.ProjectsSupervisor.create_project(project)
+        result
+
+      _ ->
+        result
+    end
   end
 
   def delete(id) do
     Project
     |> Repo.get(id)
     |> Repo.delete!()
+
+    Tasks.CleanUp.ProjectsSupervisor.delete_project(id)
   end
 end
