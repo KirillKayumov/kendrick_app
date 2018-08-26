@@ -7,7 +7,10 @@ defmodule Kendrick.Tasks.CleanUp.Worker do
   alias Kendrick.{
     Repo,
     Scheduler,
-    Task
+    Slack,
+    Task,
+    Users,
+    Workspaces
   }
 
   @schedule ~e[0 0 * * *]
@@ -57,6 +60,14 @@ defmodule Kendrick.Tasks.CleanUp.Worker do
   end
 
   defp do_perform(project) do
+    %{project: project}
+    |> delete_completed_tasks()
+    |> get_workspace()
+    |> get_users()
+    |> update_reports()
+  end
+
+  defp delete_completed_tasks(%{project: project} = data) do
     tasks =
       from(t in Task,
         join: u in assoc(t, :user),
@@ -66,6 +77,36 @@ defmodule Kendrick.Tasks.CleanUp.Worker do
       )
 
     Repo.delete_all(tasks)
+
+    data
+  end
+
+  defp get_workspace(%{project: project} = data) do
+    workspace = Workspaces.for_project(project)
+
+    Map.put(data, :workspace, workspace)
+  end
+
+  defp get_users(%{project: project} = data) do
+    users =
+      project
+      |> Users.for_project()
+      |> Users.all()
+
+    Map.put(data, :users, users)
+  end
+
+  defp update_reports(%{users: users, workspace: workspace}) do
+    Enum.each(users, fn user ->
+      attachments = Slack.Report.build(user)
+
+      Slack.Client.chat_update(%{
+        attachments: attachments,
+        channel: user.slack_channel,
+        token: workspace.slack_token,
+        ts: user.report_ts
+      })
+    end)
   end
 
   def do_delete_job(project_id, state) do

@@ -48,14 +48,11 @@ defmodule Kendrick.Slack.Actions.ProjectReport.Save do
   defp update_message(%{project: project, channel: channel, workspace: workspace, params: params}) do
     attachments = [Slack.ProjectReport.SaveMessage.build(project)]
 
-    response =
-      Slack.Client.chat_update(%{
-        attachments: attachments,
-        channel: channel,
-        token: workspace.slack_token,
-        ts: params["original_message"]["ts"]
-      })
-
-    IO.inspect(response)
+    Slack.Client.chat_update(%{
+      attachments: attachments,
+      channel: channel,
+      token: workspace.slack_token,
+      ts: params["original_message"]["ts"]
+    })
   end
 end

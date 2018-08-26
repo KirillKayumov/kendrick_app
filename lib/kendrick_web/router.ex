@@ -64,7 +64,6 @@ defmodule KendrickWeb.Router do
 
     post("/action", ActionController, :index)
     post("/command", CommandController, :index)
-    post("/event", EventController, :index)
   end
 
   # Other scopes may use custom stacks.

@@ -14,4 +14,10 @@ defmodule Kendrick.Workspaces do
   def for_user(%User{workspace_id: workspace_id}) do
     Repo.get(Workspace, workspace_id)
   end
+
+  def for_project(project) do
+    project
+    |> Ecto.assoc(:workspace)
+    |> Repo.one()
+  end
 end
