@@ -66,6 +66,10 @@ defmodule KendrickWeb.Router do
     post("/command", CommandController, :index)
   end
 
+  scope "/health_check", KendrickWeb do
+    get("/", HealthCheckController, :index)
+  end
+
   # Other scopes may use custom stacks.
   # scope "/api", KendrickWeb do
   #   pipe_through :api
