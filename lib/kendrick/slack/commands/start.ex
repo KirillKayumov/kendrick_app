@@ -48,6 +48,8 @@ defmodule Kendrick.Slack.Commands.Start do
       |> Ecto.Changeset.cast_assoc(:workspace, required: true)
       |> Repo.insert!()
 
+    Slack.Report.Remind.UsersSupervisor.create_user(user)
+
     {:ok, Map.put(data, :user, user)}
   end
 

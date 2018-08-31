@@ -6,7 +6,9 @@ defmodule Kendrick.Users do
     User
   }
 
-  def all(query), do: Repo.all(query)
+  def all(query \\ User) do
+    Repo.all(query)
+  end
 
   def get(id) do
     Repo.get(User, id)

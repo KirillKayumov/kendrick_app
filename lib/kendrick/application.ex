@@ -33,6 +33,7 @@ defmodule Kendrick.Application do
       Slack.Commands.Start,
       Slack.Commands.Todo,
       Slack.NoUserNotifier,
+      Slack.Report.Remind.Supervisor,
       Tasks.CleanUp.Supervisor
     ]
 
