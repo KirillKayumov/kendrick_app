@@ -27,8 +27,7 @@ config :kendrick, Kendrick.Guardian,
 
 config :ueberauth, Ueberauth,
   providers: [
-    slack: {Kendrick.Ueberauth.Strategy.Slack, []},
-    add_to_slack: {Kendrick.Ueberauth.Strategy.AddToSlack, []}
+    slack: {Kendrick.Ueberauth.Strategy.Slack, []}
   ]
 
 config :ueberauth, Kendrick.Ueberauth.Strategy.Slack.OAuth,

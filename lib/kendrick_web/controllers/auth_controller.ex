@@ -15,18 +15,6 @@ defmodule KendrickWeb.AuthController do
     |> redirect(to: "/")
   end
 
-  def add_to_slack_callback(%{assigns: %{ueberauth_auth: %{credentials: credentials}}} = conn, _params) do
-    Kendrick.Auth.Slack.add_to_slack(credentials)
-
-    conn
-    |> redirect(to: "/")
-  end
-
-  def add_to_slack_callback(conn, %{"error" => "access_denied"}) do
-    conn
-    |> redirect(to: "/")
-  end
-
   def sign_out(conn, _params) do
     conn
     |> Kendrick.Guardian.Plug.sign_out()

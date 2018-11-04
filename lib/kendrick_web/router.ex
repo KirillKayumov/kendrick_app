@@ -55,7 +55,6 @@ defmodule KendrickWeb.Router do
   scope "/auth", KendrickWeb do
     get("/:provider", AuthController, :request)
     get("/slack/callback", AuthController, :slack_callback)
-    get("/add_to_slack/callback", AuthController, :add_to_slack_callback)
     delete("/sign_out", AuthController, :sign_out)
   end
 

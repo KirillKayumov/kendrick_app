@@ -59,7 +59,7 @@ defmodule Kendrick.Tasks.Sync.Jira do
         preload: :tasks
       )
 
-    Repo.all(users)
+#    Repo.all(users)
   end
 
   defp search_tasks(users) do

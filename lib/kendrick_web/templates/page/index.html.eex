@@ -2,7 +2,7 @@
   <div class="jumbotron home__text">
     <h1>Kendrick App</h1>
 
-    <%= link to: auth_path(@conn, :request, "slack") do %>
+    <%= link to: auth_path(@conn, :request, "slack", scope: "identity.basic") do %>
       <img
         alt="Sign in with Slack"
         height="40"
@@ -13,7 +13,7 @@
       />
     <% end %>
 
-    <%= link to: auth_path(@conn, :request, "add_to_slack") do %>
+    <%= link to: auth_path(@conn, :request, "slack") do %>
       <img
         alt="Add to Slack"
         height="40"
