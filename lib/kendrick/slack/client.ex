@@ -5,6 +5,7 @@ defmodule Kendrick.Slack.Client do
   @files_upload_url "https://slack.com/api/files.upload"
   @post_message_url "https://slack.com/api/chat.postMessage"
   @profile_get_url "https://slack.com/api/users.profile.get"
+  @users_info_url "https://slack.com/api/users.info"
   @users_list_url "https://slack.com/api/users.list"
 
   def respond(%{url: url, token: token} = data) do
@@ -136,6 +137,20 @@ defmodule Kendrick.Slack.Client do
         [],
         params: [
           {:user, slack_id},
+          {:token, token}
+        ]
+      )
+
+    Poison.decode!(response.body)
+  end
+
+  def users_info(%{ user_id: user_id, token: token}) do
+    response =
+      HTTPoison.get!(
+        @users_info_url,
+        [],
+        params: [
+          {:user, user_id},
           {:token, token}
         ]
       )

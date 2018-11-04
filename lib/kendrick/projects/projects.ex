@@ -37,6 +37,7 @@ defmodule Kendrick.Projects do
     case result do
       {:ok, project} ->
         Tasks.CleanUp.ProjectsSupervisor.create_project(project)
+        Tasks.Sync.ProjectsSupervisor.create_project(project)
         result
 
       _ ->

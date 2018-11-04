@@ -34,7 +34,13 @@ defmodule Kendrick.Auth.Slack do
   defp update_token({_, workspace} = attrs) when is_nil(workspace), do: attrs
 
   defp update_token({credentials, workspace}) do
-    %{token: slack_token} = credentials
+    %{
+      other: %{
+        "bot" => %{
+          "bot_access_token" => slack_token
+        }
+      }
+    } = credentials
 
     workspace =
       workspace
@@ -48,8 +54,10 @@ defmodule Kendrick.Auth.Slack do
 
   defp create_workspace({credentials, _}) do
     %{
-      token: slack_token,
       other: %{
+        "bot" => %{
+          "bot_access_token" => slack_token
+        },
         "team_id" => team_id
       }
     } = credentials

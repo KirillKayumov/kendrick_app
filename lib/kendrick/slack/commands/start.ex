@@ -25,8 +25,8 @@ defmodule Kendrick.Slack.Commands.Start do
 
   def handle_cast({:call, params}, state) do
     %{params: params}
-    |> ensure_no_user()
-    ~>> find_workspace()
+    |> find_workspace()
+    ~>> ensure_no_user()
     ~>> create_user()
     |> post_message()
 
@@ -70,9 +70,9 @@ defmodule Kendrick.Slack.Commands.Start do
   defp user_color(workspace), do: Users.Colors.unique_for_workspace(workspace)
 
   defp user_name(%{params: %{"user_id" => user_id}, workspace: workspace}) do
-    response = Slack.Client.profile_get(user_id, workspace.slack_token)
+    response = Slack.Client.users_info(%{ user_id: user_id, token: workspace.slack_token })
 
-    response["profile"]["real_name"]
+    response["user"]["profile"]["real_name"]
   end
 
   defp post_message({:ok, data}) do

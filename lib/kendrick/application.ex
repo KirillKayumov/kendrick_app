@@ -34,7 +34,8 @@ defmodule Kendrick.Application do
       Slack.Commands.Todo,
       Slack.NoUserNotifier,
       Slack.Report.Remind.Supervisor,
-      Tasks.CleanUp.Supervisor
+      Tasks.CleanUp.Supervisor,
+      Tasks.Sync.Supervisor
     ]
 
     opts = [strategy: :one_for_one, name: Kendrick.Supervisor]
