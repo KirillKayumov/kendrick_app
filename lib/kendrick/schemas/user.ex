@@ -14,6 +14,7 @@ defmodule Kendrick.User do
   schema "users" do
     field(:absence, :string)
     field(:color, :string)
+    field(:email, :string)
     field(:name, :string)
     field(:report_ts, :string)
     field(:rewards_token, :string)
@@ -37,13 +38,14 @@ defmodule Kendrick.User do
     |> cast(attrs, [
       :absence,
       :color,
+      :email,
       :name,
       :report_ts,
       :rewards_token,
       :slack_channel,
       :slack_id
     ])
-    |> validate_required([:slack_id, :slack_channel])
+    |> validate_required([:email, :slack_id, :slack_channel])
     |> unique_constraint(:slack_id)
   end
 end

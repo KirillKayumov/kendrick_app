@@ -53,15 +53,18 @@ defmodule Kendrick.Slack.Commands.Start do
     {:ok, Map.put(data, :user, user)}
   end
 
-  defp user_attributes(%{params: params, workspace: workspace} = data) do
+  defp user_attributes(%{params: params, workspace: workspace}) do
     %{
       "channel_id" => slack_channel,
       "user_id" => slack_id
     } = params
 
+    slack_user_info = Slack.Client.users_info(%{ user_id: slack_id, token: workspace.slack_token })
+
     %{
       color: user_color(workspace),
-      name: user_name(data),
+      email: user_email(slack_user_info),
+      name: user_name(slack_user_info),
       slack_channel: slack_channel,
       slack_id: slack_id
     }
@@ -69,11 +72,9 @@ defmodule Kendrick.Slack.Commands.Start do
 
   defp user_color(workspace), do: Users.Colors.unique_for_workspace(workspace)
 
-  defp user_name(%{params: %{"user_id" => user_id}, workspace: workspace}) do
-    response = Slack.Client.users_info(%{ user_id: user_id, token: workspace.slack_token })
+  defp user_email(slack_user_info), do: slack_user_info["user"]["profile"]["email"]
 
-    response["user"]["profile"]["real_name"]
-  end
+  defp user_name(slack_user_info), do: slack_user_info["user"]["profile"]["real_name"]
 
   defp post_message({:ok, data}) do
     do_post_message("The app was started for you :tada:", data)
