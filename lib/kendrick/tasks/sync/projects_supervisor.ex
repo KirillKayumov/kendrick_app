@@ -19,16 +19,16 @@ defmodule Kendrick.Tasks.Sync.ProjectsSupervisor do
     DynamicSupervisor.start_child(__MODULE__, {ProjectSupervisor, project: project})
   end
 
-#  def delete_project(project_id) do
-#    __MODULE__
-#    |> DynamicSupervisor.which_children()
-#    |> Enum.each(fn {_, pid, _, _} ->
-#      case Worker.delete_job(pid, project_id) do
-#        :ok -> DynamicSupervisor.terminate_child(__MODULE__, pid)
-#        _ -> :ok
-#      end
-#    end)
-#  end
+  #  def delete_project(project_id) do
+  #    __MODULE__
+  #    |> DynamicSupervisor.which_children()
+  #    |> Enum.each(fn {_, pid, _, _} ->
+  #      case Worker.delete_job(pid, project_id) do
+  #        :ok -> DynamicSupervisor.terminate_child(__MODULE__, pid)
+  #        _ -> :ok
+  #      end
+  #    end)
+  #  end
 
   defp projects, do: Kendrick.Projects.all()
 end

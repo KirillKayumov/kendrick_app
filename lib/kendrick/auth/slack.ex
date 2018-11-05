@@ -7,7 +7,7 @@ defmodule Kendrick.Auth.Slack do
     Workspace
   }
 
-  def sign_in(conn, %{ other: %{ "user" => _user } } = credentials) do
+  def sign_in(conn, %{other: %{"user" => _user}} = credentials) do
     %{conn: conn, credentials: credentials}
     |> find_workspace()
     ~>> find_user()

@@ -59,7 +59,7 @@ defmodule Kendrick.Slack.Commands.Start do
       "user_id" => slack_id
     } = params
 
-    slack_user_info = Slack.Client.users_info(%{ user_id: slack_id, token: workspace.slack_token })
+    slack_user_info = Slack.Client.users_info(%{user_id: slack_id, token: workspace.slack_token})
 
     %{
       color: user_color(workspace),

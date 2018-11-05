@@ -10,7 +10,7 @@ defmodule KendrickWeb.Plugs.Slack.VerifyVerificationToken do
   def call(%{params: %{"token" => token}} = conn, _opts) when token == @token, do: conn
 
   def call(conn, _opts) do
-    IO.puts "Invalid Verification Token"
+    IO.puts("Invalid Verification Token")
 
     conn
     |> send_resp(401, "")

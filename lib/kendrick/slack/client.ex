@@ -144,7 +144,7 @@ defmodule Kendrick.Slack.Client do
     Poison.decode!(response.body)
   end
 
-  def users_info(%{ user_id: user_id, token: token}) do
+  def users_info(%{user_id: user_id, token: token}) do
     response =
       HTTPoison.get!(
         @users_info_url,
