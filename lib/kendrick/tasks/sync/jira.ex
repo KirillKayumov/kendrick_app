@@ -64,8 +64,9 @@ defmodule Kendrick.Tasks.Sync.Jira do
   defp search_tasks(users) do
     Enum.map(users, fn user ->
       query = search_tickets_query(user.email)
+      tasks = Jira.API.search(query).body["issues"] || []
 
-      {user, Jira.API.search(query).body["issues"]}
+      {user, tasks}
     end)
   end
 

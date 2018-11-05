@@ -16,6 +16,7 @@ defmodule Kendrick.User do
     field(:color, :string)
     field(:email, :string)
     field(:name, :string)
+    field(:position, :integer)
     field(:report_ts, :string)
     field(:rewards_token, :string)
     field(:slack_channel, :string)
@@ -40,6 +41,7 @@ defmodule Kendrick.User do
       :color,
       :email,
       :name,
+      :position,
       :report_ts,
       :rewards_token,
       :slack_channel,
