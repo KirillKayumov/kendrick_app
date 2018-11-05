@@ -1,5 +1,5 @@
 defmodule Mix.Tasks.HealthCheck do
-  @timeout 60_000
+  @timeout 5 * 60_000
 
   def run(_) do
     HTTPoison.start()

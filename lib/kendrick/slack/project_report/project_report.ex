@@ -46,7 +46,7 @@ defmodule Kendrick.Slack.ProjectReport do
 
   defp user_name_attachment(user, project) do
     %{
-      actions: Slack.Report.Menu.menu_actions(%{project: project}),
+      actions: Slack.Report.Menu.menu_actions(),
       callback_id: callback_id(user, project),
       color: user.color,
       fallback: user_name(user),

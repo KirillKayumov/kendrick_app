@@ -74,7 +74,11 @@ defmodule Kendrick.Slack.Commands.Start do
 
   defp user_email(slack_user_info), do: slack_user_info["user"]["profile"]["email"]
 
-  defp user_name(slack_user_info), do: slack_user_info["user"]["profile"]["real_name"]
+  defp user_name(slack_user_info) do
+    [name | _] = String.split(slack_user_info["user"]["profile"]["real_name"], " ")
+
+    name
+  end
 
   defp post_message({:ok, data}) do
     do_post_message("The app was started for you :tada:", data)

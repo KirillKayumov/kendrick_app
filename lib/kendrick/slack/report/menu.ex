@@ -2,11 +2,13 @@ defmodule Kendrick.Slack.Report.Menu do
   import Kendrick.Slack.Shared, only: [encode_callback_id: 1]
   import Kendrick.Slack.Report.Shared, only: [absence_reasons: 0]
 
+  alias Kendrick.Repo
+
   def build(user, opts \\ %{})
 
   def build(user, %{project: _project} = opts) do
     %{
-      actions: menu_actions(opts),
+      actions: menu_actions(),
       callback_id: callback_id(user, opts),
       fallback: "Menu"
     }
@@ -14,7 +16,7 @@ defmodule Kendrick.Slack.Report.Menu do
 
   def build(user, opts) do
     %{
-      actions: menu_actions(opts),
+      actions: menu_actions(user),
       callback_id: callback_id(user, opts),
       color: "#717171",
       fallback: "Menu",
@@ -22,17 +24,17 @@ defmodule Kendrick.Slack.Report.Menu do
     }
   end
 
-  def menu_actions(%{project: _project}) do
+  def menu_actions do
     [
       add_task_action(),
       set_absence_action()
     ]
   end
 
-  def menu_actions(_opts) do
+  def menu_actions(user) do
     [
       add_task_action(),
-      project_report_action()
+      project_report_action(user)
     ]
   end
 
@@ -70,12 +72,25 @@ defmodule Kendrick.Slack.Report.Menu do
     }
   end
 
-  defp project_report_action do
-    %{
-      name: "project_report",
-      text: "Project report",
-      type: "button"
-    }
+  defp project_report_action(user) do
+    case has_team?(user) do
+      true ->
+        %{
+          name: "project_report",
+          text: "Project report",
+          type: "button"
+        }
+
+      false ->
+        %{}
+    end
+  end
+
+  defp has_team?(user) do
+    user
+    |> Ecto.assoc(:teams)
+    |> Repo.all()
+    |> Enum.any?()
   end
 
   defp callback_id(user, %{project: project}), do: encode_callback_id(%{user_id: user.id, project_id: project.id})
