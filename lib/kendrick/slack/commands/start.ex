@@ -81,7 +81,7 @@ defmodule Kendrick.Slack.Commands.Start do
   end
 
   defp post_message({:ok, data}) do
-    do_post_message("Yo, what's up :v:", data)
+    do_post_message("Yo, what's up :v::skin-tone-6:", data)
   end
 
   defp post_message({:error, {:user_exists, data}}) do
