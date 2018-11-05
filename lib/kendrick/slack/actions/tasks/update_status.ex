@@ -45,7 +45,7 @@ defmodule Kendrick.Slack.Actions.Tasks.UpdateStatus do
     } = params
 
     task
-    |> Task.changeset(%{status: status})
+    |> Task.changeset(%{status: status, custom_status: true})
     |> Repo.update!()
 
     {:ok, data}

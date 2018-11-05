@@ -81,9 +81,9 @@ defmodule Kendrick.Slack.Actions.Tasks.Shared do
     Map.put(attributes, :title, title)
   end
 
-  defp assign_status(attributes, %{"submission" => %{"status" => nil}}), do: attributes
+  defp assign_status(attributes, %{"submission" => %{"status" => nil}}),
+    do: Map.put(attributes, :custom_status, false)
 
-  defp assign_status(attributes, %{"submission" => %{"status" => status}}) do
-    Map.put(attributes, :status, status)
-  end
+  defp assign_status(attributes, %{"submission" => %{"status" => status}}),
+    do: Map.merge(attributes, %{status: status, custom_status: true})
 end

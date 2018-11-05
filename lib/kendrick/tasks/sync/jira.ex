@@ -103,8 +103,18 @@ defmodule Kendrick.Tasks.Sync.Jira do
 
       _ ->
         task
-        |> Task.changeset(jira_task)
+        |> Task.changeset(update_task_attributes(task, jira_task))
         |> Repo.update!()
+    end
+  end
+
+  defp update_task_attributes(task, jira_task) do
+    case task.custom_status do
+      true ->
+        Map.drop(jira_task, [:status])
+
+      false ->
+        jira_task
     end
   end
 

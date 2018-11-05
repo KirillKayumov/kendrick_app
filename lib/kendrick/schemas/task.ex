@@ -17,12 +17,13 @@ defmodule Kendrick.Task do
   )
 
   schema "tasks" do
-    field(:title, :string)
-    field(:url, :string)
-    field(:status, :string)
-    field(:type, :string)
+    field(:custom_status, :boolean)
     field(:disabled, :boolean)
     field(:finished_status_set_at, :utc_datetime)
+    field(:status, :string)
+    field(:title, :string)
+    field(:type, :string)
+    field(:url, :string)
 
     belongs_to(:user, User)
 
@@ -31,7 +32,7 @@ defmodule Kendrick.Task do
 
   def changeset(%Task{} = task, attrs \\ %{}) do
     task
-    |> cast(attrs, [:title, :url, :status, :type, :disabled, :finished_status_set_at])
+    |> cast(attrs, [:title, :url, :status, :type, :disabled, :finished_status_set_at, :custom_status])
     |> validate_required([:title])
     |> track_finished_status()
   end
