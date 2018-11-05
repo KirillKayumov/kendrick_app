@@ -81,11 +81,11 @@ defmodule Kendrick.Slack.Commands.Start do
   end
 
   defp post_message({:ok, data}) do
-    do_post_message("The app was started for you :tada:", data)
+    do_post_message("Yo, what's up :v:", data)
   end
 
   defp post_message({:error, {:user_exists, data}}) do
-    do_post_message("You already started the app.", data)
+    do_post_message("Don't make me to say it again.", data)
   end
 
   defp do_post_message(message, %{params: %{"channel_id" => channel_id}, workspace: workspace}) do
