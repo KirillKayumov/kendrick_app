@@ -7,7 +7,7 @@ defmodule Kendrick.Tasks.Sync.ProjectSupervisor do
   }
 
   def start_link(args) do
-    Supervisor.start_link(__MODULE__, args, name: __MODULE__)
+    Supervisor.start_link(__MODULE__, args)
   end
 
   def init(args) do
