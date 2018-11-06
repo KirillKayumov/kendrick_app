@@ -11,7 +11,7 @@ defmodule Kendrick.Tasks.Sync.Jira do
     Task
   }
 
-  @schedule ~e[* * * * 1-5]
+  @schedule ~e[*/15 * * * 1-5]
 
   def start_link(args) do
     GenServer.start_link(__MODULE__, args)
