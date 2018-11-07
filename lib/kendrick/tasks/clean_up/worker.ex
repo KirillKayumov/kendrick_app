@@ -30,7 +30,7 @@ defmodule Kendrick.Tasks.CleanUp.Worker do
   def init(args) do
     state = %{
       project: args[:project],
-      job_name: schedule_job()
+      job_name: schedule_job().name
     }
 
     {:ok, state}
@@ -49,14 +49,10 @@ defmodule Kendrick.Tasks.CleanUp.Worker do
   end
 
   defp schedule_job do
-    job =
-      Scheduler.new_job()
-      |> Quantum.Job.set_schedule(@schedule)
-      |> Quantum.Job.set_task({__MODULE__, :perform, [self()]})
-
-    Scheduler.add_job(job)
-
-    job.name
+    Scheduler.create_job(%{
+      schedule: @schedule,
+      task: {__MODULE__, :perform, [self()]},
+    })
   end
 
   defp do_perform(project) do
