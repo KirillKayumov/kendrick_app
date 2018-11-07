@@ -3,6 +3,7 @@ defmodule Kendrick.Slack.Client do
   @chat_update_url "https://slack.com/api/chat.update"
   @dialog_open_url "https://slack.com/api/dialog.open"
   @files_upload_url "https://slack.com/api/files.upload"
+  @im_list_url "https://slack.com/api/im.list"
   @post_message_url "https://slack.com/api/chat.postMessage"
   @profile_get_url "https://slack.com/api/users.profile.get"
   @users_info_url "https://slack.com/api/users.info"
@@ -95,6 +96,19 @@ defmodule Kendrick.Slack.Client do
         },
         [
           {"Content-Type", "multipart/form-data"}
+        ]
+      )
+
+    Poison.decode!(response.body)
+  end
+
+  def im_list(%{token: token}) do
+    response =
+      HTTPoison.get!(
+        @im_list_url,
+        [],
+        params: [
+          {:token, token}
         ]
       )
 
