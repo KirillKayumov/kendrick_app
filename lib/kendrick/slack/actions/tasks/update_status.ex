@@ -2,7 +2,7 @@ defmodule Kendrick.Slack.Actions.Tasks.UpdateStatus do
   use GenServer
 
   import OK, only: [~>>: 2]
-  import Kendrick.Slack.Shared, only: [find_workspace: 1, find_user: 1, decode_callback_id: 1]
+  import Kendrick.Slack.Shared, only: [find_workspace: 1, find_user: 1, decode_callback_id: 1, find_project: 1]
   import Kendrick.Slack.Actions.Tasks.Shared, only: [find_task: 1]
 
   alias Kendrick.{
@@ -28,6 +28,7 @@ defmodule Kendrick.Slack.Actions.Tasks.UpdateStatus do
     |> find_workspace()
     ~>> find_user()
     ~>> decode_callback_id()
+    ~>> find_project()
     ~>> find_task()
     ~>> update_status()
     ~>> update_report()
@@ -49,6 +50,14 @@ defmodule Kendrick.Slack.Actions.Tasks.UpdateStatus do
     |> Repo.update!()
 
     {:ok, data}
+  end
+
+  defp update_report(%{params: params, workspace: workspace, project: project}) do
+    Slack.Client.respond(%{
+      attachments: Slack.ProjectReport.build(project),
+      token: workspace.slack_token,
+      url: params["response_url"]
+    })
   end
 
   defp update_report(%{params: params, workspace: workspace, user: user}) do

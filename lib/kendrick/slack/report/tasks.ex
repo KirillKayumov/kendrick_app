@@ -1,5 +1,6 @@
 defmodule Kendrick.Slack.Report.Tasks do
   import Kendrick.Slack.Shared, only: [encode_callback_id: 1]
+  import Kendrick.Slack.Report.Shared, only: [set_status_action: 0]
 
   def build(tasks, opts \\ %{}) do
     case length(tasks) do
@@ -55,32 +56,6 @@ defmodule Kendrick.Slack.Report.Tasks do
       edit_action(),
       more_action()
     ]
-  end
-
-  defp set_status_action do
-    %{
-      name: "task_status",
-      text: "Set status",
-      type: "select",
-      options: [
-        %{
-          text: "Starting Today",
-          value: "Starting Today"
-        },
-        %{
-          text: "WIP",
-          value: "WIP"
-        },
-        %{
-          text: "Code Review",
-          value: "Code Review"
-        },
-        %{
-          text: "Done",
-          value: "Done"
-        }
-      ]
-    }
   end
 
   defp edit_action do

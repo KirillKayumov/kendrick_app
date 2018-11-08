@@ -1,5 +1,6 @@
 defmodule Kendrick.Slack.ProjectReport.UserTasks do
   import Kendrick.Slack.Shared, only: [encode_callback_id: 1]
+  import Kendrick.Slack.Report.Shared, only: [set_status_action: 0]
 
   def build(user, project) do
     case length(user.tasks) do
@@ -35,6 +36,7 @@ defmodule Kendrick.Slack.ProjectReport.UserTasks do
 
   defp actions do
     [
+      set_status_action(),
       edit_action(),
       disable_action(),
       delete_action()
