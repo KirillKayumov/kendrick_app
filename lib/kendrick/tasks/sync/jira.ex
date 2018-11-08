@@ -39,7 +39,7 @@ defmodule Kendrick.Tasks.Sync.Jira do
   defp schedule_job do
     Scheduler.create_job(%{
       schedule: @schedule,
-      task: {__MODULE__, :perform, [self()]},
+      task: {__MODULE__, :perform, [self()]}
     })
   end
 

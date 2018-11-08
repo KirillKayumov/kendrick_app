@@ -11,6 +11,16 @@ defmodule Kendrick.Application do
   }
 
   def start(_type, _args) do
+    start_application(%{
+      repo_only: System.get_env("REPO_ONLY")
+    })
+  end
+
+  defp start_application(%{ repo_only: repo_only }) when not is_nil(repo_only) do
+    start_supervisor([Repo])
+  end
+
+  defp start_application(_config) do
     children = [
       Endpoint,
       Repo,
@@ -38,6 +48,10 @@ defmodule Kendrick.Application do
       Tasks.Sync.Supervisor
     ]
 
+    start_supervisor(children)
+  end
+
+  defp start_supervisor(children) do
     opts = [strategy: :one_for_one, name: Kendrick.Supervisor]
     Supervisor.start_link(children, opts)
   end
