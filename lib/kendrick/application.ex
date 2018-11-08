@@ -16,7 +16,7 @@ defmodule Kendrick.Application do
     })
   end
 
-  defp start_application(%{ repo_only: repo_only }) when not is_nil(repo_only) do
+  defp start_application(%{repo_only: repo_only}) when not is_nil(repo_only) do
     start_supervisor([Repo])
   end
 
@@ -25,6 +25,7 @@ defmodule Kendrick.Application do
       Endpoint,
       Repo,
       Scheduler,
+      Slack.Actions.ProjectReport.Close,
       Slack.Actions.ProjectReport.Post,
       Slack.Actions.ProjectReport.Save,
       Slack.Actions.ProjectReport.Show,

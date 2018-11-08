@@ -13,7 +13,8 @@ defmodule Kendrick.Slack.ProjectReport.Menu do
 
   defp actions do
     [
-      save_report_action()
+      save_report_action(),
+      close_report_action()
     ]
   end
 
@@ -21,6 +22,14 @@ defmodule Kendrick.Slack.ProjectReport.Menu do
     %{
       name: "project_report_save",
       text: "Save report",
+      type: "button"
+    }
+  end
+
+  defp close_report_action do
+    %{
+      name: "project_report_close",
+      text: "Close",
       type: "button"
     }
   end

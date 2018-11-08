@@ -1,5 +1,6 @@
 defmodule Kendrick.Slack.Client do
   @chat_post_ephemeral_url "https://slack.com/api/chat.postEphemeral"
+  @chat_delete_url "https://slack.com/api/chat.delete"
   @chat_update_url "https://slack.com/api/chat.update"
   @dialog_open_url "https://slack.com/api/dialog.open"
   @files_upload_url "https://slack.com/api/files.upload"
@@ -39,6 +40,20 @@ defmodule Kendrick.Slack.Client do
         [
           {"Content-Type", "multipart/form-data"}
         ]
+      )
+
+    Poison.decode!(response.body)
+  end
+
+  def chat_delete(%{token: token, channel: channel, ts: ts}) do
+    response =
+      HTTPoison.post!(
+        @chat_delete_url,
+        Poison.encode!(%{
+          channel: channel,
+          ts: ts
+        }),
+        headers(token)
       )
 
     Poison.decode!(response.body)
