@@ -7,19 +7,19 @@ defmodule Kendrick.Slack.Report do
 
   def build(user, opts \\ %{}) do
     []
-    |> add_tasks_title()
+    |> add_tasks_title(opts)
     |> add_task_list(user, opts)
     |> add_todo_title()
     |> add_todo_list(user)
     |> add_menu(user)
   end
 
-  defp add_tasks_title(attachments) do
+  defp add_tasks_title(attachments, opts) do
     attachments ++
       [
         %{
           color: "#717171",
-          fallback: "TASKS",
+          fallback: opts[:title] || "Find your tasks and todos below.",
           title: "TASKS"
         }
       ]

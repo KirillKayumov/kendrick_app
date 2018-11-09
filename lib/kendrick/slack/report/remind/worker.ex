@@ -64,7 +64,13 @@ defmodule Kendrick.Slack.Report.Remind.Worker do
   end
 
   defp post_report(%{user: user, workspace: workspace}) do
-    Slack.Report.Post.call(user, workspace)
+    report = Slack.Report.build(user, %{title: "Yo, check your tasks for today"})
+
+    Slack.Report.Post.call(%{
+      report: report,
+      user: user,
+      workspace: workspace
+    })
   end
 
   def do_delete_job(user_id, state) do

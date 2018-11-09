@@ -28,6 +28,12 @@ defmodule Kendrick.Slack.Commands.Report do
   end
 
   defp post_report(%{user: user, workspace: workspace}) do
-    Slack.Report.Post.call(user, workspace)
+    report = Slack.Report.build(user)
+
+    Slack.Report.Post.call(%{
+      report: report,
+      user: user,
+      workspace: workspace
+    })
   end
 end
