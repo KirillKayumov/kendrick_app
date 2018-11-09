@@ -3,9 +3,10 @@ defmodule Kendrick.Slack.Actions.Tasks.UpdateStatus do
 
   import OK, only: [~>>: 2]
   import Kendrick.Slack.Shared, only: [find_workspace: 1, find_user: 1, decode_callback_id: 1, find_project: 1]
-  import Kendrick.Slack.Actions.Tasks.Shared, only: [find_task: 1]
+  import Kendrick.Slack.Actions.Tasks.Shared, only: [find_task: 1, jira_ticket_details: 1]
 
   alias Kendrick.{
+    Jira,
     Repo,
     Slack,
     Task
@@ -30,13 +31,33 @@ defmodule Kendrick.Slack.Actions.Tasks.UpdateStatus do
     ~>> decode_callback_id()
     ~>> find_project()
     ~>> find_task()
+    ~>> get_status()
     ~>> update_status()
     ~>> update_report()
 
     {:noreply, state}
   end
 
-  defp update_status(%{params: params, task: task} = data) do
+  defp get_status(%{params: params, task: task} = data) do
+    {status, custom_status} =
+      case get_status_from_params(params) do
+        "-" ->
+          status =
+            task.url
+            |> jira_ticket_details()
+            |> Jira.Task.to_map()
+            |> Map.get(:status)
+
+          {status, false}
+
+        status ->
+          {status, true}
+      end
+
+    {:ok, Map.merge(data, %{status: status, custom_status: custom_status})}
+  end
+
+  defp get_status_from_params(params) do
     %{
       "actions" => [
         %{
@@ -45,8 +66,12 @@ defmodule Kendrick.Slack.Actions.Tasks.UpdateStatus do
       ]
     } = params
 
+    status
+  end
+
+  defp update_status(%{task: task, status: status, custom_status: custom_status} = data) do
     task
-    |> Task.changeset(%{status: status, custom_status: true})
+    |> Task.changeset(%{status: status, custom_status: custom_status})
     |> Repo.update!()
 
     {:ok, data}

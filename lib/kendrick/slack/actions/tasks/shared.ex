@@ -27,12 +27,15 @@ defmodule Kendrick.Slack.Actions.Tasks.Shared do
 
   def validate_params(data), do: {:ok, data}
 
+  def jira_ticket_details(url) do
+    url
+    |> String.trim()
+    |> Kendrick.Jira.Task.key_from_url()
+    |> Jira.API.ticket_details()
+  end
+
   def get_jira_data(%{params: %{"submission" => %{"url" => url}}} = data) when not is_nil(url) do
-    jira_data =
-      url
-      |> String.trim()
-      |> Kendrick.Jira.Task.key_from_url()
-      |> Jira.API.ticket_details()
+    jira_data = jira_ticket_details(url)
 
     {:ok, Map.put(data, :jira_data, jira_data)}
   end

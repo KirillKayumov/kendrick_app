@@ -14,6 +14,10 @@ defmodule Kendrick.Slack.Report.Shared do
       type: "select",
       options: [
         %{
+          text: "Pull from Jira",
+          value: "-"
+        },
+        %{
           text: "Starting Today",
           value: "Starting Today"
         },
