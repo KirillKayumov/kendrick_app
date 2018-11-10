@@ -34,27 +34,30 @@ defmodule Kendrick.Mixfile do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:cowboy, "~> 1.0"},
+      {:ecto_sql, "~> 3.0"},
+      {:espec, "~> 1.6", only: :test},
+      {:espec_phoenix, "~> 0.6", only: :test},
       {:ex_cldr_numbers, "~> 1.5"},
       {:gettext, "~> 0.11"},
       {:guardian, "~> 1.0"},
       {:httpoison, "~> 1.1"},
+      {:jason, "~> 1.0"},
       {:jira, "~> 0.0.8"},
+      {:mox, "~> 0.4.0", only: :test},
       {:oauth2, "~> 0.9.2"},
       {:ok, "~> 1.11"},
+      {:phoenix, "~> 1.4.0"},
       {:phoenix_active_link, "~> 0.2.1"},
-      {:phoenix_ecto, "~> 3.2"},
+      {:phoenix_ecto, "~> 4.0"},
       {:phoenix_html, "~> 2.10"},
-      {:phoenix_pubsub, "~> 1.0"},
-      {:phoenix, "~> 1.3.4"},
-      {:postgrex, ">= 0.0.0"},
-      {:quantum, "~> 2.3"},
-      {:timex, "~> 3.3"},
-      {:ueberauth, "~> 0.5.0"},
       {:phoenix_live_reload, "~> 1.0", only: :dev},
-      {:espec_phoenix, "~> 0.6", only: :test},
-      {:espec, "~> 1.6", only: :test},
-      {:mox, "~> 0.4.0", only: :test}
+      {:phoenix_pubsub, "~> 1.0"},
+      {:plug, "~> 1.7"},
+      {:plug_cowboy, "~> 2.0"},
+      {:postgrex, ">= 0.0.0"},
+      {:quantum, github: "KirillKayumov/quantum-core"},
+      {:timex, "~> 3.3"},
+      {:ueberauth, "~> 0.5.0"}
     ]
   end
 
