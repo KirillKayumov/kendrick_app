@@ -1,8 +1,5 @@
 [
-  inputs: [
-    "mix.exs",
-    "{config,lib,spec}/**/*.{ex,exs}",
-    "priv/repo/**/*.{ex,exs}"
-  ],
+  import_deps: [:phoenix],
+  inputs: ["*.{ex,exs}", "{config,lib,priv,test,spec}/**/*.{ex,exs}"],
   line_length: 120
 ]

@@ -1,15 +1,15 @@
 <div class="container">
   <div class="row">
-    <%= link "New team", to: project_team_path(@conn, :new, @project), class: "btn btn-primary" %>
+    <%= link "New team", to: Routes.project_team_path(@conn, :new, @project), class: "btn btn-primary" %>
   </div>
 
   <div class="row">
     <ul>
       <%= for team <- @teams do %>
         <li>
-          <%= link team.name, to: project_team_path(@conn, :show, @project, team) %>
+          <%= link team.name, to: Routes.project_team_path(@conn, :show, @project, team) %>
           <%= link "Remove",
-            to: project_team_path(@conn, :delete, @project, team),
+            to: Routes.project_team_path(@conn, :delete, @project, team),
             method: :delete,
             data: [confirm: "Are you sure?"] %>
         </li>

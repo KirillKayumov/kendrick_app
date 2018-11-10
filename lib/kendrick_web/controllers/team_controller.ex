@@ -39,7 +39,7 @@ defmodule KendrickWeb.TeamController do
     case result do
       {:ok, _} ->
         conn
-        |> redirect(to: project_path(conn, :show, project))
+        |> redirect(to: Routes.project_path(conn, :show, project))
 
       {:error, changeset} ->
         conn
@@ -52,7 +52,7 @@ defmodule KendrickWeb.TeamController do
     Teams.update(team, team_params, current_workspace(conn))
 
     conn
-    |> redirect(to: project_team_path(conn, :show, project, team))
+    |> redirect(to: Routes.project_team_path(conn, :show, project, team))
   end
 
   def delete(conn, _params) do
@@ -60,7 +60,7 @@ defmodule KendrickWeb.TeamController do
     Teams.delete!(team)
 
     conn
-    |> redirect(to: project_path(conn, :show, project))
+    |> redirect(to: Routes.project_path(conn, :show, project))
   end
 
   defp set_project(%{params: %{"project_id" => project_id}} = conn, _opts) do

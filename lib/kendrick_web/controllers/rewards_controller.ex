@@ -11,13 +11,13 @@ defmodule KendrickWeb.RewardsController do
     Kendrick.Rewards.connect(params, current_user(conn))
 
     conn
-    |> redirect(to: rewards_path(conn, :show))
+    |> redirect(to: Routes.rewards_path(conn, :show))
   end
 
   def delete(conn, _params) do
     Kendrick.Rewards.disconnect(current_user(conn))
 
     conn
-    |> redirect(to: rewards_path(conn, :show))
+    |> redirect(to: Routes.rewards_path(conn, :show))
   end
 end

@@ -1,12 +1,12 @@
 <nav class="navbar navbar-expand navbar-light bg-white">
-  <%= link "Kendrick App", to: page_path(@conn, :index), class: "navbar-brand" %>
+  <%= link "Kendrick App", to: Routes.page_path(@conn, :index), class: "navbar-brand" %>
 
   <%= if @current_user do %>
     <div class="d-flex justify-content-between w-100">
       <ul class="navbar-nav">
         <li class="nav-item">
           <%= active_link @conn, "Projects",
-            to: project_path(@conn, :index),
+            to: Routes.project_path(@conn, :index),
             class: "nav-link",
             active: [
               {KendrickWeb.ProjectController, :any},
@@ -18,7 +18,7 @@
 
       <ul class="navbar-nav">
         <li class="nav-item">
-          <%= link "Sign out", to: auth_path(@conn, :sign_out), class: "nav-link", method: :delete %>
+          <%= link "Sign out", to: Routes.auth_path(@conn, :sign_out), class: "nav-link", method: :delete %>
         </li>
       </ul>
     </div>

@@ -7,7 +7,7 @@
         <%= user.name %>
 
         <%= unless true do %>
-          <%= link "Add to the app", to: user_path(@conn, :add_to_app, user["id"]), method: :post %>
+          <%= link "Add to the app", to: Routes.user_path(@conn, :add_to_app, user["id"]), method: :post %>
         <% end %>
       </li>
     <% end %>

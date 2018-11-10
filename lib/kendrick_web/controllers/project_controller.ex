@@ -35,7 +35,7 @@ defmodule KendrickWeb.ProjectController do
     case Projects.create(project_params, current_workspace(conn)) do
       {:ok, _} ->
         conn
-        |> redirect(to: project_path(conn, :index))
+        |> redirect(to: Routes.project_path(conn, :index))
 
       {:error, changeset} ->
         conn
@@ -49,6 +49,6 @@ defmodule KendrickWeb.ProjectController do
     |> Projects.delete()
 
     conn
-    |> redirect(to: project_path(conn, :index))
+    |> redirect(to: Routes.project_path(conn, :index))
   end
 end

@@ -1,6 +1,6 @@
 <div class="row justify-content-center">
   <div class="col-6">
-    <%= form_for @changeset, project_team_path(@conn, :update, @project, @team), fn f -> %>
+    <%= form_for @changeset, Routes.project_team_path(@conn, :update, @project, @team), fn f -> %>
       <div class="form-group">
         <%= label f, :name %>
         <%= text_input f, :name, class: "form-control", required: true %>

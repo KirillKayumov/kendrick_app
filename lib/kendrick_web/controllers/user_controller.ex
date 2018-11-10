@@ -13,6 +13,6 @@ defmodule KendrickWeb.UserController do
     Kendrick.Users.AddToApp.call(slack_id, current_workspace(conn))
 
     conn
-    |> redirect(to: user_path(conn, :index))
+    |> redirect(to: Routes.user_path(conn, :index))
   end
 end
