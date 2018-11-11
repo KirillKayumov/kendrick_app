@@ -1,6 +1,6 @@
 defmodule Kendrick.Ueberauth.Strategy.Slack do
   use Ueberauth.Strategy,
-    default_scope: "bot,chat:write:bot,commands",
+    default_scope: "bot,chat:write:bot,commands,links:read,reactions:read",
     oauth2_module: Kendrick.Ueberauth.Strategy.Slack.OAuth
 
   alias Ueberauth.Auth.Info
