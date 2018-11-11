@@ -85,12 +85,12 @@ defmodule Kendrick.Slack.Commands.Todo do
       workspace: workspace
     } = data
 
-    Slack.Client.chat_post_ephemeral(
-      text,
-      channel,
-      user,
-      workspace.slack_token
-    )
+    Slack.Client.chat_post_ephemeral(%{
+      channel: channel,
+      text: text,
+      token: workspace.slack_token,
+      user: user
+    })
   end
 
   defp update_report(%{user: user, workspace: workspace}) do

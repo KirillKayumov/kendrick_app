@@ -3,10 +3,6 @@ defmodule KendrickWeb.Slack.CommandController do
 
   plug(KendrickWeb.Plugs.Slack.EnsureUserExists)
 
-  def index(conn, %{"ssl_check" => _ssl_check}) do
-    send_resp(conn, 200, "")
-  end
-
   def index(conn, %{"command" => "/start"} = params) do
     Kendrick.Slack.Commands.Start.call(params)
 

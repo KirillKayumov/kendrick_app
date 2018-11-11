@@ -25,6 +25,7 @@ defmodule KendrickWeb.Router do
     plug(KendrickWeb.Plugs.Slack.DecodePayload)
     plug(KendrickWeb.Plugs.Slack.VerifyVerificationToken)
     plug(KendrickWeb.Plugs.Slack.SslCheck)
+    plug(KendrickWeb.Plugs.Slack.Challenge)
   end
 
   scope "/", KendrickWeb do
@@ -63,6 +64,7 @@ defmodule KendrickWeb.Router do
 
     post("/action", ActionController, :index)
     post("/command", CommandController, :index)
+    post("/event", EventController, :index)
   end
 
   scope "/health_check", KendrickWeb do

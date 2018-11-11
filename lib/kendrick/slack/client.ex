@@ -1,6 +1,8 @@
 defmodule Kendrick.Slack.Client do
-  @chat_post_ephemeral_url "https://slack.com/api/chat.postEphemeral"
+  @channels_history_url "https://slack.com/api/channels.history"
   @chat_delete_url "https://slack.com/api/chat.delete"
+  @chat_me_message_url "https://slack.com/api/chat.meMessage"
+  @chat_post_ephemeral_url "https://slack.com/api/chat.postEphemeral"
   @chat_update_url "https://slack.com/api/chat.update"
   @dialog_open_url "https://slack.com/api/dialog.open"
   @files_upload_url "https://slack.com/api/files.upload"
@@ -24,22 +26,34 @@ defmodule Kendrick.Slack.Client do
     Poison.decode!(response.body)
   end
 
-  def chat_post_ephemeral(text, channel, user, token) do
+  def channels_history(%{channel: channel, token: token} = data) do
+    response =
+      HTTPoison.get!(
+        @channels_history_url,
+        [],
+        params: [
+          {:channel, channel},
+          {:count, data[:count]},
+          {:inclusive, data[:inclusive]},
+          {:latest, data[:latest]},
+          {:token, token}
+        ]
+      )
+
+    Poison.decode!(response.body)
+  end
+
+  def chat_post_ephemeral(%{channel: channel, user: user, token: token} = data) do
     response =
       HTTPoison.post!(
         @chat_post_ephemeral_url,
-        {
-          :form,
-          [
-            {"text", text},
-            {"channel", channel},
-            {"user", user},
-            {"token", token}
-          ]
-        },
-        [
-          {"Content-Type", "multipart/form-data"}
-        ]
+        Poison.encode!(%{
+          attachments: data[:attachments] || [],
+          channel: channel,
+          text: data[:text] || "",
+          user: user
+        }),
+        headers(token)
       )
 
     Poison.decode!(response.body)
@@ -52,6 +66,20 @@ defmodule Kendrick.Slack.Client do
         Poison.encode!(%{
           channel: channel,
           ts: ts
+        }),
+        headers(token)
+      )
+
+    Poison.decode!(response.body)
+  end
+
+  def chat_me_message(%{token: token, channel: channel, text: text}) do
+    response =
+      HTTPoison.post!(
+        @chat_me_message_url,
+        Poison.encode!(%{
+          channel: channel,
+          text: text
         }),
         headers(token)
       )

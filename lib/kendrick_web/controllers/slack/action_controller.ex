@@ -10,10 +10,6 @@ defmodule KendrickWeb.Slack.ActionController do
 
   plug(KendrickWeb.Plugs.Slack.EnsureUserExists)
 
-  def index(conn, %{"ssl_check" => _ssl_check}) do
-    send_resp(conn, 200, "")
-  end
-
   def index(conn, %{"actions" => [%{"name" => "task_add"}]} = params) do
     Tasks.ShowNewForm.call(params)
 

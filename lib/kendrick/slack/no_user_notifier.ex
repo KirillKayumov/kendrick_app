@@ -29,11 +29,11 @@ defmodule Kendrick.Slack.NoUserNotifier do
   end
 
   defp post_message(%{channel: channel, user_slack_id: user_slack_id, workspace: workspace}) do
-    Slack.Client.chat_post_ephemeral(
-      ":warning: Please type `/start` to start using the app.",
-      channel,
-      user_slack_id,
-      workspace.slack_token
-    )
+    Slack.Client.chat_post_ephemeral(%{
+      channel: channel,
+      text: ":warning: Please type `/start` to start using the app.",
+      token: workspace.slack_token,
+      user: user_slack_id
+    })
   end
 end

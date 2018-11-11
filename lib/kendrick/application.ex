@@ -43,8 +43,11 @@ defmodule Kendrick.Application do
       Slack.Commands.Report,
       Slack.Commands.Start,
       Slack.Commands.Todo,
+      Slack.Events.LinkShared,
+      Slack.Events.ReactionAdded,
       Slack.NoUserNotifier,
       Slack.Report.Remind.Supervisor,
+      Slack.ReviewReminders.Worker,
       Tasks.CleanUp.Supervisor,
       Tasks.Sync.Supervisor
     ]
