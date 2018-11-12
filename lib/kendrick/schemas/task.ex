@@ -40,7 +40,7 @@ defmodule Kendrick.Task do
   defp track_finished_status(%{changes: %{status: new_status}} = changeset) do
     timestamp =
       case String.downcase(new_status) in @finished_statuses do
-        true -> Kendrick.date_time().utc_now()
+        true -> Kendrick.date_time().utc_now() |> Kendrick.date_time().truncate(:second)
         false -> nil
       end
 
