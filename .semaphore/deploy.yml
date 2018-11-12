@@ -8,6 +8,11 @@ agent:
 blocks:
   - name: Deploy to Heroku
     task:
+      prologue:
+        commands:
+          - checkout
+          - git remote add heroku https://git.heroku.com/kendrick-app.git
+          - git config heroku.remote heroku
       jobs:
         - name: Deploy
           commands:

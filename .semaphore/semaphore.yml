@@ -22,6 +22,7 @@ blocks:
             - mix do deps.get, compile
             - cache store mix-deps-$(checksum mix.lock) deps
             - cache store mix-build-$(checksum mix.lock) _build
+            - sem-service start postgres
   - name: Build
     task:
       env_vars:
@@ -32,7 +33,6 @@ blocks:
           - checkout
           - cache restore mix-deps-$(checksum mix.lock)
           - cache restore mix-build-$(checksum mix.lock)
-          - sem-service start postgres
       jobs:
         - name: Tests
           commands:
