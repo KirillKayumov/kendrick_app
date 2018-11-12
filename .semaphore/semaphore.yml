@@ -37,11 +37,3 @@ blocks:
         - name: Tests
           commands:
             - mix test
-
-promotions:
-  - name: Deploy
-    pipeline_file: deploy.yml
-    auto_promote_on:
-      - result: passed
-        branch:
-          - master
