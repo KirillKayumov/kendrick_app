@@ -1,0 +1,16 @@
+agent:
+  machine:
+    type: e1-standard-2
+    os_image: ubuntu1804
+
+blocks:
+  - name: Deploy to Heroku
+    task:
+      jobs:
+        - name: Deploy
+          commands:
+            - heroku maintenance:on
+            - git push --force heroku $BRANCH_NAME:master
+            - heroku run "POOL_SIZE=2 mix ecto.migrate"
+            - heroku restart
+            - heroku maintenance:off
