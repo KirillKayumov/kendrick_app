@@ -11,6 +11,7 @@ defmodule Kendrick.Auth.Slack do
     %{conn: conn, credentials: credentials}
     |> find_workspace()
     ~>> find_user()
+    ~>> update_user_token()
     ~>> do_sign_in()
     |> get_conn()
   end
@@ -18,7 +19,7 @@ defmodule Kendrick.Auth.Slack do
   def sign_in(conn, credentials) do
     %{conn: conn, credentials: credentials}
     |> find_workspace()
-    ~>> update_token()
+    ~>> update_bot_token()
     |> create_workspace()
     |> get_conn()
   end
@@ -45,6 +46,15 @@ defmodule Kendrick.Auth.Slack do
       nil -> {:error, data}
       _ -> {:ok, Map.put(data, :user, user)}
     end
+  end
+
+  defp update_user_token(%{credentials: %{token: slack_token}, user: user} = data) do
+    user =
+      user
+      |> User.changeset(%{slack_token: slack_token})
+      |> Repo.update!()
+
+    {:ok, Map.put(data, :user, user)}
   end
 
   defp do_sign_in(%{conn: conn, user: user} = data) do
@@ -76,7 +86,7 @@ defmodule Kendrick.Auth.Slack do
     {:ok, Map.put(data, :workspace, workspace)}
   end
 
-  defp update_token(%{credentials: credentials, workspace: workspace} = data) do
+  defp update_bot_token(%{credentials: credentials, workspace: workspace} = data) do
     %{
       other: %{
         "bot" => %{

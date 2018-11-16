@@ -21,6 +21,7 @@ defmodule Kendrick.User do
     field(:rewards_token, :string)
     field(:slack_channel, :string)
     field(:slack_id, :string)
+    field(:slack_token, :string)
 
     belongs_to(:workspace, Workspace)
 
@@ -45,7 +46,8 @@ defmodule Kendrick.User do
       :report_ts,
       :rewards_token,
       :slack_channel,
-      :slack_id
+      :slack_id,
+      :slack_token
     ])
     |> validate_required([:email, :slack_id, :slack_channel])
     |> unique_constraint(:slack_id)
