@@ -65,7 +65,7 @@ defmodule Kendrick.TaskSpec do
           it "finished_status_set_at to current time" do
             Kendrick.date_time()
             |> Mox.expect(:utc_now, fn -> {2018, 8, 19} end)
-            |> Mox.expect(:truncate, fn(_, _) -> {2018, 8, 19} end)
+            |> Mox.expect(:truncate, fn _, _ -> {2018, 8, 19} end)
 
             expect(subject().changes)
             |> to(match_pattern(%{finished_status_set_at: {2018, 8, 19}}))

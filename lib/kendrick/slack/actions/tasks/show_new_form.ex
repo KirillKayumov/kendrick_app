@@ -48,7 +48,7 @@ defmodule Kendrick.Slack.Actions.Tasks.ShowNewForm do
           label: "Link to task",
           name: "url",
           optional: true,
-          placeholder: "https://aclgrc.atlassian.net/browse/PD-7200",
+          placeholder: "Example: https://aclgrc.atlassian.net/browse/PD-7200",
           subtype: "url",
           type: "text",
           value: "https://aclgrc.atlassian.net/browse/"
@@ -57,14 +57,14 @@ defmodule Kendrick.Slack.Actions.Tasks.ShowNewForm do
           label: "Task description",
           name: "description",
           optional: true,
-          placeholder: "Deploy to preprod",
+          placeholder: "Example: Deploy to preprod",
           type: "text"
         },
         %{
           label: "Status",
           name: "status",
           optional: true,
-          placeholder: "WIP",
+          placeholder: "Example: WIP",
           type: "text"
         }
       ]

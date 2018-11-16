@@ -50,7 +50,7 @@ defmodule Kendrick.Slack.Actions.Tasks.ShowEditForm do
           label: "Link to task",
           name: "url",
           optional: true,
-          placeholder: "https://aclgrc.atlassian.net/browse/PD-7200",
+          placeholder: "Example: https://aclgrc.atlassian.net/browse/PD-7200",
           subtype: "url",
           type: "text",
           value: task.url
@@ -59,7 +59,7 @@ defmodule Kendrick.Slack.Actions.Tasks.ShowEditForm do
           label: "Task description",
           name: "description",
           optional: true,
-          placeholder: "Deploy to preprod",
+          placeholder: "Example: Deploy to preprod",
           type: "text",
           value: task.title
         },
@@ -67,7 +67,7 @@ defmodule Kendrick.Slack.Actions.Tasks.ShowEditForm do
           label: "Status",
           name: "status",
           optional: true,
-          placeholder: "WIP",
+          placeholder: "Example: WIP",
           type: "text",
           value: task.status
         }
