@@ -48,4 +48,19 @@ defmodule Kendrick.Task do
   end
 
   defp track_finished_status(changeset), do: changeset
+
+  def color(%{disabled: true}), do: ""
+
+  def color(%{type: type}) do
+    case type do
+      "Bug" -> "#DE4D33"
+      "Design" -> "#FF9C23"
+      "Epic" -> "#904EE2"
+      "Fail Test" -> "#8095AA"
+      "Story" -> "#63BA3C"
+      "Sub-task" -> "#4BAEE8"
+      "Task" -> "#4BADE8"
+      _ -> ""
+    end
+  end
 end

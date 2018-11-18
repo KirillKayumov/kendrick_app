@@ -3,6 +3,7 @@ defmodule Kendrick.Slack.Client do
   @chat_delete_url "https://slack.com/api/chat.delete"
   @chat_me_message_url "https://slack.com/api/chat.meMessage"
   @chat_post_ephemeral_url "https://slack.com/api/chat.postEphemeral"
+  @chat_unfurl_url "https://slack.com/api/chat.unfurl"
   @chat_update_url "https://slack.com/api/chat.update"
   @dialog_open_url "https://slack.com/api/dialog.open"
   @files_upload_url "https://slack.com/api/files.upload"
@@ -80,6 +81,21 @@ defmodule Kendrick.Slack.Client do
         Poison.encode!(%{
           channel: channel,
           text: text
+        }),
+        headers(token)
+      )
+
+    Poison.decode!(response.body)
+  end
+
+  def chat_unfurl(%{token: token, channel: channel, ts: ts, unfurls: unfurls}) do
+    response =
+      HTTPoison.post!(
+        @chat_unfurl_url,
+        Poison.encode!(%{
+          channel: channel,
+          ts: ts,
+          unfurls: unfurls
         }),
         headers(token)
       )

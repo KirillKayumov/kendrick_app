@@ -49,6 +49,14 @@ defmodule Kendrick.Users do
     |> filter_out_users_from(workspace.slack_users["list"])
   end
 
+  def first_with_slack_token(workspace) do
+    workspace
+    |> Ecto.assoc(:users)
+    |> where([u], not is_nil(u.slack_token))
+    |> first()
+    |> Repo.one()
+  end
+
   defp filter_out_users_from(users, slack_users) do
     slack_ids = Enum.map(users, & &1.slack_id)
 

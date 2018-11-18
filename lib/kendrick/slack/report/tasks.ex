@@ -2,6 +2,8 @@ defmodule Kendrick.Slack.Report.Tasks do
   import Kendrick.Slack.Shared, only: [encode_callback_id: 1]
   import Kendrick.Slack.Report.Shared, only: [set_status_action: 0]
 
+  alias Kendrick.Task
+
   def build(tasks, opts \\ %{}) do
     case length(tasks) do
       0 ->
@@ -26,7 +28,7 @@ defmodule Kendrick.Slack.Report.Tasks do
     %{
       actions: actions(task, opts),
       callback_id: callback_id(task),
-      color: color(task),
+      color: Task.color(task),
       fallback: title(task, index),
       footer: footer(task),
       text: text(task),
@@ -41,7 +43,7 @@ defmodule Kendrick.Slack.Report.Tasks do
     ]
   end
 
-  defp actions(%{id: todo_id}, %{more_actions: id}) when todo_id == id do
+  defp actions(%{id: task_id}, %{more_actions: id}) when task_id == id do
     [
       set_status_action(),
       edit_action(),
@@ -110,21 +112,6 @@ defmodule Kendrick.Slack.Report.Tasks do
   end
 
   defp callback_id(task), do: encode_callback_id(%{id: task.id})
-
-  defp color(%{disabled: true}), do: ""
-
-  defp color(task) do
-    case task.type do
-      "Bug" -> "#DE4D33"
-      "Design" -> "#FF9C23"
-      "Epic" -> "#904EE2"
-      "Fail Test" -> "#8095AA"
-      "Story" -> "#63BA3C"
-      "Sub-task" -> "#4BAEE8"
-      "Task" -> "#4BADE8"
-      _ -> ""
-    end
-  end
 
   defp title(%{disabled: true} = task, index), do: "#{index}. #{task.title}"
   defp title(task, index), do: "#{index}. #{task.title}"
