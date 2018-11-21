@@ -42,7 +42,6 @@ defmodule Kendrick.Mixfile do
       {:guardian, "~> 1.0"},
       {:httpoison, "~> 1.1"},
       {:jason, "~> 1.0"},
-      {:jira, "~> 0.0.8"},
       {:mox, "~> 0.4.0", only: :test},
       {:oauth2, "~> 0.9.2"},
       {:ok, "~> 1.11"},

@@ -28,7 +28,7 @@ config :ueberauth, Kendrick.Ueberauth.Strategy.Slack.OAuth,
   client_id: System.get_env("SLACK_CLIENT_ID"),
   client_secret: System.get_env("SLACK_CLIENT_SECRET")
 
-config :jira,
+config :kendrick, Kendrick.Jira.API,
   username: System.get_env("JIRA_USERNAME"),
   password: System.get_env("JIRA_PASSWORD"),
   host: System.get_env("JIRA_HOST")
@@ -36,10 +36,5 @@ config :jira,
 config :quantum, timezone: "Europe/Moscow"
 
 config :kendrick, date_time: DateTime
-
-config :jira,
-  username: System.get_env("JIRA_USERNAME"),
-  password: System.get_env("JIRA_PASSWORD"),
-  host: System.get_env("JIRA_HOST")
 
 import_config "#{Mix.env()}.exs"

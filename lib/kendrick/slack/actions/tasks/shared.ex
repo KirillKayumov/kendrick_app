@@ -1,5 +1,8 @@
 defmodule Kendrick.Slack.Actions.Tasks.Shared do
-  alias Kendrick.Tasks
+  alias Kendrick.{
+    Jira,
+    Tasks
+  }
 
   def find_task(%{callback_id: %{"id" => task_id}} = data) do
     task = Tasks.get(task_id)
@@ -30,7 +33,7 @@ defmodule Kendrick.Slack.Actions.Tasks.Shared do
   def jira_ticket_details(url) do
     url
     |> String.trim()
-    |> Kendrick.Jira.Task.key_from_url()
+    |> Jira.Task.key_from_url()
     |> Jira.API.ticket_details()
   end
 
@@ -63,7 +66,7 @@ defmodule Kendrick.Slack.Actions.Tasks.Shared do
 
   def task_attributes(%{jira_data: jira_data, params: params}) do
     jira_data
-    |> Kendrick.Jira.Task.to_map()
+    |> Jira.Task.to_map()
     |> assign_attributes(params)
   end
 

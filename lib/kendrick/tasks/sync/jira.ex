@@ -5,6 +5,7 @@ defmodule Kendrick.Tasks.Sync.Jira do
   import Ecto.Query
 
   alias Kendrick.{
+    Jira,
     Repo,
     Scheduler,
     Slack,
@@ -82,7 +83,7 @@ defmodule Kendrick.Tasks.Sync.Jira do
   defp create_or_update_tasks(users_with_tasks) do
     Enum.map(users_with_tasks, fn {user, tasks} ->
       Enum.each(tasks, fn task ->
-        jira_task = Kendrick.Jira.Task.to_map(task)
+        jira_task = Jira.Task.to_map(task)
 
         update_task(jira_task, user) || create_task(jira_task, user)
       end)
