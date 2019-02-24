@@ -54,10 +54,10 @@ defmodule Kendrick.Slack.Events.LinkShared.Github do
           |> Github.PullRequest.parse()
 
         %{
+          author_name: pull_request.author,
           color: pull_request.color,
           text: """
           *#{pull_request.title}*
-          *Author:* #{pull_request.author}
           *Diff:* :heavy_plus_sign: #{pull_request.additions} :heavy_minus_sign: #{pull_request.deletions}
           """
         }
