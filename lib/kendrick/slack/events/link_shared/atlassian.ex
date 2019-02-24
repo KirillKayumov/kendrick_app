@@ -47,7 +47,9 @@ defmodule Kendrick.Slack.Events.LinkShared.Atlassian do
       |> jira_ticket_details()
 
     case jira_task do
-      %{ title: nil } -> %{}
+      %{title: nil} ->
+        %{}
+
       _ ->
         task_details =
           [
