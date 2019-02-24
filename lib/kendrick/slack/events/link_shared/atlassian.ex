@@ -46,21 +46,25 @@ defmodule Kendrick.Slack.Events.LinkShared.Atlassian do
       |> Map.get(:path)
       |> jira_ticket_details()
 
-    task_details =
-      [
-        "*Status:* #{jira_task.status}",
-        "*Story points:* #{jira_task.points || "N/A"}",
-        "*Assignee:* #{jira_task.assignee || "N/A"}"
-      ]
-      |> Enum.join(" | ")
+    case jira_task do
+      %{ title: nil } -> %{}
+      _ ->
+        task_details =
+          [
+            "*Status:* #{jira_task.status}",
+            "*Story points:* #{jira_task.points || "N/A"}",
+            "*Assignee:* #{jira_task.assignee || "N/A"}"
+          ]
+          |> Enum.join(" | ")
 
-    %{
-      text: """
-      *#{jira_task.title}*
-      #{task_details}
-      """,
-      color: Task.color(jira_task)
-    }
+        %{
+          text: """
+          *#{jira_task.title}*
+          #{task_details}
+          """,
+          color: Task.color(jira_task)
+        }
+    end
   end
 
   defp build_comment_unfurl(uri_info, comment_id) do
