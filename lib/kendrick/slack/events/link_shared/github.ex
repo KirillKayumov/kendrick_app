@@ -58,7 +58,7 @@ defmodule Kendrick.Slack.Events.LinkShared.Github do
           color: pull_request.color,
           text: """
           *#{pull_request.title}*
-          *Diff:* +#{pull_request.additions} / -#{pull_request.deletions}
+          *Diff:* :heavy_plus_sign:#{pull_request.additions} */* :heavy_minus_sign:#{pull_request.deletions}
           """
         }
 
