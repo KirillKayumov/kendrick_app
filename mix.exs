@@ -54,7 +54,7 @@ defmodule Kendrick.Mixfile do
       {:plug, "~> 1.7"},
       {:plug_cowboy, "~> 2.0"},
       {:postgrex, ">= 0.0.0"},
-      {:quantum, github: "KirillKayumov/quantum-core"},
+      {:quantum, "~> 2.3"},
       {:timex, "~> 3.3"},
       {:ueberauth, "~> 0.5.0"}
     ]
