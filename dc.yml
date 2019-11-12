@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+  a:
+    image: busybox
+    command: ping google.com
+    volumes:
+      - kek:/kekus
+  b:
+    image: busybox
+    command: ping google.com
+    volumes:
+      - kek:/kekus2
+
+volumes:
+  kek:

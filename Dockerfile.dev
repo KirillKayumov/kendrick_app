@@ -12,4 +12,3 @@ COPY config config
 RUN mix deps.get && mix deps.compile
 
 COPY . .
-RUN mix compile

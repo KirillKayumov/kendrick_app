@@ -9,6 +9,8 @@ services:
     tty: true
     ports:
       - "4000:4000"
+    volumes:
+      - deps:/app/deps
     depends_on:
       - postgres
       - frontend
@@ -18,10 +20,13 @@ services:
       context: ./assets
       dockerfile: Dockerfile.dev
     tty: true
-    ports:
-      - "3000:4000"
+    volumes:
+      - deps:/app/deps
 
   postgres:
     image: postgres:12.0
     environment:
       POSTGRES_DB: kendrick_dev
+
+volumes:
+  deps:
