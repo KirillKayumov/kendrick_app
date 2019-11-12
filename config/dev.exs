@@ -10,16 +10,16 @@ config :kendrick, KendrickWeb.Endpoint,
   http: [port: 4000],
   debug_errors: true,
   code_reloader: true,
-  check_origin: false,
-  watchers: [
-    node: [
-      "node_modules/webpack/bin/webpack.js",
-      "--mode",
-      "development",
-      "--watch-stdin",
-      cd: Path.expand("../assets", __DIR__)
-    ]
-  ]
+  check_origin: false
+  # watchers: [
+  #   node: [
+  #     "node_modules/webpack/bin/webpack.js",
+  #     "--mode",
+  #     "development",
+  #     "--watch-stdin",
+  #     cd: Path.expand("../assets", __DIR__)
+  #   ]
+  # ]
 
 # ## SSL Support
 #
@@ -61,7 +61,7 @@ config :kendrick, Kendrick.Repo,
   username: "postgres",
   password: "postgres",
   database: "kendrick_dev",
-  hostname: "localhost",
+  hostname: "postgres",
   pool_size: 10
 
 config :kendrick, Kendrick.Scheduler, debug_logging: false
