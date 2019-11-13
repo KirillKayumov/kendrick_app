@@ -2,8 +2,8 @@ FROM node:13.1.0-alpine
 
 WORKDIR /app
 
-COPY package.json package-lock.json ./
-RUN npm install
+# COPY package.json package-lock.json ./
+# RUN npm install
 
-COPY . .
+# COPY . .
 CMD ["npm", "run", "watch"]

@@ -16,7 +16,7 @@ module.exports = () => ({
   },
   output: {
     filename: 'app.js',
-    path: path.resolve(__dirname, '../priv/static/js')
+    path: path.resolve(__dirname, './priv/static/js')
   },
   module: {
     rules: [
