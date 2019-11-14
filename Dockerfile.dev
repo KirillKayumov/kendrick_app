@@ -6,4 +6,4 @@ RUN apk add inotify-tools && \
   mix local.hex --force && \
   mix local.rebar --force
 
-CMD ["mix", "phx.server"]
+CMD ["iex", "-S", "mix", "phx.server"]
