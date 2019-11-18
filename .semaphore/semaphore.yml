@@ -7,9 +7,17 @@ agent:
     os_image: ubuntu1804
 
 blocks:
-  - name: Elixir example
+  - name: Build
     task:
       jobs:
-        - name: Run some code
+        - name: Build Docker
           commands:
-            - elixir -e 'IO.puts "Hello world!"'
+            - checkout
+            - docker-compose -f docker-compose.test.yml build
+
+  - name: Tests
+    task:
+      jobs:
+        - name: Unit tests
+          commands:
+            - docker-compose -f docker-compose.test.yml run web mix test
