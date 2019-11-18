@@ -5,6 +5,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.test
+      cache_from:
+        -
     depends_on:
       - postgres
 

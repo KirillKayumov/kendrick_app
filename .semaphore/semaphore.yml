@@ -14,9 +14,10 @@ blocks:
       jobs:
         - name: Build Docker
           commands:
+            - echo "$GITHUB_PASSWORD" | docker login docker.pkg.github.com -u "$GITHUB_USERNAME" --password-stdin
+            - docker pull "$GITHUB_USERNAME"/kendrick_app/kendrick_app_web
             - checkout
             - docker-compose -f docker-compose.test.yml build
-            - echo "$GITHUB_PASSWORD" | docker login docker.pkg.github.com -u "$GITHUB_USERNAME" --password-stdin
             - docker tag kendrick_app_web:latest docker.pkg.github.com/"$GITHUB_USERNAME"/kendrick_app/kendrick_app_web:latest
             - docker push docker.pkg.github.com/"$GITHUB_USERNAME"/kendrick_app/kendrick_app_web:latest
 
@@ -27,8 +28,8 @@ blocks:
 
       prologue:
         commands:
-          - checkout
           - echo "$GITHUB_PASSWORD" | docker login docker.pkg.github.com -u "$GITHUB_USERNAME" --password-stdin
+          - checkout
           - docker pull "$GITHUB_USERNAME"/kendrick_app/kendrick_app_web
 
       jobs:
