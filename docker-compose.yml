@@ -9,7 +9,7 @@ services:
     ports:
       - "4000:4000"
     volumes:
-      - .:/app:cached
+      - .:/app
     depends_on:
       - frontend
       - postgres
@@ -20,7 +20,7 @@ services:
       dockerfile: Dockerfile.dev
     tty: true
     volumes:
-      - ./assets:/app:cached
+      - ./assets:/app
       - ./deps:/app/deps
       - ./priv:/app/priv
 
