@@ -1,0 +1,15 @@
+version: v1.0
+name: Kendrick App
+
+agent:
+  machine:
+    type: e1-standard-2
+    os_image: ubuntu1804
+
+blocks:
+  - name: Elixir example
+    task:
+      jobs:
+        - name: Run some code
+          commands:
+            - elixir -e 'IO.puts "Hello world!"'
