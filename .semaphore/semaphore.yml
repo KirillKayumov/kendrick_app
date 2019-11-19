@@ -31,6 +31,7 @@ blocks:
           - echo "$GITHUB_PACKAGE_REGISTRY_TOKEN" | docker login docker.pkg.github.com -u "$GITHUB_USERNAME" --password-stdin
           - checkout
           - docker pull docker.pkg.github.com/"$GITHUB_USERNAME"/kendrick_app/kendrick_app_web:latest
+          - docker tag docker.pkg.github.com/"$GITHUB_USERNAME"/kendrick_app/kendrick_app_web:latest kendrick_app_web:latest
 
       jobs:
         - name: Unit tests

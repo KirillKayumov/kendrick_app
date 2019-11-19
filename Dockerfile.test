@@ -11,3 +11,5 @@ COPY mix.exs mix.lock ./
 RUN mix do deps.get, compile
 
 COPY . .
+
+RUN mix compile
