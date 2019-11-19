@@ -6,7 +6,7 @@ services:
       context: .
       dockerfile: Dockerfile.test
       cache_from:
-        -
+        - "docker.pkg.github.com/${GITHUB_USERNAME}/kendrick_app/kendrick_app_web:latest"
     depends_on:
       - postgres
 
