@@ -32,6 +32,7 @@ blocks:
           - checkout
           - docker pull docker.pkg.github.com/"$GITHUB_USERNAME"/kendrick_app/kendrick_app_web:latest
           - docker tag docker.pkg.github.com/"$GITHUB_USERNAME"/kendrick_app/kendrick_app_web:latest kendrick_app_web:latest
+          - docker pull postgres:12.0
 
       jobs:
         - name: Unit tests
